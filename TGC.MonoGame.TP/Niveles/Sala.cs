@@ -32,22 +32,24 @@ namespace TGC.MonoGame.TP.Niveles
 
         public Sala(ContentManager content, GraphicsDevice graphicsDevice, Vector3 posicion)
         {
+            Posicion = posicion;
+
             Effect = content.Load<Effect>(ContentFolderEffects + "BasicShader");
 
             Piso = new CubePrimitive(graphicsDevice);
-            PisoWorld = Matrix.CreateScale(Size, 1f, Size) * Matrix.CreateTranslation(new Vector3(0, 0, 0) + posicion);
+            PisoWorld = Matrix.CreateScale(Size, 1f, Size) * Matrix.CreateTranslation(new Vector3(0, 0, 0) + Posicion);
             
             ParedOeste = new CubePrimitive(graphicsDevice);
-            ParedOesteWorld = Matrix.CreateScale(Size, Size, 1f) * Matrix.CreateTranslation(new Vector3(0, 0, Size/2) + posicion);
+            ParedOesteWorld = Matrix.CreateScale(Size, Size, 1f) * Matrix.CreateTranslation(new Vector3(0, 0, Size/2) + Posicion);
 
             ParedEste = new CubePrimitive(graphicsDevice);
-            ParedEsteWorld = Matrix.CreateScale(Size, Size, 1f) * Matrix.CreateTranslation(new Vector3(0, 0, -Size / 2) + posicion);
+            ParedEsteWorld = Matrix.CreateScale(Size, Size, 1f) * Matrix.CreateTranslation(new Vector3(0, 0, -Size / 2) + Posicion);
             
             ParedNorteIzq = new CubePrimitive(graphicsDevice);
-            ParedNorteIzqWorld = Matrix.CreateScale(1f, Size, Size*0.45f) * Matrix.CreateTranslation(new Vector3(50, 0, Size * 0.275f) + posicion);
+            ParedNorteIzqWorld = Matrix.CreateScale(1f, Size, Size*0.45f) * Matrix.CreateTranslation(new Vector3(50, 0, Size * 0.275f) + Posicion);
 
             ParedNorteDer = new CubePrimitive(graphicsDevice);
-            ParedNorteDerWorld = Matrix.CreateScale(1f, Size, Size * 0.45f) * Matrix.CreateTranslation(new Vector3(50, 0, -Size * 0.275f) + posicion);
+            ParedNorteDerWorld = Matrix.CreateScale(1f, Size, Size * 0.45f) * Matrix.CreateTranslation(new Vector3(50, 0, -Size * 0.275f) + Posicion);
         }
 
         public virtual void Draw(GameTime gameTime, Matrix view, Matrix projection)
@@ -64,5 +66,7 @@ namespace TGC.MonoGame.TP.Niveles
             ParedNorteDer.Draw(ParedNorteDerWorld, view, projection);
 
         }
+
+        public virtual void Update(GameTime gameTime) { }
     }
 }

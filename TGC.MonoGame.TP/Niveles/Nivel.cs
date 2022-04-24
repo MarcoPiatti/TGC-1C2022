@@ -50,5 +50,12 @@ namespace TGC.MonoGame.TP.Niveles
 
         }
 
+        public void Update(GameTime gameTime) {
+            foreach (Sala s in Salas)
+            {
+                s.Update(gameTime);
+            }
+        }
+
     }
 }
