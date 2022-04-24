@@ -10,43 +10,92 @@ using TGC.MonoGame.TP.Geometries;
 
 namespace TGC.MonoGame.TP.Elements
 {
-
         public class MovingObject
         {
             public Matrix World { get; set; }
 
-            private Vector3 StartPosition { get; set; }
-            private Vector3 EndPosition { get; set; }
+            private List<Vector3> Points { get; set; }
 
             public Vector3 Position { get; set; }
 
+            private int movementType { get; set; } //1 = Linear, 2 = Circuit, 3 = Random
             private float speed { get; set; }
 
-            private bool direction = true;
+            private int direction = 1;
+            
+            private int lastPos { get; set; }
+            private int nextPos { get; set; }
 
-            public MovingObject(Vector3 StartPosition, Vector3 EndPosition, GraphicsDevice graphicsDevice, float speed = 0.1f)
+            public MovingObject(List<Vector3> Points, GraphicsDevice graphicsDevice, Color color, int movementType = 1, float speed = 0.1f)
             {
-                this.StartPosition = StartPosition;
-                this.EndPosition = EndPosition;
-                Position = StartPosition;
+                this.Points = Points;
+                this.movementType = movementType;
                 this.speed = speed;
+                //Inicializacion por tipo de movimiento
+                if (movementType == 1)
+                {
+                    lastPos = 0;
+                    nextPos = 1;
+                } else if (movementType == -1)
+                {
+                    lastPos = Points.Count - 1;
+                    nextPos = Points.Count - 2;
+                    direction = -1;
+                }
+                else if (movementType == 2)
+                {
+                    lastPos = 0;
+                    nextPos = 1;
+                }
+                else if (movementType == -2)
+                {
+                    lastPos = Points.Count - 1;
+                    nextPos = Points.Count - 2;
+                    direction = -1;
+                }
+                else if (movementType == 3)
+                {
+                    Random rnd = new Random();
+                    lastPos = 0;
+                    nextPos = rnd.Next(0, Points.Count - 1);
+                }
+                else if (movementType == -3)
+                {
+                    Random rnd = new Random();
+                    lastPos = rnd.Next(0, Points.Count - 1);
+                    nextPos = rnd.Next(0, Points.Count - 1);
+                }
+                Position = Points[lastPos];
+
             }
 
             public void Move(GameTime gameTime)
             {
+                if (Points.Count < 2) return;
                 float deltaTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
                 float marginError = 2 * speed * deltaTime;
-                if (direction)
+                Position = ConstantSpeedLerp(Position, Points[lastPos], Points[nextPos], speed * deltaTime);
+                if (Vector3.Distance(Position, Points[nextPos]) < marginError)
                 {
-                    Position = ConstantSpeedLerp(Position, StartPosition, EndPosition, speed * deltaTime);
-                    if (Vector3.Distance(Position, EndPosition) < marginError)
-                        direction = false;
-                }
-                else
+                    if(movementType == 1 || movementType == -1) //Linear movement, el objeto va del punto 0 al ultimo y vuelve del punto 0 al ultimo, recorriendo cada punto en medio. En negativo el bloque empieza en el ultimo punto y va para el primero. 
                 {
-                    Position = ConstantSpeedLerp(Position, EndPosition, StartPosition, speed * deltaTime);
-                    if (Vector3.Distance(Position, StartPosition) < marginError)
-                        direction = true;
+                        if (nextPos + direction > Points.Count - 1 || nextPos + direction < 0) direction *= -1;
+                        lastPos = nextPos;
+                        nextPos = nextPos + direction;
+                    }
+                    else if (movementType == 2 || movementType == -2) //Circuit movement, el objeto va del punto 0 al ultimo recorriendo cada punto en medio y vuelve del punto 0 al ultimo directamente. En negativo el bloque empieza en 0 pero va en sentido contrario.
+                    {
+                        lastPos = nextPos;
+                        nextPos = nextPos + direction;
+                        if (nextPos > Points.Count - 1) nextPos = 0;
+                        if (nextPos < 0) nextPos = Points.Count - 1;
+                    }
+                    else if (movementType == 3 || movementType == -3) //Random movement, el objeto va de un punto a otro aleatorio. En negativo el bloque empieza en un punto aleatorio tambien.
+                    {
+                        Random rnd = new Random();
+                        lastPos = nextPos;
+                        nextPos = rnd.Next(0, Points.Count - 1);
+                    }
                 }
             }
 
@@ -58,9 +107,9 @@ namespace TGC.MonoGame.TP.Elements
         public class MovingCube : MovingObject
         {
             public CubePrimitive Cube { get; set; }
-            public MovingCube(Vector3 StartPosition, Vector3 EndPosition, GraphicsDevice graphicsDevice, float speed = 0.1f) : base(StartPosition, EndPosition, graphicsDevice, speed)
+            public MovingCube(List<Vector3> Points, GraphicsDevice graphicsDevice, Color color, int movementType = 1, float speed = 0.1f) : base(Points, graphicsDevice, color, movementType, speed)
             {
-            Cube = new CubePrimitive(graphicsDevice);
+            Cube = new CubePrimitive(graphicsDevice, 1, color);
             }
         }
 
