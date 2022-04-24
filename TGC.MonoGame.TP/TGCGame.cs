@@ -23,7 +23,7 @@ namespace TGC.MonoGame.TP
 
         //private FreeCamera Camera { get; set; }
 
-        private Sala0 Nivel { get; set; }
+        private Nivel Nivel { get; set; }
         /// <summary>
         ///     Constructor del juego.
         /// </summary>
@@ -89,7 +89,7 @@ namespace TGC.MonoGame.TP
         protected override void LoadContent()
         {
 
-            Nivel = new Sala0(Content, GraphicsDevice);
+            Nivel = new Nivel(Content, GraphicsDevice);
             // Aca es donde deberiamos cargar todos los contenido necesarios antes de iniciar el juego.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 

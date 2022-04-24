@@ -12,16 +12,16 @@ namespace TGC.MonoGame.TP.Niveles
 {
     public class Sala1 : Sala
     {
-        private CubePrimitive UnObstaculo { get; set; }
+        private CylinderPrimitive UnObstaculo { get; set; }
         private Matrix UnObstaculoWorld { get; set; }
 
-        public Sala1(GraphicsDevice graphicsDevice) : base(graphicsDevice)
+        public Sala1(ContentManager content, GraphicsDevice graphicsDevice, Vector3 posicion) : base(content, graphicsDevice, posicion)
         {
             UnObstaculo = new CylinderPrimitive(graphicsDevice);
-            UnObstaculoWorld = Matrix.CreateScale(10f, 1f, 10f) * Matrix.CreateTranslation(new Vector3(50, 0, 50));
+            UnObstaculoWorld = Matrix.CreateScale(50f, 50f, 50f) * Matrix.CreateTranslation(new Vector3(0, 10f, 0) + posicion);
         }
 
-        public void Draw(GameTime gameTime, Matrix view, Matrix projection)
+        public override void Draw(GameTime gameTime, Matrix view, Matrix projection)
         {
             base.Draw(gameTime,view,projection);
             UnObstaculo.Draw(UnObstaculoWorld, view, projection);

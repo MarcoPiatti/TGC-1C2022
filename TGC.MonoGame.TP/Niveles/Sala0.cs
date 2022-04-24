@@ -15,15 +15,16 @@ namespace TGC.MonoGame.TP.Niveles
         private CubePrimitive ParedSur { get; set; }
         private Matrix ParedSurWorld { get; set; }
 
-        public Sala(GraphicsDevice graphicsDevice) : base(graphicsDevice)
+        public Sala0(ContentManager content, GraphicsDevice graphicsDevice, Vector3 posicion) : base(content,graphicsDevice,posicion)
         {
             ParedSur = new CubePrimitive(graphicsDevice);
-            ParedSurWorld = Matrix.CreateScale(50f, 100f, 1f) * Matrix.CreateTranslation(new Vector3(-100, 0, 50));
+            ParedSurWorld = Matrix.CreateScale(1f, Size, Size) * Matrix.CreateTranslation(new Vector3(-Size/2, 0, 0) + posicion);
         }
 
-        public void Draw(GameTime gameTime, Matrix view, Matrix projection)
+        public override void Draw(GameTime gameTime, Matrix view, Matrix projection)
         {
-            base.Draw(gameTime,view,projection);
+            base.Draw(gameTime, view, projection);
+            ParedSur.Draw(ParedSurWorld, view, projection);
         }
     }
 }
