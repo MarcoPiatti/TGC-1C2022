@@ -26,7 +26,7 @@ namespace TGC.MonoGame.TP.Elements
             private int lastPos { get; set; }
             private int nextPos { get; set; }
 
-            public MovingObject(List<Vector3> Points, GraphicsDevice graphicsDevice, Color color, int movementType = 1, float speed = 0.1f)
+            public MovingObject(List<Vector3> Points, GraphicsDevice graphicsDevice, Color color, int movementType = 1, float speed = 10f)
             {
                 this.Points = Points;
                 this.movementType = movementType;
@@ -68,7 +68,7 @@ namespace TGC.MonoGame.TP.Elements
                 Position = Points[lastPos];
 
             }
-
+            
             public void Move(GameTime gameTime)
             {
                 if (Points.Count < 2) return;
@@ -100,16 +100,7 @@ namespace TGC.MonoGame.TP.Elements
             }
 
             private Vector3 ConstantSpeedLerp(Vector3 position, Vector3 start, Vector3 end, float speed) {
-                return position - (start - end) * speed;
-            }
-        }
-
-        public class MovingCube : MovingObject
-        {
-            public CubePrimitive Cube { get; set; }
-            public MovingCube(List<Vector3> Points, GraphicsDevice graphicsDevice, Color color, int movementType = 1, float speed = 0.1f) : base(Points, graphicsDevice, color, movementType, speed)
-            {
-            Cube = new CubePrimitive(graphicsDevice, 1, color);
+                return position - (start - end) / Vector3.Distance(start, end) * speed;
             }
         }
 
