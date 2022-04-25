@@ -50,7 +50,7 @@ namespace TGC.MonoGame.TP.Niveles
         {
             CoinAngle += 0.01f;
             var rotation = Matrix.CreateRotationY(CoinAngle);
-            CoinWorld = Matrix.CreateScale(1f, 10f, 10f) * rotation  * Matrix.CreateTranslation(new Vector3(25, 20, 0));
+            CoinWorld = Matrix.CreateScale(1f, 10f, 10f) * rotation * Matrix.CreateTranslation(new Vector3(25, 20, 0));
             //CoinRotation += Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             base.Update(gameTime);
         }
