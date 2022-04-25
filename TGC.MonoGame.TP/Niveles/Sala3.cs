@@ -50,7 +50,7 @@ namespace TGC.MonoGame.TP.Niveles
             base.Draw(gameTime, view, projection);
             foreach (MovingCube cube in obstacles)
             {
-                cube.Cube.Draw(cube.World, view, projection);
+                cube.Draw(view, projection);
             }
         }
 

@@ -58,7 +58,7 @@ namespace TGC.MonoGame.TP.Niveles
             
             foreach(MovingSphere sphere in Spheres)
             {
-                sphere.Sphere.Draw(sphere.World, view, projection);
+                sphere.Draw(view, projection);
             }
         }
 

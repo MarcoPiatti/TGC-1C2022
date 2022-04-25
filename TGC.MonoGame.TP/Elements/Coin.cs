@@ -7,9 +7,9 @@ namespace TGC.MonoGame.TP.Elements
 {
     public class Coin
     {
-        private SpherePrimitive body { get; set; }
-        private Matrix CoinWorld { get; set; }
-        private Vector3 position { get; set; }
+        public SpherePrimitive body { get; set; }
+        public Matrix CoinWorld { get; set; }
+        public Vector3 position { get; set; }
         private float CoinRotation { get; set; }
         private float CoinAngle { get; set; }
 

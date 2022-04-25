@@ -17,5 +17,10 @@ namespace TGC.MonoGame.TP.Elements
         {
             Sphere = new SpherePrimitive(graphicsDevice, 1, 16);
         }
+
+        public void Draw(Matrix view, Matrix projection)
+        {
+            Sphere.Draw(World, view, projection);
+        }
     }
 }

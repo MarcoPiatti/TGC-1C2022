@@ -17,5 +17,10 @@ namespace TGC.MonoGame.TP.Elements
         {
             Cube = new CubePrimitive(graphicsDevice);
         }
+
+        public void Draw(Matrix view, Matrix projection)
+        {
+            Cube.Draw(World, view, projection);
+        }
     }
 }
