@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using TGC.MonoGame.TP.Niveles;
-
+using TGC.MonoGame.TP.Geometries;
 
 namespace TGC.MonoGame.TP
 {
@@ -47,8 +47,10 @@ namespace TGC.MonoGame.TP
         private Matrix World { get; set; }
         private Matrix View { get; set; }
         private Matrix Projection { get; set; }
-
-        private FreeCamera Camera { get; set; }
+        private SpherePrimitive Player { get; set; }
+        private Matrix PlayerWorld { get; set; }
+        private Camera Camera { get; set; }
+ 
 
         /// <summary>
         ///     Se llama una sola vez, al principio cuando se ejecuta el ejemplo.
@@ -58,6 +60,9 @@ namespace TGC.MonoGame.TP
         {
             var screenSize = new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
             Camera = new FreeCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-250, 100, 700), screenSize);
+
+            Player = new SpherePrimitive(GraphicsDevice);
+            PlayerWorld = Matrix.CreateScale(5, 5, 5) * Matrix.CreateTranslation(new Vector3(0, 6, 0));
             // La logica de inicializacion que no depende del contenido se recomienda poner en este metodo.
 
             // Apago el backface culling.
@@ -120,6 +125,7 @@ namespace TGC.MonoGame.TP
             // Aca deberiamos poner toda la logica de actualizacion del juego.
             Camera.Update(gameTime);
 
+
             Nivel.Update(gameTime);
             // Capturar Input teclado
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -139,15 +145,17 @@ namespace TGC.MonoGame.TP
         protected override void Draw(GameTime gameTime)
         {
             // Aca deberiamos poner toda la logia de renderizado del juego.
-            GraphicsDevice.Clear(Color.Black);
-
+            GraphicsDevice.Clear(Color.Cyan);
+            
             // Para dibujar le modelo necesitamos pasarle informacion que el efecto esta esperando.
             Effect.Parameters["View"].SetValue(Camera.View);
             Effect.Parameters["Projection"].SetValue(Camera.Projection);
             Effect.Parameters["DiffuseColor"].SetValue(Color.DarkBlue.ToVector3());
             var rotationMatrix = Matrix.CreateRotationY(Rotation);
             Nivel.Draw(gameTime, Camera.View, Camera.Projection);
+            Player.Draw(PlayerWorld, Camera.View, Camera.Projection);
             
+
         }
 
         /// <summary>

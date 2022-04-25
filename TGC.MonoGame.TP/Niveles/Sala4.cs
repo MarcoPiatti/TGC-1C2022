@@ -30,10 +30,10 @@ namespace TGC.MonoGame.TP.Niveles
             Platforms.Add(new Platform(new CubePrimitive(graphicsDevice), new Vector3(22.5f, 0, 0)));
 
             Spheres = new List<MovingSphere>();
-            Spheres.Add(new MovingSphere(new Vector3(-33.75f, 5, -40), new Vector3(-33.75f, 5, 40), graphicsDevice));
-            Spheres.Add(new MovingSphere(new Vector3(-12f, 5, 40), new Vector3(-12f, 5, -40), graphicsDevice));
-            Spheres.Add(new MovingSphere(new Vector3(12f, 5, -40), new Vector3(12f, 5, 40), graphicsDevice));
-            Spheres.Add(new MovingSphere(new Vector3(33.75f, 5, 40), new Vector3(33.75f, 5, -40), graphicsDevice));
+            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(-33.75f, 5, -40), new Vector3(-33.75f, 5, 40) }, graphicsDevice, Color.Red, -2));
+            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(-12f, 5, 40), new Vector3(-12f, 5, -40) }, graphicsDevice, Color.Red, -2));
+            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(12f, 5, -40), new Vector3(12f, 5, 40) }, graphicsDevice, Color.Red, -2));
+            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(33.75f, 5, 40), new Vector3(33.75f, 5, -40) }, graphicsDevice, Color.Red, -2));
 
             foreach (Platform platform in Platforms)
             {

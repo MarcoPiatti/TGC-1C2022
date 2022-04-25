@@ -28,10 +28,11 @@ namespace TGC.MonoGame.TP.Niveles
 
             Salas = new List<Sala>();
             //pendiente for para procedural
-            Salas.Add(new Sala0(content, graphicsDevice, new Vector3(0 * Sala.Size,0,0)));
+            Salas.Add(new Sala0(content, graphicsDevice, new Vector3(0 * Sala.Size, 0, 0)));
             Salas.Add(new Sala1(content, graphicsDevice, new Vector3(1 * Sala.Size, 0, 0)));
             Salas.Add(new Sala2(content, graphicsDevice, new Vector3(2 * Sala.Size, 0, 0)));
-            Salas.Add(new Sala4(content, graphicsDevice, new Vector3(3 * Sala.Size, 0, 0)));
+            Salas.Add(new Sala3(content, graphicsDevice, new Vector3(3 * Sala.Size, 0, 0)));
+            Salas.Add(new Sala4(content, graphicsDevice, new Vector3(4 * Sala.Size, 0, 0)));
 
             // Load an effect that will be used to draw the scene
             Effect = content.Load<Effect>(ContentFolderEffects + "BasicShader");

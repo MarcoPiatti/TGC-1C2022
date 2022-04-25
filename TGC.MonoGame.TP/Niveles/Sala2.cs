@@ -28,10 +28,11 @@ namespace TGC.MonoGame.TP.Niveles
             PisoSalidaWorld = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(new Vector3(45f, 0, 0) + posicion);
 
             MovingCubes = new List<MovingCube>();
-            MovingCubes.Add(new MovingCube(new Vector3(0, 0, -40), new Vector3(0, 0, 40), graphicsDevice));
-            MovingCubes.Add(new MovingCube(new Vector3(22.5f, 0, 40), new Vector3(22.5f, 0, -40), graphicsDevice));
-            MovingCubes.Add(new MovingCube(new Vector3(-22.5f, 0, 40), new Vector3(-22.5f, 0, -40), graphicsDevice));
-
+            MovingCubes.Add(new MovingCube(new List<Vector3> { new Vector3(0, 0, -40), new Vector3(0, 0, 40) }, graphicsDevice, Color.White));
+            MovingCubes.Add(new MovingCube(new List<Vector3> { new Vector3(22.5f, 0, 40), new Vector3(22.5f, 0, -40) }, graphicsDevice, Color.White));
+            MovingCubes.Add(new MovingCube(new List<Vector3> { new Vector3(-22.5f, 0, 40), new Vector3(-22.5f, 0, -40) }, graphicsDevice, Color.White));
+            //MovingCubes.Add(new MovingCube(new List<Vector3> { new Vector3(40, 20, -20), new Vector3(40, 20, 20), new Vector3(40, 40, 20), new Vector3(40, 40, -20) }, graphicsDevice, Color.Red, 2, 0.5f));
+            
             foreach (MovingCube cube in MovingCubes)
             {
                 cube.World = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(cube.Position + posicion);
