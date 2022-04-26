@@ -33,7 +33,7 @@ namespace TGC.MonoGame.TP.Niveles
             Salas.Add(new Sala2(content, graphicsDevice, new Vector3(2 * Sala.Size, 0, 0)));
             Salas.Add(new Sala3(content, graphicsDevice, new Vector3(3 * Sala.Size, 0, 0)));
             Salas.Add(new Sala4(content, graphicsDevice, new Vector3(4 * Sala.Size, 0, 0)));
-
+            Salas.Add(new SalaFin(content, graphicsDevice, new Vector3(5 * Sala.Size, 0, 0)));
             // Load an effect that will be used to draw the scene
             Effect = content.Load<Effect>(ContentFolderEffects + "BasicShader");
         }

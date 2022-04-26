@@ -14,8 +14,8 @@ namespace TGC.MonoGame.TP.Elements
         private float CoinAngle { get; set; }
 
         public Coin(GraphicsDevice graphicsDevice, Vector3 posicion){
-            body = new SpherePrimitive(graphicsDevice);
-            CoinWorld = Matrix.CreateScale(1f, 10f, 10f) * Matrix.CreateTranslation(posicion);
+            body = new SpherePrimitive(graphicsDevice,1f,16,Color.Gold);
+            CoinWorld = Matrix.CreateScale(1f, 5f, 5f) * Matrix.CreateTranslation(posicion);
             position = posicion;
         }
 

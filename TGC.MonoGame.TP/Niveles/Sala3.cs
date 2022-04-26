@@ -16,7 +16,7 @@ namespace TGC.MonoGame.TP.Niveles
         private List<MovingCube> obstacles { get; set; }
         private static Vector3 obstacleScale = new Vector3(1f, 0.1f * Size, 0.1f * Size);
         private static float angle = (float)Math.PI / 12f;
-
+        private List<Coin> Coins { get; set; }
         public Sala3(ContentManager content, GraphicsDevice graphicsDevice, Vector3 posicion) : base(content, graphicsDevice, posicion)
         {
             
@@ -36,7 +36,16 @@ namespace TGC.MonoGame.TP.Niveles
             obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.35f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.35f * Size)}, graphicsDevice, Color.Red));
             obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.45f * Size), new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.45f * Size)}, graphicsDevice, Color.Red));
 
+            Coins = new List<Coin>();
 
+            Coins.Add(new Coin(graphicsDevice, new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size * 1.1f, 0.45f * Size) + posicion));
+            Coins.Add(new Coin(graphicsDevice, new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size * 1.1f, -0.45f * Size) + posicion));
+            Coins.Add(new Coin(graphicsDevice, new Vector3(0, (float)Math.Tan(angle) * Size * 0.7f, 0f * Size) + posicion));
+
+            foreach (Coin coin in Coins)
+            {
+                coin.CoinWorld = Matrix.CreateTranslation(coin.position + posicion);
+            }
 
             foreach (MovingCube cube in obstacles)
             {
@@ -52,6 +61,11 @@ namespace TGC.MonoGame.TP.Niveles
             {
                 cube.Draw(view, projection);
             }
+
+            foreach (Coin coin in Coins)
+            {
+                coin.Draw(view, projection);
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -60,6 +74,10 @@ namespace TGC.MonoGame.TP.Niveles
             {
                 cube.Move(gameTime);
                 cube.World = Matrix.CreateScale(obstacleScale) * Matrix.CreateTranslation(cube.Position + Posicion);
+            }
+            foreach (Coin coin in Coins)
+            {
+                coin.Update(gameTime);
             }
         }
     }

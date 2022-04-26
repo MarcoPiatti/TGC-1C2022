@@ -59,7 +59,7 @@ namespace TGC.MonoGame.TP
         protected override void Initialize()
         {
             var screenSize = new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-            Camera = new FreeCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-250, 100, 700), screenSize);
+            Camera = new FreeCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), screenSize);
 
             Player = new SpherePrimitive(GraphicsDevice);
             PlayerWorld = Matrix.CreateScale(5, 5, 5) * Matrix.CreateTranslation(new Vector3(0, 6, 0));
