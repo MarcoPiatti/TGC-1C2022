@@ -16,7 +16,7 @@ namespace TGC.MonoGame.TP.Elements
         private float velocidadAngular = -90f;
 
         public SpinningPillar(GraphicsDevice graphicsDevice, Vector3 posicion){
-            Columna = new CylinderPrimitive(graphicsDevice, 1f, 1f, 8);
+            Columna = new CylinderPrimitive(graphicsDevice, 1f, 1f, 32);
             ColumnaWorld = Matrix.CreateScale(40f, 80f, 40f) * Matrix.CreateTranslation(new Vector3(0, 10f, 0) + posicion);
 
             Escalones = new List<Escalon>();
