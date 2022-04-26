@@ -15,7 +15,7 @@ namespace TGC.MonoGame.TP
         private float pitch;
 
         // Angles
-        private float yaw = -90f;
+        private float yaw = 0f;
 
         public FreeCamera(float aspectRatio, Vector3 position, Point screenCenter) : this(aspectRatio, position)
         {
