@@ -16,6 +16,7 @@ namespace TGC.MonoGame.TP.Niveles
         public Matrix PisoSalidaWorld { get; set; }
         public List<MovingSphere> Spheres { get; set; }
         public List<Platform> Platforms { get; set; }
+        public List<Coin> Coins { get; set; }
 
         public Sala4(ContentManager content, GraphicsDevice graphicsDevice, Vector3 posicion) : base(content, graphicsDevice, posicion)
         {
@@ -27,13 +28,23 @@ namespace TGC.MonoGame.TP.Niveles
             Platforms = new List<Platform>();
             Platforms.Add(new Platform(new CubePrimitive(graphicsDevice), new Vector3(-22.5f, 0, 0)));
             Platforms.Add(new Platform(new CubePrimitive(graphicsDevice), new Vector3(0, 0, 0)));
+            Platforms.Add(new Platform(new CubePrimitive(graphicsDevice), new Vector3(0, 0, 22.5f)));
+            Platforms.Add(new Platform(new CubePrimitive(graphicsDevice), new Vector3(0, 0, -22.5f)));
             Platforms.Add(new Platform(new CubePrimitive(graphicsDevice), new Vector3(22.5f, 0, 0)));
 
             Spheres = new List<MovingSphere>();
-            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(-33.75f, 5, -40), new Vector3(-33.75f, 5, 40) }, graphicsDevice, Color.Red, -2));
-            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(-12f, 5, 40), new Vector3(-12f, 5, -40) }, graphicsDevice, Color.Red, -2));
-            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(12f, 5, -40), new Vector3(12f, 5, 40) }, graphicsDevice, Color.Red, -2));
-            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(33.75f, 5, 40), new Vector3(33.75f, 5, -40) }, graphicsDevice, Color.Red, -2));
+            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(-33.75f, 5, -20), new Vector3(-33.75f, 5, 20) }, graphicsDevice, Color.Red, -2, 45f));
+            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(-12f, 5, 20), new Vector3(-12f, 5, -20) }, graphicsDevice, Color.Red, -2, 45f));
+            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(12f, 5, -20), new Vector3(12f, 5, 20) }, graphicsDevice, Color.Red, -2, 45f));
+            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(33.75f, 5, 20), new Vector3(33.75f, 5, -20) }, graphicsDevice, Color.Red, -2, 45f));
+            // esferas con movimiento vertical
+            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(0, 35, 11.25f), new Vector3(0, -35, 11.25f) }, graphicsDevice, Color.Red, -2, 100f));
+            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(0, -35, -11.25f), new Vector3(0, 35, -11.25f) }, graphicsDevice, Color.Red, -2, 100f));
+
+
+            Coins = new List<Coin>();
+            Coins.Add(new Coin(graphicsDevice, new Vector3(0, 10, 22.5f) + posicion));
+            Coins.Add(new Coin(graphicsDevice, new Vector3(0, 10, -22.5f) + posicion));
 
             foreach (Platform platform in Platforms)
             {
@@ -58,7 +69,12 @@ namespace TGC.MonoGame.TP.Niveles
             
             foreach(MovingSphere sphere in Spheres)
             {
-                sphere.Draw(view, projection);
+                sphere.Sphere.Draw(sphere.World, view, projection);
+            }
+
+            foreach(Coin coin in Coins)
+            {
+                coin.Draw(view, projection);
             }
         }
 
@@ -70,6 +86,11 @@ namespace TGC.MonoGame.TP.Niveles
             {
                 sphere.Move(gameTime);
                 sphere.World = Matrix.CreateScale(arrowScale) * Matrix.CreateTranslation(sphere.Position + Posicion);
+            }
+
+            foreach(Coin coin in Coins)
+            {
+                coin.Update(gameTime);
             }
         }
     }
