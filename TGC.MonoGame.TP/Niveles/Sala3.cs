@@ -14,8 +14,11 @@ namespace TGC.MonoGame.TP.Niveles
     public class Sala3 : Sala
     {
         private List<MovingCube> obstacles { get; set; }
-        private static Vector3 obstacleScale = new Vector3(1f, 0.1f * Size, 0.1f * Size);
+        private static Vector3 obstacleScale = new Vector3(1f, 0.2f * Size, 0.1f * Size);
+        private static float obstaclespeed = 10f;
+
         private static float angle = (float)Math.PI / 12f;
+        
         private List<Coin> Coins { get; set; }
         public Sala3(ContentManager content, GraphicsDevice graphicsDevice, Vector3 posicion) : base(content, graphicsDevice, posicion)
         {
@@ -24,17 +27,17 @@ namespace TGC.MonoGame.TP.Niveles
 
             obstacles = new List<MovingCube>();
 
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, -0.05f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, -0.05f * Size) }, graphicsDevice, Color.Red));
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle)*Size, -0.15f*Size), new Vector3(-Size * 0.4f,(float)Math.Tan(angle)*Size*0.1f,-0.15f * Size)}, graphicsDevice,Color.Red));
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, -0.25f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, -0.25f * Size)}, graphicsDevice, Color.Red));
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, -0.35f * Size), new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, -0.35f * Size)}, graphicsDevice, Color.Red));
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, -0.45f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, -0.45f * Size)}, graphicsDevice, Color.Red));
+            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, -0.05f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, -0.05f * Size) }, graphicsDevice, Color.Red,1,obstaclespeed));
+            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle)*Size, -0.15f*Size), new Vector3(-Size * 0.4f,(float)Math.Tan(angle)*Size*0.1f,-0.15f * Size)}, graphicsDevice,Color.Red, 1, obstaclespeed));
+            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, -0.25f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, -0.25f * Size)}, graphicsDevice, Color.Red, 1, obstaclespeed));
+            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, -0.35f * Size), new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, -0.35f * Size)}, graphicsDevice, Color.Red, 1, obstaclespeed));
+            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, -0.45f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, -0.45f * Size)}, graphicsDevice, Color.Red, 1, obstaclespeed));
             
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.05f * Size), new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.05f * Size)}, graphicsDevice, Color.Red));
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.15f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.15f * Size)}, graphicsDevice, Color.Red));
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.25f * Size), new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.25f * Size)}, graphicsDevice, Color.Red));
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.35f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.35f * Size)}, graphicsDevice, Color.Red));
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.45f * Size), new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.45f * Size)}, graphicsDevice, Color.Red));
+            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.05f * Size), new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.05f * Size)}, graphicsDevice, Color.Red, 1, obstaclespeed));
+            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.15f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.15f * Size)}, graphicsDevice, Color.Red, 1, obstaclespeed));
+            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.25f * Size), new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.25f * Size)}, graphicsDevice, Color.Red, 1, obstaclespeed));
+            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.35f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.35f * Size)}, graphicsDevice, Color.Red, 1, obstaclespeed));
+            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.45f * Size), new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.45f * Size)}, graphicsDevice, Color.Red, 1, obstaclespeed));
 
             Coins = new List<Coin>();
 
