@@ -34,7 +34,7 @@ namespace TGC.MonoGame.TP.Niveles
 
 
             ParedSur = new CubePrimitive(graphicsDevice);
-            ParedSurWorld = Matrix.CreateScale(1f, Size, Size) * Matrix.CreateTranslation(new Vector3(-Size / 2, 0, 0) + posicion);
+            ParedSurWorld = Matrix.CreateScale(1f, Size, Size) * Matrix.CreateTranslation(new Vector3(-Size / 2, Size / 2, 0) + posicion);
         }
 
         public override void Draw(GameTime gameTime, Matrix view, Matrix projection)

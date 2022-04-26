@@ -22,11 +22,14 @@ namespace TGC.MonoGame.TP.Niveles
         private CubePrimitive ParedEste { get; set; }
         private CubePrimitive ParedNorteIzq { get; set; }
         private CubePrimitive ParedNorteDer { get; set; }
+        private CubePrimitive Techo { get; set; }
         public Matrix PisoWorld { get; set; }
         public Matrix ParedOesteWorld { get; set; }
         public Matrix ParedEsteWorld { get; set; }
         public Matrix ParedNorteIzqWorld { get; set; }
         public Matrix ParedNorteDerWorld { get; set; }
+        public Matrix TechoWorld { get; set; }
+
         public Vector3 Posicion;
         public static float Size = 100f;
 
@@ -40,16 +43,19 @@ namespace TGC.MonoGame.TP.Niveles
             PisoWorld = Matrix.CreateScale(Size, 1f, Size) * Matrix.CreateTranslation(new Vector3(0, 0, 0) + Posicion);
             
             ParedOeste = new CubePrimitive(graphicsDevice);
-            ParedOesteWorld = Matrix.CreateScale(Size, Size, 1f) * Matrix.CreateTranslation(new Vector3(0, 0, Size/2) + Posicion);
+            ParedOesteWorld = Matrix.CreateScale(Size, Size, 1f) * Matrix.CreateTranslation(new Vector3(0, Size / 2, Size/2) + Posicion);
 
             ParedEste = new CubePrimitive(graphicsDevice);
-            ParedEsteWorld = Matrix.CreateScale(Size, Size, 1f) * Matrix.CreateTranslation(new Vector3(0, 0, -Size / 2) + Posicion);
+            ParedEsteWorld = Matrix.CreateScale(Size, Size, 1f) * Matrix.CreateTranslation(new Vector3(0, Size / 2, -Size / 2) + Posicion);
             
             ParedNorteIzq = new CubePrimitive(graphicsDevice);
-            ParedNorteIzqWorld = Matrix.CreateScale(1f, Size, Size*0.45f) * Matrix.CreateTranslation(new Vector3(50, 0, Size * 0.275f) + Posicion);
+            ParedNorteIzqWorld = Matrix.CreateScale(1f, Size, Size*0.45f) * Matrix.CreateTranslation(new Vector3(50, Size / 2, Size * 0.275f) + Posicion);
 
             ParedNorteDer = new CubePrimitive(graphicsDevice);
-            ParedNorteDerWorld = Matrix.CreateScale(1f, Size, Size * 0.45f) * Matrix.CreateTranslation(new Vector3(50, 0, -Size * 0.275f) + Posicion);
+            ParedNorteDerWorld = Matrix.CreateScale(1f, Size, Size * 0.45f) * Matrix.CreateTranslation(new Vector3(50, Size / 2, -Size * 0.275f) + Posicion);
+
+            Techo = new CubePrimitive(graphicsDevice);
+            TechoWorld = Matrix.CreateScale(Size, 1f, Size) * Matrix.CreateTranslation(new Vector3(0, Size, 0) + Posicion);
         }
 
         public virtual void Draw(GameTime gameTime, Matrix view, Matrix projection)
@@ -64,7 +70,7 @@ namespace TGC.MonoGame.TP.Niveles
             ParedEste.Draw(ParedEsteWorld, view, projection);
             ParedNorteIzq.Draw(ParedNorteIzqWorld, view, projection);
             ParedNorteDer.Draw(ParedNorteDerWorld, view, projection);
-
+            Techo.Draw(TechoWorld, view, projection);
         }
 
         public virtual void Update(GameTime gameTime) { }
