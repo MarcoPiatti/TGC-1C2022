@@ -48,8 +48,9 @@ namespace TGC.MonoGame.TP
         private Matrix View { get; set; }
         private Matrix Projection { get; set; }
         private Player Player { get; set; }
-        private Camera Camera { get; set; }
- 
+        //private FollowCamera Camera { get; set; }
+        private FreeCamera Camera { get; set; }
+
 
         /// <summary>
         ///     Se llama una sola vez, al principio cuando se ejecuta el ejemplo.
@@ -58,6 +59,7 @@ namespace TGC.MonoGame.TP
         protected override void Initialize()
         {
             var screenSize = new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            //Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), screenSize);
             Camera = new FreeCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), screenSize);
 
             Player = new Player(GraphicsDevice,Content);
@@ -113,16 +115,45 @@ namespace TGC.MonoGame.TP
         protected override void Update(GameTime gameTime)
         {
             // Aca deberiamos poner toda la logica de actualizacion del juego.
+
+            //Camera.Update(gameTime, Player.Position);
             Camera.Update(gameTime);
 
-
+            var keyboardState = Keyboard.GetState();
             Nivel.Update(gameTime);
             // Capturar Input teclado
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 //Salgo del juego.
                 Exit();
 
-            // Basado en el tiempo que paso se va generando una rotacion.
+            if (keyboardState.IsKeyDown(Keys.Right))
+            {
+                Player.MoveRight();
+            }
+            if (keyboardState.IsKeyDown(Keys.Left))
+            {
+                Player.MoveLeft();
+            }
+            if (keyboardState.IsKeyDown(Keys.Up))
+            {
+                Player.MoveForward();
+            }
+            if (keyboardState.IsKeyDown(Keys.Down))
+            {
+                Player.MoveBackwards();
+            }
+            if (keyboardState.IsKeyDown(Keys.Space))
+            {
+                Player.Jump();
+            }
+
+            if (Player.Intersects(Nivel.Salas[0].Piso.Collider))
+            {
+                Player.VectorSpeed = new Vector3(Player.VectorSpeed.X,0, Player.VectorSpeed.Z);
+                Player.Body.World *= Matrix.CreateTranslation(new Vector3(0,5,0));
+            }
+
+            Player.Update(gameTime);
             Rotation += Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
 
             base.Update(gameTime);

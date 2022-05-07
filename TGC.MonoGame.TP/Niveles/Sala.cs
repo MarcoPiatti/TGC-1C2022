@@ -34,23 +34,23 @@ namespace TGC.MonoGame.TP.Niveles
 
             Effect = content.Load<Effect>(ContentFolderEffects + "BasicShader");
 
-            Piso = new Cube(graphicsDevice, content, posicion);
-            Piso.World = Matrix.CreateScale(Size, 1f, Size) * Matrix.CreateTranslation(new Vector3(0, 0, 0) + Posicion);
+            Piso = new Cube(graphicsDevice, content, posicion,Color.Gray);
+            Piso.WorldUpdate(new Vector3(Size, 1f, Size), new Vector3(0, 0, 0) + Posicion, Quaternion.Identity);
             
-            ParedOeste = new Cube(graphicsDevice, content, posicion);
-            ParedOeste.World = Matrix.CreateScale(Size, Size, 1f) * Matrix.CreateTranslation(new Vector3(0, Size / 2, Size/2) + Posicion);
+            ParedOeste = new Cube(graphicsDevice, content, posicion, Color.Orange);
+            ParedOeste.WorldUpdate(new Vector3(Size, Size, 1f), new Vector3(0, Size / 2, Size / 2) + Posicion, Quaternion.Identity);
 
-            ParedEste = new Cube(graphicsDevice, content, posicion);
-            ParedEste.World = Matrix.CreateScale(Size, Size, 1f) * Matrix.CreateTranslation(new Vector3(0, Size / 2, -Size / 2) + Posicion);
+            ParedEste = new Cube(graphicsDevice, content, posicion, Color.Orange);
+            ParedEste.WorldUpdate(new Vector3(Size, Size, 1f), new Vector3(0, Size / 2, -Size / 2) + Posicion, Quaternion.Identity);
             
-            ParedNorteIzq = new Cube(graphicsDevice, content, posicion);
-            ParedNorteIzq.World = Matrix.CreateScale(1f, Size, Size*0.45f) * Matrix.CreateTranslation(new Vector3(50, Size / 2, Size * 0.275f) + Posicion);
+            ParedNorteIzq = new Cube(graphicsDevice, content, posicion, Color.Orange);
+            ParedNorteIzq.WorldUpdate(new Vector3(1f, Size, Size * 0.45f), new Vector3(50, Size / 2, Size * 0.275f) + Posicion, Quaternion.Identity);
 
-            ParedNorteDer = new Cube(graphicsDevice, content, posicion);
-            ParedNorteDer.World = Matrix.CreateScale(1f, Size, Size * 0.45f) * Matrix.CreateTranslation(new Vector3(50, Size / 2, -Size * 0.275f) + Posicion);
+            ParedNorteDer = new Cube(graphicsDevice, content, posicion, Color.Orange);
+            ParedNorteDer.WorldUpdate(new Vector3(1f, Size, Size * 0.45f), new Vector3(50, Size / 2, -Size * 0.275f) + Posicion, Quaternion.Identity);
 
             Techo = new Cube(graphicsDevice, content, posicion);
-            Techo.World = Matrix.CreateScale(Size, 1f, Size) * Matrix.CreateTranslation(new Vector3(0, Size, 0) + Posicion);
+            Techo.WorldUpdate(new Vector3(Size, 1f, Size), new Vector3(0, Size, 0) + Posicion, Quaternion.Identity);
         }
 
         public virtual void Draw(GameTime gameTime, Matrix view, Matrix projection)

@@ -46,7 +46,7 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 }
 
 float4 MainPS(VertexShaderOutput input) : COLOR
-{
+{	
     return float4(DiffuseColor, 1.0);
 }
 

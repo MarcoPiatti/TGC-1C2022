@@ -40,7 +40,7 @@ namespace TGC.MonoGame.TP.Geometries
         private VertexBuffer VertexBuffer { get; set; }
 
         private IndexBuffer IndexBuffer { get; set; }
-        public BasicEffect Effect { get; set; }
+        public Effect Effect { get; set; }
 
         #endregion Fields
 
@@ -91,9 +91,9 @@ namespace TGC.MonoGame.TP.Geometries
             IndexBuffer.SetData(Indices.ToArray());
 
             // Create a BasicEffect, which will be used to render the primitive.
-            Effect = new BasicEffect(graphicsDevice);
-            Effect.VertexColorEnabled = true;
-            Effect.EnableDefaultLighting();
+            Effect = content.Load<Effect>(ContentFolderEffects + "BasicShader");
+            //Effect.VertexColorEnabled = true;
+            //Effect.EnableDefaultLighting();
         }
 
         /// <summary>
@@ -143,6 +143,7 @@ namespace TGC.MonoGame.TP.Geometries
 
             graphicsDevice.Indices = IndexBuffer;
 
+
             foreach (var effectPass in effect.CurrentTechnique.Passes)
             {
                 effectPass.Apply();
@@ -162,10 +163,10 @@ namespace TGC.MonoGame.TP.Geometries
         public void Draw(Matrix world, Matrix view, Matrix projection)
         {
             // Set BasicEffect parameters.
-            Effect.World = world;
-            Effect.View = view;
-            Effect.Projection = projection;
-
+            Effect.Parameters["World"].SetValue(world);
+            Effect.Parameters["View"].SetValue(view);
+            Effect.Parameters["Projection"].SetValue(projection);
+            Effect.Parameters["DiffuseColor"].SetValue(Vertices[0].Color.ToVector3());
             // Draw the model, using BasicEffect.
             Draw(Effect);
         }

@@ -19,9 +19,7 @@ namespace TGC.MonoGame.TP.Niveles
         private List<Matrix> WorldMatrices { get; set; }
         private Effect Effect { get; set; }
         private GraphicsDevice graphicsDevice { get; }
-        
-        
-        private List<Sala> Salas { get; set; }
+        public List<Sala> Salas { get; set; }
        
         public Nivel(ContentManager content, GraphicsDevice graphicsDevice)
         {
