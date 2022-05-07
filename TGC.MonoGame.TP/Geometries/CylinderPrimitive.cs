@@ -13,6 +13,7 @@
 
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 #endregion Using Statements
@@ -27,7 +28,7 @@ namespace TGC.MonoGame.TP.Geometries
         /// <summary>
         ///     Constructs a new cylinder primitive, with the specified size and tessellation level.
         /// </summary>
-        public CylinderPrimitive(GraphicsDevice graphicsDevice, float height = 1, float diameter = 1,
+        public CylinderPrimitive(GraphicsDevice graphicsDevice,ContentManager content, float height = 1, float diameter = 1,
             int tessellation = 32)
         {
             if (tessellation < 3)
@@ -58,7 +59,7 @@ namespace TGC.MonoGame.TP.Geometries
             CreateCap(tessellation, height, radius, Vector3.Up);
             CreateCap(tessellation, height, radius, Vector3.Down);
 
-            InitializePrimitive(graphicsDevice);
+            InitializePrimitive(graphicsDevice,content);
         }
 
         /// <summary>

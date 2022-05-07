@@ -12,6 +12,7 @@
 #region Using Statements
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 #endregion Using Statements
@@ -23,12 +24,12 @@ namespace TGC.MonoGame.TP.Geometries
     /// </summary>
     public class CubePrimitive : GeometricPrimitive
     {
-        public CubePrimitive(GraphicsDevice graphicsDevice) : this(graphicsDevice, 1, Color.White, Color.White,
+        public CubePrimitive(GraphicsDevice graphicsDevice, ContentManager content) : this(graphicsDevice, content, 1, Color.White, Color.White,
             Color.White, Color.White, Color.White, Color.White)
         {
         }
 
-        public CubePrimitive(GraphicsDevice graphicsDevice, float size, Color color) : this(graphicsDevice, size, color,
+        public CubePrimitive(GraphicsDevice graphicsDevice, ContentManager content, float size, Color color) : this(graphicsDevice, content, size, color,
             color, color, color, color, color)
         {
         }
@@ -36,7 +37,7 @@ namespace TGC.MonoGame.TP.Geometries
         /// <summary>
         ///     Constructs a new cube primitive, with the specified size.
         /// </summary>
-        public CubePrimitive(GraphicsDevice graphicsDevice, float size, Color color1, Color color2, Color color3,
+        public CubePrimitive(GraphicsDevice graphicsDevice, ContentManager content, float size, Color color1, Color color2, Color color3,
             Color color4, Color color5, Color color6)
         {
             // A cube has six faces, each one pointing in a different direction.
@@ -87,7 +88,7 @@ namespace TGC.MonoGame.TP.Geometries
                 i++;
             }
 
-            InitializePrimitive(graphicsDevice);
+            InitializePrimitive(graphicsDevice,content);
         }
     }
 }

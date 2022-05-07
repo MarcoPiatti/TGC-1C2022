@@ -12,43 +12,42 @@ namespace TGC.MonoGame.TP.Niveles
         private Vector3 platformScale = new Vector3(10f, 1, 10f);
         private Vector3 arrowScale = new Vector3(4f, 4f, 4f);
 
-        public CubePrimitive PisoSalida { get; set; }
-        public Matrix PisoSalidaWorld { get; set; }
+        public Cube PisoSalida { get; set; }
         public List<MovingSphere> Spheres { get; set; }
-        public List<Platform> Platforms { get; set; }
+        public List<Cube> Platforms { get; set; }
         public List<Coin> Coins { get; set; }
 
         public Sala4(ContentManager content, GraphicsDevice graphicsDevice, Vector3 posicion) : base(content, graphicsDevice, posicion)
         {
-            PisoWorld = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(new Vector3(-45f, 0, 0) + posicion);
+            Piso.World = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(new Vector3(-45f, 0, 0) + posicion);
 
-            PisoSalida = new CubePrimitive(graphicsDevice);
-            PisoSalidaWorld = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(new Vector3(45f, 0, 0) + posicion);
+            PisoSalida = new Cube(graphicsDevice, content, posicion);
+            PisoSalida.World = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(new Vector3(45f, 0, 0) + posicion);
 
-            Platforms = new List<Platform>();
-            Platforms.Add(new Platform(new CubePrimitive(graphicsDevice), new Vector3(-22.5f, 0, 0)));
-            Platforms.Add(new Platform(new CubePrimitive(graphicsDevice), new Vector3(0, 0, 0)));
-            Platforms.Add(new Platform(new CubePrimitive(graphicsDevice), new Vector3(0, 0, 22.5f)));
-            Platforms.Add(new Platform(new CubePrimitive(graphicsDevice), new Vector3(0, 0, -22.5f)));
-            Platforms.Add(new Platform(new CubePrimitive(graphicsDevice), new Vector3(22.5f, 0, 0)));
+            Platforms = new List<Cube>();
+            Platforms.Add(new Cube(graphicsDevice, content, new Vector3(-22.5f, 0, 0)));
+            Platforms.Add(new Cube(graphicsDevice, content, new Vector3(0, 0, 0)));
+            Platforms.Add(new Cube(graphicsDevice, content, new Vector3(0, 0, 22.5f)));
+            Platforms.Add(new Cube(graphicsDevice, content, new Vector3(0, 0, -22.5f)));
+            Platforms.Add(new Cube(graphicsDevice, content, new Vector3(22.5f, 0, 0)));
 
             Spheres = new List<MovingSphere>();
-            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(-33.75f, 5, -20), new Vector3(-33.75f, 5, 20) }, graphicsDevice, Color.Red, -2, 45f));
-            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(-12f, 5, 20), new Vector3(-12f, 5, -20) }, graphicsDevice, Color.Red, -2, 45f));
-            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(12f, 5, -20), new Vector3(12f, 5, 20) }, graphicsDevice, Color.Red, -2, 45f));
-            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(33.75f, 5, 20), new Vector3(33.75f, 5, -20) }, graphicsDevice, Color.Red, -2, 45f));
+            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(-33.75f, 5, -20), new Vector3(-33.75f, 5, 20) }, graphicsDevice, content,Color.Red, -2, 45f));
+            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(-12f, 5, 20), new Vector3(-12f, 5, -20) }, graphicsDevice, content, Color.Red, -2, 45f));
+            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(12f, 5, -20), new Vector3(12f, 5, 20) }, graphicsDevice, content, Color.Red, -2, 45f));
+            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(33.75f, 5, 20), new Vector3(33.75f, 5, -20) }, graphicsDevice, content, Color.Red, -2, 45f));
             // esferas con movimiento vertical
-            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(0, 35, 11.25f), new Vector3(0, -35, 11.25f) }, graphicsDevice, Color.Red, -2, 100f));
-            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(0, -35, -11.25f), new Vector3(0, 35, -11.25f) }, graphicsDevice, Color.Red, -2, 100f));
+            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(0, 35, 11.25f), new Vector3(0, -35, 11.25f) }, graphicsDevice, content, Color.Red, -2, 100f));
+            Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(0, -35, -11.25f), new Vector3(0, 35, -11.25f) }, graphicsDevice, content, Color.Red, -2, 100f));
 
 
             Coins = new List<Coin>();
-            Coins.Add(new Coin(graphicsDevice, new Vector3(0, 10, 22.5f) + posicion));
-            Coins.Add(new Coin(graphicsDevice, new Vector3(0, 10, -22.5f) + posicion));
+            Coins.Add(new Coin(graphicsDevice, content, new Vector3(0, 10, 22.5f) + posicion));
+            Coins.Add(new Coin(graphicsDevice, content, new Vector3(0, 10, -22.5f) + posicion));
 
-            foreach (Platform platform in Platforms)
+            foreach (Cube cube in Platforms)
             {
-                platform.World = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(platform.Position + posicion);
+                cube.World = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(cube.Position + posicion);
             }
 
             foreach (MovingSphere sphere in Spheres)
@@ -60,16 +59,16 @@ namespace TGC.MonoGame.TP.Niveles
         public override void Draw(GameTime gameTime, Matrix view, Matrix projection)
         {
             base.Draw(gameTime, view, projection);
-            PisoSalida.Draw(PisoSalidaWorld, view, projection);
+            PisoSalida.Body.Draw(PisoSalida.World, view, projection);
 
-            foreach(Platform platform in Platforms)
+            foreach(Cube cube in Platforms)
             {
-                platform.Geometric.Draw(platform.World, view, projection);
+                cube.Body.Draw(cube.World, view, projection);
             }
             
             foreach(MovingSphere sphere in Spheres)
             {
-                sphere.Sphere.Draw(sphere.World, view, projection);
+                sphere.Body.Draw(sphere.World, view, projection);
             }
 
             foreach(Coin coin in Coins)

@@ -47,8 +47,7 @@ namespace TGC.MonoGame.TP
         private Matrix World { get; set; }
         private Matrix View { get; set; }
         private Matrix Projection { get; set; }
-        private SpherePrimitive Player { get; set; }
-        private Matrix PlayerWorld { get; set; }
+        private Player Player { get; set; }
         private Camera Camera { get; set; }
  
 
@@ -61,17 +60,8 @@ namespace TGC.MonoGame.TP
             var screenSize = new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
             Camera = new FreeCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), screenSize);
 
-            Player = new SpherePrimitive(GraphicsDevice);
-            PlayerWorld = Matrix.CreateScale(5, 5, 5) * Matrix.CreateTranslation(new Vector3(0, 6, 0));
+            Player = new Player(GraphicsDevice,Content);
             // La logica de inicializacion que no depende del contenido se recomienda poner en este metodo.
-
-            // Apago el backface culling.
-            // Esto se hace por un problema en el diseno del modelo del logo de la materia.
-            // Una vez que empiecen su juego, esto no es mas necesario y lo pueden sacar.
-            var rasterizerState = new RasterizerState();
-            rasterizerState.CullMode = CullMode.None;
-            GraphicsDevice.RasterizerState = rasterizerState;
-            // Seria hasta aca.
 
             // Configuramos nuestras matrices de la escena.
             World = Matrix.Identity;
@@ -153,9 +143,7 @@ namespace TGC.MonoGame.TP
             Effect.Parameters["DiffuseColor"].SetValue(Color.DarkBlue.ToVector3());
             var rotationMatrix = Matrix.CreateRotationY(Rotation);
             Nivel.Draw(gameTime, Camera.View, Camera.Projection);
-            Player.Draw(PlayerWorld, Camera.View, Camera.Projection);
-            
-
+            Player.Draw(Camera.View, Camera.Projection);
         }
 
         /// <summary>

@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 #endregion Using Statements
@@ -44,7 +45,7 @@ namespace TGC.MonoGame.TP.Geometries
         #endregion Fields
 
         #region Initialization
-
+        public const string ContentFolderEffects = "Effects/";
         /// <summary>
         ///     Adds a new vertex to the primitive model. This should only be called during the initialization process, before
         ///     InitializePrimitive.
@@ -75,7 +76,7 @@ namespace TGC.MonoGame.TP.Geometries
         ///     Once all the geometry has been specified by calling AddVertex and AddIndex, this method copies the vertex and index
         ///     data into GPU format buffers, ready for efficient rendering.
         /// </summary>
-        protected void InitializePrimitive(GraphicsDevice graphicsDevice)
+        protected void InitializePrimitive(GraphicsDevice graphicsDevice,ContentManager content)
         {
             // Create a vertex declaration, describing the format of our vertex data.
 

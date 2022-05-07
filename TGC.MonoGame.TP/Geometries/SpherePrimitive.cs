@@ -13,6 +13,7 @@
 
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 #endregion Using Statements
@@ -24,15 +25,28 @@ namespace TGC.MonoGame.TP.Geometries
     /// </summary>
     public class SpherePrimitive : GeometricPrimitive
     {
+        private GraphicsDevice graphicsDevice;
+        private float diameter;
+        private int tessellation;
+        private Color white;
+
         /// <summary>
         ///     Constructs a new sphere primitive, with the specified size, tessellation level and white color.
         /// </summary>
         /// <param name="graphicsDevice">Used to initialize and control the presentation of the graphics device.</param>
         /// <param name="diameter">Diameter of the sphere.</param>
         /// <param name="tessellation">The number of times the surface triangles are subdivided.</param>
-        public SpherePrimitive(GraphicsDevice graphicsDevice, float diameter = 1, int tessellation = 16) : this(
-            graphicsDevice, diameter, tessellation, Color.White)
+        public SpherePrimitive(GraphicsDevice graphicsDevice, ContentManager content, float diameter = 1, int tessellation = 16) : this(
+            graphicsDevice, content, diameter, tessellation, Color.White)
         {
+        }
+
+        public SpherePrimitive(GraphicsDevice graphicsDevice, float diameter, int tessellation, Color white)
+        {
+            this.graphicsDevice = graphicsDevice;
+            this.diameter = diameter;
+            this.tessellation = tessellation;
+            this.white = white;
         }
 
         /// <summary>
@@ -42,7 +56,7 @@ namespace TGC.MonoGame.TP.Geometries
         /// <param name="diameter">Diameter of the sphere.</param>
         /// <param name="tessellation">The number of times the surface triangles are subdivided.</param>
         /// <param name="color">Color of the sphere.</param>
-        public SpherePrimitive(GraphicsDevice graphicsDevice, float diameter, int tessellation, Color color)
+        public SpherePrimitive(GraphicsDevice graphicsDevice, ContentManager content, float diameter, int tessellation, Color color)
         {
             if (tessellation < 3)
                 throw new ArgumentOutOfRangeException("tessellation");
@@ -113,7 +127,7 @@ namespace TGC.MonoGame.TP.Geometries
                 AddIndex(CurrentVertex - 2 - i);
             }
 
-            InitializePrimitive(graphicsDevice);
+            InitializePrimitive(graphicsDevice, content);
         }
     }
 }

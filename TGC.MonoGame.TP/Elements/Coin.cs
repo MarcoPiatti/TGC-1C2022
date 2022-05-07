@@ -1,33 +1,30 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using TGC.MonoGame.TP.Geometries;
 
 namespace TGC.MonoGame.TP.Elements
 {
-    public class Coin
+    public class Coin: Sphere
     {
-        public SpherePrimitive body { get; set; }
-        public Matrix CoinWorld { get; set; }
-        public Vector3 position { get; set; }
         private float CoinRotation { get; set; }
         private float CoinAngle { get; set; }
 
-        public Coin(GraphicsDevice graphicsDevice, Vector3 posicion){
-            body = new SpherePrimitive(graphicsDevice,1f,16,Color.Gold);
-            CoinWorld = Matrix.CreateScale(1f, 5f, 5f) * Matrix.CreateTranslation(posicion);
-            position = posicion;
+        public Coin(GraphicsDevice graphicsDevice, ContentManager content, Vector3 posicion): base(graphicsDevice,content, 1f, 16, Color.Gold)
+        {
+            Position = posicion;
+            World = Matrix.CreateScale(1f, 5f, 5f) * Matrix.CreateTranslation(posicion);
         }
 
         public void Update(GameTime gameTime)
         {
-            CoinAngle += 0.01f;
+            var elapsedTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
+            CoinAngle += 1.5f * elapsedTime;
             Matrix rotation = Matrix.CreateRotationY(CoinAngle);
-            CoinWorld = Matrix.CreateScale(1f, 10f, 10f) * rotation * Matrix.CreateTranslation(position);
+            World = Matrix.CreateScale(1f, 10f, 10f) * rotation * Matrix.CreateTranslation(Position);
         }
 
-        public void Draw(Matrix view, Matrix projection){
-            body.Draw(CoinWorld, view, projection);
-        }
     }
 }

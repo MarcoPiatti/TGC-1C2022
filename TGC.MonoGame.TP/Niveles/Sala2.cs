@@ -16,23 +16,22 @@ namespace TGC.MonoGame.TP.Niveles
     {
         private Vector3 platformScale = new Vector3(10f, 1f, 10f);
 
-        private CubePrimitive PisoSalida { get; set; }
-        public Matrix PisoSalidaWorld { get; set; }
+        private Cube PisoSalida { get; set; }
         private List<MovingCube> MovingPlatforms { get; set; }
 
         private List<Coin> Coins { get; set; }
 
         public Sala2(ContentManager content, GraphicsDevice graphicsDevice, Vector3 posicion) : base(content, graphicsDevice, posicion)
         {
-            PisoWorld = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(new Vector3(-45f, 0, 0) + posicion);
+            Piso.World = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(new Vector3(-45f, 0, 0) + posicion);
 
-            PisoSalida = new CubePrimitive(graphicsDevice);
-            PisoSalidaWorld = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(new Vector3(45f, 0, 0) + posicion);
+            PisoSalida = new Cube(graphicsDevice, content, posicion);
+            PisoSalida.World = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(new Vector3(45f, 0, 0) + posicion);
 
             MovingPlatforms = new List<MovingCube>();
-            MovingPlatforms.Add(new MovingCube(new List<Vector3> { new Vector3(0, 0, -40), new Vector3(0, 0, 40) }, graphicsDevice, Color.White));
-            MovingPlatforms.Add(new MovingCube(new List<Vector3> { new Vector3(22.5f, 0, 40), new Vector3(22.5f, 0, -40) }, graphicsDevice, Color.White));
-            MovingPlatforms.Add(new MovingCube(new List<Vector3> { new Vector3(-22.5f, 0, 40), new Vector3(-22.5f, 0, -40) }, graphicsDevice, Color.White));
+            MovingPlatforms.Add(new MovingCube(new List<Vector3> { new Vector3(0, 0, -40), new Vector3(0, 0, 40) }, graphicsDevice, content ,Color.White));
+            MovingPlatforms.Add(new MovingCube(new List<Vector3> { new Vector3(22.5f, 0, 40), new Vector3(22.5f, 0, -40) }, graphicsDevice, content,Color.White));
+            MovingPlatforms.Add(new MovingCube(new List<Vector3> { new Vector3(-22.5f, 0, 40), new Vector3(-22.5f, 0, -40) }, graphicsDevice, content,Color.White));
             //MovingCubes.Add(new MovingCube(new List<Vector3> { new Vector3(40, 20, -20), new Vector3(40, 20, 20), new Vector3(40, 40, 20), new Vector3(40, 40, -20) }, graphicsDevice, Color.Red, 2, 25f));
             
             foreach (MovingCube cube in MovingPlatforms)
@@ -42,13 +41,13 @@ namespace TGC.MonoGame.TP.Niveles
 
             Coins = new List<Coin>();
 
-            Coins.Add(new Coin(graphicsDevice, new Vector3(0, 10, -40) + posicion));
-            Coins.Add(new Coin(graphicsDevice, new Vector3(22.5f, 10, 40) + posicion));
-            Coins.Add(new Coin(graphicsDevice, new Vector3(-22.5f, 10, 40) + posicion));
+            Coins.Add(new Coin(graphicsDevice,content, new Vector3(0, 10, -40) + posicion));
+            Coins.Add(new Coin(graphicsDevice, content, new Vector3(22.5f, 10, 40) + posicion));
+            Coins.Add(new Coin(graphicsDevice, content, new Vector3(-22.5f, 10, 40) + posicion));
 
             foreach (Coin coin in Coins)
             {
-                coin.CoinWorld = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(coin.position + posicion);
+                coin.World = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(coin.Position + posicion);
             }
 
         }
@@ -56,7 +55,7 @@ namespace TGC.MonoGame.TP.Niveles
         public override void Draw(GameTime gameTime, Matrix view, Matrix projection)
         {
             base.Draw(gameTime, view, projection);
-            PisoSalida.Draw(PisoSalidaWorld, view, projection);
+            PisoSalida.Draw(view, projection);
 
             foreach (MovingCube cube in MovingPlatforms)
             {

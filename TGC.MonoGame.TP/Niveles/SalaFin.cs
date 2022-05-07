@@ -17,8 +17,8 @@ namespace TGC.MonoGame.TP.Niveles
         {
 
 
-            ParedNorteIzqWorld = Matrix.CreateScale(1f, Size, Size * 0.5f) * Matrix.CreateTranslation(new Vector3(50, Size / 2, Size * 0.25f) + Posicion);
-            ParedNorteDerWorld = Matrix.CreateScale(1f, Size, Size * 0.5f) * Matrix.CreateTranslation(new Vector3(50, Size / 2, -Size * 0.25f) + Posicion);
+            ParedNorteIzq.World = Matrix.CreateScale(1f, Size, Size * 0.5f) * Matrix.CreateTranslation(new Vector3(50, Size / 2, Size * 0.25f) + Posicion);
+            ParedNorteDer.World = Matrix.CreateScale(1f, Size, Size * 0.5f) * Matrix.CreateTranslation(new Vector3(50, Size / 2, -Size * 0.25f) + Posicion);
 
         }
 

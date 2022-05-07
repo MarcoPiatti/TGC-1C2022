@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace TGC.MonoGame.TP.Geometries
@@ -15,8 +16,8 @@ namespace TGC.MonoGame.TP.Geometries
         /// <param name="vertex1">Vertex of the triangle.</param>
         /// <param name="vertex2">Vertex of the triangle.</param>
         /// <param name="vertex3">Vertex of the triangle.</param>
-        public TrianglePrimitive(GraphicsDevice device, Vector3 vertex1, Vector3 vertex2, Vector3 vertex3) : this(
-            device, vertex1, vertex2, vertex3, Color.White)
+        public TrianglePrimitive(GraphicsDevice device, ContentManager content, Vector3 vertex1, Vector3 vertex2, Vector3 vertex3) : this(
+            device, content, vertex1, vertex2, vertex3, Color.White)
         {
         }
 
@@ -28,8 +29,8 @@ namespace TGC.MonoGame.TP.Geometries
         /// <param name="vertex2">Vertex of the triangle.</param>
         /// <param name="vertex3">Vertex of the triangle.</param>
         /// <param name="vertexColor">The color of the triangle.</param>
-        public TrianglePrimitive(GraphicsDevice device, Vector3 vertex1, Vector3 vertex2, Vector3 vertex3,
-            Color vertexColor) : this(device, vertex1, vertex2, vertex3, vertexColor, vertexColor, vertexColor)
+        public TrianglePrimitive(GraphicsDevice device, ContentManager content, Vector3 vertex1, Vector3 vertex2, Vector3 vertex3,
+            Color vertexColor) : this(device, content, vertex1, vertex2, vertex3, vertexColor, vertexColor, vertexColor)
         {
         }
 
@@ -43,7 +44,7 @@ namespace TGC.MonoGame.TP.Geometries
         /// <param name="vertexColor1">The color of the vertex.</param>
         /// <param name="vertexColor2">The color of the vertex.</param>
         /// <param name="vertexColor3">The color of the vertex.</param>
-        public TrianglePrimitive(GraphicsDevice graphicsDevice, Vector3 vertex1, Vector3 vertex2, Vector3 vertex3,
+        public TrianglePrimitive(GraphicsDevice graphicsDevice, ContentManager content, Vector3 vertex1, Vector3 vertex2, Vector3 vertex3,
             Color vertexColor1, Color vertexColor2, Color vertexColor3)
         {
             AddIndex(CurrentVertex + 0);
@@ -57,7 +58,7 @@ namespace TGC.MonoGame.TP.Geometries
             AddVertex(vertex2, vertexColor2, normal);
             AddVertex(vertex3, vertexColor3, normal);
 
-            InitializePrimitive(graphicsDevice);
+            InitializePrimitive(graphicsDevice, content);
         }
     }
 }
