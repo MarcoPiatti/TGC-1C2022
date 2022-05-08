@@ -14,9 +14,9 @@ namespace TGC.MonoGame.TP
 {
     public class Player
     {
-
+        public Vector3 PositionE { get; private set; }
         public Vector3 VectorSpeed { get; set; }
-
+        public Vector3 roundPosition { get; set; }
         private static float Gravity = 0.01f;
         private static float MoveForce = 5f;
         private static float JumpForce = 10f;
@@ -35,6 +35,7 @@ namespace TGC.MonoGame.TP
 
         public void Draw(Matrix view, Matrix projection)
         {
+            
             Body.Draw(view, projection);
         }
 

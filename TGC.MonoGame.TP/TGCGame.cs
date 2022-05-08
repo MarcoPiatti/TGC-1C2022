@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using TGC.MonoGame.TP.Niveles;
 using TGC.MonoGame.TP.Geometries;
+using Microsoft.Xna.Framework.Media;
 
 namespace TGC.MonoGame.TP
 {
@@ -49,8 +50,18 @@ namespace TGC.MonoGame.TP
         private Matrix Projection { get; set; }
         private Player Player { get; set; }
         //private FollowCamera Camera { get; set; }
-        private FreeCamera Camera { get; set; }
+        private Camera Camera { get; set; }
 
+        private SpriteFont SpriteFont { get; set; }
+        private string SongName { get; set; }
+        private Song Song { get; set; }
+        //Menu
+        public const int mainMenu = 0; // cuidado, publico
+        public const int estado1 = 1; // cuidado, publico
+        public const int estado2 = 2; // cuidado, publico
+
+        public int estadoMenu = mainMenu; // cuidado, publico
+        public Point screenSize { get; set; } // cuidado, publico
 
         /// <summary>
         ///     Se llama una sola vez, al principio cuando se ejecuta el ejemplo.
@@ -58,10 +69,11 @@ namespace TGC.MonoGame.TP
         /// </summary>
         protected override void Initialize()
         {
-            var screenSize = new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            //originalmente variable local screenSize
+            screenSize = new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
             //Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), screenSize);
             Camera = new FreeCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), screenSize);
-
+            //Camera = new TargetCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), new Vector3(0,0,0));
             Player = new Player(GraphicsDevice,Content);
             // La logica de inicializacion que no depende del contenido se recomienda poner en este metodo.
 
@@ -89,14 +101,16 @@ namespace TGC.MonoGame.TP
             Nivel = new Nivel(Content, GraphicsDevice);
             // Aca es donde deberiamos cargar todos los contenido necesarios antes de iniciar el juego.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
-
+            SpriteFont = Content.Load<SpriteFont>(ContentFolderSpriteFonts + "Cascadia/CascadiaCodePL");
             // Cargo el modelo del logo.
             Model = Content.Load<Model>(ContentFolder3D + "tgc-logo/tgc-logo");
 
             // Cargo un efecto basico propio declarado en el Content pipeline.
             // En el juego no pueden usar BasicEffect de MG, deben usar siempre efectos propios.
             Effect = Content.Load<Effect>(ContentFolderEffects + "BasicShader");
-
+            SongName = "crystal_dolphin";
+            Song = Content.Load<Song>(ContentFolderMusic + SongName);
+            
             // Asigno el efecto que cargue a cada parte del mesh.
             // Un modelo puede tener mas de 1 mesh internamente.
             foreach (var mesh in Model.Meshes)
@@ -112,12 +126,60 @@ namespace TGC.MonoGame.TP
         ///     Se debe escribir toda la logica de computo del modelo, asi como tambien verificar entradas del usuario y reacciones
         ///     ante ellas.
         /// </summary>
+        /// 
+        public float flag = 0;
+        void cambiarCamara()
+        {
+            if (flag == 0)
+            {
+                Camera = new FreeCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), screenSize);
+                flag = 1;
+            }
+            else
+            {
+                Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), screenSize);
+                flag = 0;
+            }
+        }
         protected override void Update(GameTime gameTime)
         {
+            if (estadoMenu == mainMenu)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.C))
+                {
+
+                    estadoMenu = estado1;
+                }
+
+                if (Keyboard.GetState().IsKeyDown(Keys.G))
+                {
+                    estadoMenu = estado2;
+                    MediaPlayer.Play(Song);
+                }
+                return;
+            }
+            else if (estadoMenu == estado1)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.P))
+                {
+                    estadoMenu = mainMenu;
+                }
+                return;
+            }else if (estadoMenu == estado2)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.H))
+                {
+                    //se supone que cada segundo puedas presionar recién xd pero no supe como hacerlo
+                    if(Convert.ToSingle(gameTime.TotalGameTime.TotalSeconds) % 2 > 0) { cambiarCamara(); }
+                    
+                }
+            }
+
+
             // Aca deberiamos poner toda la logica de actualizacion del juego.
 
-            //Camera.Update(gameTime, Player.Position);
             Camera.Update(gameTime);
+            //Camera.Update(gameTime,Player.Position);
 
             var keyboardState = Keyboard.GetState();
             Nivel.Update(gameTime);
@@ -165,6 +227,41 @@ namespace TGC.MonoGame.TP
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
+            //Logica para dibujar en pantalla posicion exacta del jugador, actualmente no funcionando
+
+            /*
+            Vector3 playerRoundPosition = Player.roundPosition;
+            Vector3 playerPositionE = Player.PositionE;
+            playerRoundPosition = new Vector3(MathF.Round(playerPositionE.X, 2), MathF.Round(playerPositionE.Y, 2), MathF.Round(playerPositionE.Z, 2));
+            */
+
+            if (estadoMenu == mainMenu)
+            {
+                DrawCenterText("Marble it up!", 1);
+                DrawCenterTextY("Presiona G para comenzar", GraphicsDevice.Viewport.Height * 1 / 12, 1);
+                return;
+            }
+            else if (estadoMenu == estado1)
+            {
+
+                return;
+            }else if (estadoMenu == estado2)
+            {
+                /*
+                DrawCenterTextY("Las teclas WASD se usan para moverse", GraphicsDevice.Viewport.Height * 1 / 12, 1);
+                DrawCenterTextY("SPACE para saltar", GraphicsDevice.Viewport.Height * 3 / 12, 1);
+                DrawCenterTextY("R para reiniciar", GraphicsDevice.Viewport.Height * 5 / 12, 1);
+
+                DrawCenterTextY("ESC para salir del juego", GraphicsDevice.Viewport.Height * 9 / 12, 1);
+                DrawCenterTextY("P para volver a la Main Menu", GraphicsDevice.Viewport.Height * 11 / 12, 1);
+                */
+
+            }
+            //Despues del menu restablezco
+            GraphicsDevice.RasterizerState = new RasterizerState { CullMode = CullMode.None };
+            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+
+
             // Aca deberiamos poner toda la logia de renderizado del juego.
             GraphicsDevice.Clear(Color.Cyan);
             
@@ -175,8 +272,31 @@ namespace TGC.MonoGame.TP
             var rotationMatrix = Matrix.CreateRotationY(Rotation);
             Nivel.Draw(gameTime, Camera.View, Camera.Projection);
             Player.Draw(Camera.View, Camera.Projection);
+
+            //Logica para dibujar en pantalla posicion exacta del jugador, actualmente no funcionando
+            //  SpriteBatch.DrawString(SpriteFont, playerRoundPosition.ToString(), new Vector2(GraphicsDevice.Viewport.Width / 2, 0), Color.White);
+        }
+        public void DrawCenterText(string msg, float escala)
+        {
+            var W = GraphicsDevice.Viewport.Width;
+            var H = GraphicsDevice.Viewport.Height;
+            var size = SpriteFont.MeasureString(msg) * escala;
+            SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null,
+                Matrix.CreateScale(escala) * Matrix.CreateTranslation((W - size.X) / 2, (H - size.Y) / 2, 0));
+            SpriteBatch.DrawString(SpriteFont, msg, new Vector2(0, 0), Color.CornflowerBlue);
+            SpriteBatch.End();
         }
 
+        public void DrawCenterTextY(string msg, float Y, float escala)
+        {
+            var W = GraphicsDevice.Viewport.Width;
+            var H = GraphicsDevice.Viewport.Height;
+            var size = SpriteFont.MeasureString(msg) * escala;
+            SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null,
+                Matrix.CreateScale(escala) * Matrix.CreateTranslation((W - size.X) / 2, Y, 0));
+            SpriteBatch.DrawString(SpriteFont, msg, new Vector2(0, 0), Color.White);
+            SpriteBatch.End();
+        }
         /// <summary>
         ///     Libero los recursos que se cargaron en el juego.
         /// </summary>
