@@ -50,3 +50,24 @@
 /processorParam:Quality=Best
 /build:Music/crystal_dolphin.mp3
 
+#begin SpriteFonts/Arial.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/Arial.spritefont
+
+#begin SpriteFonts/Cascadia/CascadiaCodePL.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/Cascadia/CascadiaCodePL.spritefont
+
+#begin SpriteFonts/Cascadia/CascadiaMonoPL.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/Cascadia/CascadiaMonoPL.spritefont
+
