@@ -52,6 +52,8 @@ namespace TGC.MonoGame.TP
         //private FollowCamera Camera { get; set; }
         private Camera Camera { get; set; }
 
+        private float CameraChangeCooldown = 0f;
+
         private SpriteFont SpriteFont { get; set; }
         private string SongName { get; set; }
         private Song Song { get; set; }
@@ -71,10 +73,12 @@ namespace TGC.MonoGame.TP
         {
             //originalmente variable local screenSize
             screenSize = new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            //Pongo el jugador antes de la camara porque sino no hay Player.Position
+            Player = new Player(GraphicsDevice, Content);
             //Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), screenSize);
-            Camera = new FreeCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), screenSize);
+            Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, Player.Position + new Vector3(-50, 50, 0), screenSize);
             //Camera = new TargetCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), new Vector3(0,0,0));
-            Player = new Player(GraphicsDevice,Content);
+            
             // La logica de inicializacion que no depende del contenido se recomienda poner en este metodo.
 
             // Configuramos nuestras matrices de la escena.
@@ -132,12 +136,12 @@ namespace TGC.MonoGame.TP
         {
             if (flag == 0)
             {
-                Camera = new FreeCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), screenSize);
+                Camera = new FreeCamera(GraphicsDevice.Viewport.AspectRatio, Player.Position + new Vector3(-30, 30, 0), screenSize);
                 flag = 1;
             }
             else
             {
-                Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), screenSize);
+                Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, Player.Position + new Vector3(-30, 30, 0), screenSize);
                 flag = 0;
             }
         }
@@ -170,12 +174,16 @@ namespace TGC.MonoGame.TP
                 if (Keyboard.GetState().IsKeyDown(Keys.H))
                 {
                     //se supone que cada segundo puedas presionar recién xd pero no supe como hacerlo
-                    if(Convert.ToSingle(gameTime.TotalGameTime.TotalSeconds) % 2 > 0) { cambiarCamara(); }
+                    if(CameraChangeCooldown <= 0) { 
+                        cambiarCamara(); 
+                        CameraChangeCooldown = 0.25f; 
+                    }
                     
                 }
             }
 
-
+            if(CameraChangeCooldown > 0)
+                CameraChangeCooldown -= Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             // Aca deberiamos poner toda la logica de actualizacion del juego.
 
             Camera.Update(gameTime);

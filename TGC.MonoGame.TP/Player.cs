@@ -17,7 +17,7 @@ namespace TGC.MonoGame.TP
         public Vector3 PositionE { get; private set; }
         public Vector3 VectorSpeed { get; set; }
         public Vector3 roundPosition { get; set; }
-        private static float Gravity = 1f;
+        private static float Gravity = 0f;
         private static float MoveForce = 1f;
         private static float JumpForce = 2f;
 

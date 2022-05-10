@@ -28,15 +28,15 @@ namespace TGC.MonoGame.TP
             Position = position;
             pastMousePosition = Mouse.GetState().Position.ToVector2();
             UpdateCameraVectors();
-            CalculateView(Vector3.Zero);
+            CalculateView();
         }
 
         public float MovementSpeed { get; set; } = 100f;
         public float MouseSensitivity { get; set; } = 5f;
 
-        private void CalculateView(Vector3 playerPosition)
+        private void CalculateView()
         {
-            View = Matrix.CreateLookAt(playerPosition + new Vector3(-20, 20, 0), playerPosition, UpDirection);
+            View = Matrix.CreateLookAt(Position, Position + FrontDirection, UpDirection);
         }
 
         /// <inheritdoc />        /// 
@@ -47,7 +47,7 @@ namespace TGC.MonoGame.TP
             ProcessMouseMovement(elapsedTime);
 
             if (changed)
-                CalculateView(playerPosition);
+                CalculateView();
         }
 
         public override void Update(GameTime gameTime) { 
