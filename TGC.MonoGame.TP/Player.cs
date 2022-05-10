@@ -17,10 +17,11 @@ namespace TGC.MonoGame.TP
         public Vector3 PositionE { get; private set; }
         public Vector3 VectorSpeed { get; set; }
         public Vector3 roundPosition { get; set; }
-        private static float Gravity = 0.01f;
-        private static float MoveForce = 5f;
-        private static float JumpForce = 10f;
+        private static float Gravity = 1f;
+        private static float MoveForce = 1f;
+        private static float JumpForce = 2f;
 
+        private static Vector3 scale = new Vector3(5, 5, 5);
         private State estado {get; set;}
 
         public Sphere Body { get; set; }
@@ -30,7 +31,7 @@ namespace TGC.MonoGame.TP
         public Player(GraphicsDevice graphics, ContentManager content)
         {
             Body = new Sphere(graphics,content,1f,16,Color.Green);
-            Body.World = Matrix.CreateScale(5, 5, 5) * Matrix.CreateTranslation(new Vector3(0, 15, 0));
+            Body.WorldUpdate(scale, new Vector3(0, 15, 0),Quaternion.Identity);
         }
 
         public void Draw(Matrix view, Matrix projection)
@@ -50,10 +51,10 @@ namespace TGC.MonoGame.TP
 
         public void Update(GameTime gameTime)
         {
-            //VectorSpeed += Vector3.Down * Gravity;
+            VectorSpeed += Vector3.Down * Gravity;
             var elapsedTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             var scaledSpeed = VectorSpeed * elapsedTime;
-            Body.World = Body.World * Matrix.CreateTranslation(scaledSpeed);
+            Body.WorldUpdate(scale, scaledSpeed, Quaternion.Identity);
             Position = Body.Position;
         }
 

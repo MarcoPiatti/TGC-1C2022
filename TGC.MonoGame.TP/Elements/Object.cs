@@ -21,9 +21,9 @@ namespace TGC.MonoGame.TP.Elements
             Body.Draw(World, view, projection);
         }
 
-        public virtual void WorldUpdate(Vector3 scale, Vector3 traslation, Quaternion rotation)
-        {
-            World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(traslation) * Matrix.CreateFromQuaternion(rotation);
+        public virtual void WorldUpdate(Vector3 scale, Vector3 traslation, Quaternion rotation) { 
+            World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(Position + traslation) * Matrix.CreateFromQuaternion(rotation);
+            Position = Position + traslation;
         }
     } 
 
@@ -49,7 +49,7 @@ namespace TGC.MonoGame.TP.Elements
         {
             base.WorldUpdate(scale, traslation, rotation);
             Collider.Extents = scale;
-            Collider.Center = traslation;
+            Collider.Center += traslation;
             Collider.Rotate(rotation); 
         }
     }
@@ -75,8 +75,8 @@ namespace TGC.MonoGame.TP.Elements
         {
             base.WorldUpdate(scale, traslation, rotation);
             BoundingSphere collider = Collider;
-            collider.Radius = scale.Length();
-            collider.Center = traslation;
+            collider.Radius = scale.X/2;
+            collider.Center += traslation;
             Collider = collider;
         }
     }
