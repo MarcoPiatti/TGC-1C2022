@@ -87,6 +87,10 @@ namespace TGC.MonoGame.TP
                 farPlaneDistance);
         }
 
+        public virtual void UpdatePlayerPosition(Vector3 position)
+        {
+        }
+
         /// <summary>
         ///     Allows updating the internal state of the camera if this method is overwritten.
         ///     By default it does not perform any action.
