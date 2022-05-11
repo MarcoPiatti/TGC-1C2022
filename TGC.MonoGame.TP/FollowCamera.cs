@@ -12,7 +12,16 @@ namespace TGC.MonoGame.TP
         private bool changed;
 
         private Vector2 pastMousePosition;
+        private float pastMouseWheel;
         private float pitch;
+
+        private Vector3 PlayerPosition = Vector3.Zero;
+
+        float YaxisAngle = 0;
+        float Yhigh = 0;
+        float Xdistance = 30;
+
+        private Vector3 AnglePosition;
 
         // Angles
         private float yaw = 0f;
@@ -25,7 +34,8 @@ namespace TGC.MonoGame.TP
 
         public FollowCamera(float aspectRatio, Vector3 position) : base(aspectRatio)
         {
-            Position = position;
+            AnglePosition = new Vector3(-Xdistance, 0, 0);
+            Position = position + AnglePosition;
             pastMousePosition = Mouse.GetState().Position.ToVector2();
             UpdateCameraVectors();
             CalculateView();
@@ -36,73 +46,46 @@ namespace TGC.MonoGame.TP
 
         private void CalculateView()
         {
-            View = Matrix.CreateLookAt(Position, Position + FrontDirection, UpDirection);
+            View = Matrix.CreateLookAt(Position, PlayerPosition, UpDirection);
         }
 
-        /// <inheritdoc />        /// 
-        public void Update(GameTime gameTime, Vector3 playerPosition)
+        public override void UpdatePlayerPosition(Vector3 position)
+        {
+            PlayerPosition = position;
+        }
+
+        /// <inheritdoc />
+        public override void Update(GameTime gameTime)
         {
             var elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             changed = false;
             ProcessMouseMovement(elapsedTime);
 
-            if (changed)
-                CalculateView();
-        }
+            Position = AnglePosition + PlayerPosition;
 
-        public override void Update(GameTime gameTime) { 
-        }
-
-        private void ProcessKeyboard(float elapsedTime)
-        {
-            var keyboardState = Keyboard.GetState();
-
-            var currentMovementSpeed = MovementSpeed;
-            if (keyboardState.IsKeyDown(Keys.LeftShift))
-                currentMovementSpeed *= 5f;
-
-            if (keyboardState.IsKeyDown(Keys.A) || keyboardState.IsKeyDown(Keys.Left))
-            {
-                Position += -RightDirection * currentMovementSpeed * elapsedTime;
-                changed = true;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.D) || keyboardState.IsKeyDown(Keys.Right))
-            {
-                Position += RightDirection * currentMovementSpeed * elapsedTime;
-                changed = true;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Up))
-            {
-                Position += FrontDirection * currentMovementSpeed * elapsedTime;
-                changed = true;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.S) || keyboardState.IsKeyDown(Keys.Down))
-            {
-                Position += -FrontDirection * currentMovementSpeed * elapsedTime;
-                changed = true;
-            }
+            CalculateView();
         }
 
         private void ProcessMouseMovement(float elapsedTime)
         {
-            var mouseState = Mouse.GetState();
-
+            MouseState mouseState = Mouse.GetState();
             if (mouseState.RightButton.Equals(ButtonState.Pressed))
             {
-                var mouseDelta = mouseState.Position.ToVector2() - pastMousePosition;
+                Vector2 mouseDelta = mouseState.Position.ToVector2() - pastMousePosition;
                 mouseDelta *= MouseSensitivity * elapsedTime;
 
-                yaw -= mouseDelta.X;
-                pitch += mouseDelta.Y;
+                float mouseWheelDelta = (Mouse.GetState().ScrollWheelValue - pastMouseWheel) * 0.01f;
 
-                if (pitch > 89.0f)
-                    pitch = 89.0f;
-                if (pitch < -89.0f)
-                    pitch = -89.0f;
+                //Position = new Vector3(Position.X - mouseDelta.X, Position.Y, Position.Z);
+                float error = 0.001f;
+                YaxisAngle -= mouseDelta.X * 0.1f;
+                Yhigh = Math.Clamp(Yhigh - mouseDelta.Y * 0.1f, error, 1 - error);
+                Xdistance = Math.Clamp(Xdistance - mouseWheelDelta, 15, 50);
+                float curve = 1 + MathF.Sqrt(-MathF.Pow(Yhigh, 2) + 1);
+                float Odistance = (1 - curve) * Xdistance;
 
+                AnglePosition = new Vector3(Odistance * MathF.Cos(YaxisAngle), Yhigh * Xdistance, Odistance * MathF.Sin(YaxisAngle));
+                
                 changed = true;
                 UpdateCameraVectors();
 
@@ -118,6 +101,7 @@ namespace TGC.MonoGame.TP
             }
 
             pastMousePosition = Mouse.GetState().Position.ToVector2();
+            pastMouseWheel = Mouse.GetState().ScrollWheelValue;
         }
 
         private void UpdateCameraVectors()

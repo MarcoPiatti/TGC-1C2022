@@ -54,6 +54,8 @@ namespace TGC.MonoGame.TP
 
         private float CameraChangeCooldown = 0f;
 
+        private Vector3 CameraInitPosition = new Vector3(-30, 30, 0);
+
         private SpriteFont SpriteFont { get; set; }
         private string SongName { get; set; }
         private Song Song { get; set; }
@@ -76,7 +78,7 @@ namespace TGC.MonoGame.TP
             //Pongo el jugador antes de la camara porque sino no hay Player.Position
             Player = new Player(GraphicsDevice, Content);
             //Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), screenSize);
-            Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, Player.Position + new Vector3(-50, 50, 0), screenSize);
+            Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, Player.Position, screenSize);
             //Camera = new TargetCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), new Vector3(0,0,0));
             
             // La logica de inicializacion que no depende del contenido se recomienda poner en este metodo.
@@ -136,15 +138,16 @@ namespace TGC.MonoGame.TP
         {
             if (flag == 0)
             {
-                Camera = new FreeCamera(GraphicsDevice.Viewport.AspectRatio, Player.Position + new Vector3(-30, 30, 0), screenSize);
+                Camera = new FreeCamera(GraphicsDevice.Viewport.AspectRatio, Player.Position + CameraInitPosition, screenSize);
                 flag = 1;
             }
             else
             {
-                Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, Player.Position + new Vector3(-30, 30, 0), screenSize);
+                Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, Player.Position, screenSize);
                 flag = 0;
             }
         }
+
         protected override void Update(GameTime gameTime)
         {
             if (estadoMenu == mainMenu)
@@ -186,6 +189,7 @@ namespace TGC.MonoGame.TP
                 CameraChangeCooldown -= Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             // Aca deberiamos poner toda la logica de actualizacion del juego.
 
+            Camera.UpdatePlayerPosition(Player.Position);
             Camera.Update(gameTime);
             //Camera.Update(gameTime,Player.Position);
 
