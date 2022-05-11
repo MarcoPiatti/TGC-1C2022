@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using TGC.MonoGame.TP.Elements;
 using TGC.MonoGame.TP.Geometries;
 
 namespace TGC.MonoGame.TP.Niveles
@@ -20,11 +21,13 @@ namespace TGC.MonoGame.TP.Niveles
         private Effect Effect { get; set; }
         private GraphicsDevice graphicsDevice { get; }
         public List<Sala> Salas { get; set; }
-       
+
+        public List<Cube> PhysicalObjects { get; set; }
+
         public Nivel(ContentManager content, GraphicsDevice graphicsDevice)
         {
             this.graphicsDevice = graphicsDevice;
-
+            PhysicalObjects = new List<Cube>();
             Salas = new List<Sala>();
             Random rnd = new Random();
             Salas.Add(new Sala0(content, graphicsDevice, new Vector3(0 * Sala.Size, 0, 0)));
@@ -46,6 +49,9 @@ namespace TGC.MonoGame.TP.Niveles
                 }
             }
             Salas.Add(new SalaFin(content, graphicsDevice, new Vector3(i * Sala.Size, 0, 0)));
+            foreach (Sala s in Salas) {
+                PhysicalObjects.AddRange(s.GetPhyisicalObjects());
+            }
             // Load an effect that will be used to draw the scene
             Effect = content.Load<Effect>(ContentFolderEffects + "BasicShader");
         }

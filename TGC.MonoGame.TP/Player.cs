@@ -17,12 +17,12 @@ namespace TGC.MonoGame.TP
         public Vector3 PositionE { get; private set; }
         public Vector3 VectorSpeed { get; set; }
         public Vector3 roundPosition { get; set; }
-        private static float Gravity = 0f;
+        private static float Gravity = 0.1f;
         private static float MoveForce = 1f;
         private static float JumpForce = 2f;
 
         private static Vector3 scale = new Vector3(5, 5, 5);
-        private State estado {get; set;}
+        private State estado { get; set; }
 
         public Sphere Body { get; set; }
 
@@ -30,19 +30,18 @@ namespace TGC.MonoGame.TP
 
         public Player(GraphicsDevice graphics, ContentManager content)
         {
-            Body = new Sphere(graphics,content,1f,16,Color.Green);
-            Body.WorldUpdate(scale, new Vector3(0, 15, 0),Quaternion.Identity);
+            Body = new Sphere(graphics, content, 1f, 16, Color.Green);
+            Body.WorldUpdate(scale, new Vector3(0, 15, 0), Quaternion.Identity);
         }
 
         public void Draw(Matrix view, Matrix projection)
         {
-            
+
             Body.Draw(view, projection);
         }
 
         public bool Intersects(OrientedBoundingBox box)
         {
-
             var difference = Body.Collider.Center - box.Center;
             var obbSpaceSphere = new BoundingSphere(Vector3.Transform(difference, box.Orientation), Body.Collider.Radius);
             var aabb = new BoundingBox(-box.Extents, box.Extents);
@@ -58,21 +57,23 @@ namespace TGC.MonoGame.TP
             Position = Body.Position;
         }
 
-        public void MoveForward()
+        public void PhyisicallyInteract(List<Cube> objects)
         {
-            VectorSpeed += Vector3.Forward * MoveForce;
+            foreach (Cube o in objects)
+            {
+                if (Intersects(o.Collider))
+                {
+                    VectorSpeed = new Vector3(VectorSpeed.X, -VectorSpeed.Y, VectorSpeed.Z);
+                    //aca tenemos que ver como hacer que reaccione a la colision correctamente
+                    Body.WorldUpdate(scale, VectorSpeed * 0.02f, Quaternion.Identity);
+                }
+            }
         }
-        public void MoveBackwards()
+
+
+        public void Move(Vector3 direction)
         {
-            VectorSpeed += Vector3.Backward * MoveForce;
-        }
-        public void MoveLeft()
-        {
-            VectorSpeed += Vector3.Left * MoveForce;
-        }
-        public void MoveRight()
-        {
-            VectorSpeed += Vector3.Right * MoveForce;
+            VectorSpeed += direction * MoveForce;
         }
         public void Jump()
         {

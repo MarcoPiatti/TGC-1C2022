@@ -68,6 +68,11 @@ namespace TGC.MonoGame.TP.Niveles
             Techo.Draw(view, projection);
         }
 
+        public List<Cube> GetPhyisicalObjects() {
+            List<Cube> l = new List<Cube>();
+            l.Add(Piso);
+            return l;
+        }
         public virtual void Update(GameTime gameTime) { }
     }
 }

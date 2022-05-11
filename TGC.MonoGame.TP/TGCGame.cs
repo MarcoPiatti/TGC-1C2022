@@ -198,31 +198,25 @@ namespace TGC.MonoGame.TP
 
             if (keyboardState.IsKeyDown(Keys.Right))
             {
-                Player.MoveRight();
+                Player.Move(Camera.RightDirection);
             }
             if (keyboardState.IsKeyDown(Keys.Left))
             {
-                Player.MoveLeft();
+                Player.Move(Camera.RightDirection * -1);
             }
             if (keyboardState.IsKeyDown(Keys.Up))
             {
-                Player.MoveForward();
+                Player.Move(Camera.FrontDirection);
             }
             if (keyboardState.IsKeyDown(Keys.Down))
             {
-                Player.MoveBackwards();
+                Player.Move(Camera.FrontDirection * -1);
             }
             if (keyboardState.IsKeyDown(Keys.Space))
             {
                 Player.Jump();
             }
-
-            if (Player.Intersects(Nivel.Salas[0].Piso.Collider))
-            {
-                Player.VectorSpeed = new Vector3(Player.VectorSpeed.X,0, Player.VectorSpeed.Z);
-                Player.Body.World *= Matrix.CreateTranslation(new Vector3(0,5,0));
-            }
-
+            Player.PhyisicallyInteract(Nivel.PhysicalObjects);
             Player.Update(gameTime);
             Rotation += Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
 
