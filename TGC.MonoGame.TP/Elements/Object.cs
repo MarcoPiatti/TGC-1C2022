@@ -33,14 +33,14 @@ namespace TGC.MonoGame.TP.Elements
 
         public Cube(GraphicsDevice graphicsDevice, ContentManager content, Vector3 Position, Color color)
         {
-            Collider = new OrientedBoundingBox(new Vector3(0,0,0), new Vector3(1, 1, 1));
+            Collider = new OrientedBoundingBox(Position, new Vector3(1, 1, 1));
             Body = new CubePrimitive(graphicsDevice, content, 1, color);
             this.Position = Position;
         }
 
         public Cube(GraphicsDevice graphicsDevice, ContentManager content, Vector3 Position)
         {
-            Collider = new OrientedBoundingBox(new Vector3(0, 0, 0), new Vector3(1, 1, 1));
+            Collider = new OrientedBoundingBox(Position, new Vector3(1, 1, 1));
             Body = new CubePrimitive(graphicsDevice, content, 1, Color.White);
             this.Position = Position;
         }
@@ -48,8 +48,8 @@ namespace TGC.MonoGame.TP.Elements
         public override void WorldUpdate(Vector3 scale, Vector3 traslation, Quaternion rotation)
         {
             base.WorldUpdate(scale, traslation, rotation);
-            Collider.Extents = scale;
-            Collider.Center += traslation;
+            Collider.Center += traslation; 
+            Collider.Extents = Collider.Center + scale/2;
             Collider.Rotate(rotation); 
         }
     }

@@ -220,8 +220,9 @@ namespace TGC.MonoGame.TP
             {
                 Player.Jump();
             }
-            Player.PhyisicallyInteract(Nivel.PhysicalObjects);
-            Player.Update(gameTime);
+            Player.Update(gameTime, Nivel.PhysicalObjects);
+
+
             Rotation += Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
 
             base.Update(gameTime);
