@@ -68,8 +68,8 @@ namespace TGC.MonoGame.TP.Niveles
             Techo.Draw(view, projection);
         }
 
-        public List<Cube> GetPhyisicalObjects() {
-            List<Cube> l = new List<Cube>();
+        public virtual List<TP.Elements.Object> GetPhysicalObjects() {
+            List<TP.Elements.Object> l = new List<TP.Elements.Object>();
             l.Add(Piso);
             l.Add(ParedEste);
             l.Add(ParedOeste);

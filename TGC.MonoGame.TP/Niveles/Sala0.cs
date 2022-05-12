@@ -24,11 +24,11 @@ namespace TGC.MonoGame.TP.Niveles
             Coin = new Coin(graphicsDevice,content,new Vector3(25, 20, 0) + posicion);
 
             FirstPlatform = new Cube(graphicsDevice, content, posicion);
-            FirstPlatform.World = Matrix.CreateScale(10f, 1f, 10f) * Matrix.CreateTranslation(new Vector3(25, 10, 0) + posicion);
+            FirstPlatform.WorldUpdate(new Vector3(10f, 1f, 10f), new Vector3(25, 10, 0) + posicion, Quaternion.Identity);
 
 
             ParedSur = new Cube(graphicsDevice, content, posicion);
-            ParedSur.World = Matrix.CreateScale(1f, Size, Size) * Matrix.CreateTranslation(new Vector3(-Size / 2, Size / 2, 0) + posicion);
+            ParedSur.WorldUpdate(new Vector3(1f, Size, Size), new Vector3(-Size / 2, Size / 2, 0) + posicion,Quaternion.Identity);
         }
 
         public override void Draw(GameTime gameTime, Matrix view, Matrix projection)
@@ -45,6 +45,13 @@ namespace TGC.MonoGame.TP.Niveles
             Coin.Update(gameTime);
             base.Update(gameTime);
         }
-        
+
+        public override List<TP.Elements.Object> GetPhysicalObjects()
+        {
+            List<TP.Elements.Object> l = base.GetPhysicalObjects();
+            l.Add(ParedSur);
+            l.Add(FirstPlatform);
+            return l;
+        }
     }
 }

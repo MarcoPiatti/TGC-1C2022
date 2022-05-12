@@ -100,6 +100,15 @@ namespace TGC.MonoGame.TP.Elements
             return position - (start - end) / Vector3.Distance(start, end) * speed;
         }
 
+        public override bool Intersects(Sphere s)
+        {
+            return false;
+        }
+        public override Vector3 GetDirectionFromCollision(Sphere s)
+        {
+            return Vector3.One;
+        }
+
     }
 
 }
