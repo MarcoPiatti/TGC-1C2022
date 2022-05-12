@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using TGC.MonoGame.TP.Niveles;
 using TGC.MonoGame.TP.Geometries;
 using Microsoft.Xna.Framework.Media;
+using TGC.MonoGame.Niveles.SkyBox;
 
 namespace TGC.MonoGame.TP
 {
@@ -57,15 +58,19 @@ namespace TGC.MonoGame.TP
         private Vector3 CameraInitPosition = new Vector3(-30, 30, 0);
 
         private SpriteFont SpriteFont { get; set; }
+       //Canciones
         private string SongName { get; set; }
         private Song Song { get; set; }
         //Menu
-        public const int mainMenu = 0; // cuidado, publico
-        public const int estado1 = 1; // cuidado, publico
-        public const int estado2 = 2; // cuidado, publico
+        private const int mainMenu = 0; 
+        private const int estado1 = 1;
+        private const int estado2 = 2; 
 
-        public int estadoMenu = mainMenu; // cuidado, publico
-        public Point screenSize { get; set; } // cuidado, publico
+        private int estadoMenu = mainMenu; 
+        private Point screenSize { get; set; } 
+
+        //Skybox
+        private SkyBox unaSkyBox { get; set; }
 
         /// <summary>
         ///     Se llama una sola vez, al principio cuando se ejecuta el ejemplo.
@@ -104,25 +109,32 @@ namespace TGC.MonoGame.TP
         protected override void LoadContent()
         {
 
+            
+
             Nivel = new Nivel(Content, GraphicsDevice);
-            // Aca es donde deberiamos cargar todos los contenido necesarios antes de iniciar el juego.
+
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             SpriteFont = Content.Load<SpriteFont>(ContentFolderSpriteFonts + "Cascadia/CascadiaCodePL");
-            // Cargo el modelo del logo.
-            Model = Content.Load<Model>(ContentFolder3D + "tgc-logo/tgc-logo");
 
-            // Cargo un efecto basico propio declarado en el Content pipeline.
-            // En el juego no pueden usar BasicEffect de MG, deben usar siempre efectos propios.
+
+
             Effect = Content.Load<Effect>(ContentFolderEffects + "BasicShader");
             SongName = "crystal_dolphin";
             Song = Content.Load<Song>(ContentFolderMusic + SongName);
-            
-            // Asigno el efecto que cargue a cada parte del mesh.
-            // Un modelo puede tener mas de 1 mesh internamente.
-            foreach (var mesh in Model.Meshes)
-                // Un mesh puede tener mas de 1 mesh part (cada 1 puede tener su propio efecto).
-            foreach (var meshPart in mesh.MeshParts)
-                meshPart.Effect = Effect;
+
+            var skyBox = Content.Load<Model>(ContentFolder3D + "skybox/cube");
+            //var skyBoxTexture = Content.Load<TextureCube>(ContentFolderTextures + "skyboxes/sunset/sunset");
+            var skyBoxTexture = Content.Load<TextureCube>(ContentFolderTextures + "skyboxes/islands/islands");
+            //var skyBoxTexture = Content.Load<TextureCube>(ContentFolderTextures + "/skyboxes/skybox/skybox");
+            var skyBoxEffect = Content.Load<Effect>(ContentFolderEffects + "SkyBox");
+            unaSkyBox = new SkyBox(skyBox, skyBoxTexture, skyBoxEffect, 100);
+
+
+            //var skyBox = Content.Load<Model>(ContentFolder3D + "skybox/cube");
+            //var skyBoxTexture = Content.Load<TextureCube>(ContentFolderTextures + "skyboxes/skybox/skybox");
+            //var skyBoxEffect = Content.Load<Effect>(ContentFolderEffects + "SkyBox");
+
+
 
             base.LoadContent();
         }
@@ -133,7 +145,7 @@ namespace TGC.MonoGame.TP
         ///     ante ellas.
         /// </summary>
         /// 
-        public float flag = 0;
+        private float flag = 0;
         void cambiarCamara()
         {
             if (flag == 0)
@@ -241,7 +253,7 @@ namespace TGC.MonoGame.TP
             Vector3 playerPositionE = Player.PositionE;
             playerRoundPosition = new Vector3(MathF.Round(playerPositionE.X, 2), MathF.Round(playerPositionE.Y, 2), MathF.Round(playerPositionE.Z, 2));
             */
-
+            
             if (estadoMenu == mainMenu)
             {
                 DrawCenterText("Marble it up!", 1);
@@ -264,7 +276,9 @@ namespace TGC.MonoGame.TP
                 */
 
             }
+
             //Despues del menu restablezco
+            
             GraphicsDevice.RasterizerState = new RasterizerState { CullMode = CullMode.None };
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
@@ -275,8 +289,9 @@ namespace TGC.MonoGame.TP
             // Para dibujar le modelo necesitamos pasarle informacion que el efecto esta esperando.
             Effect.Parameters["View"].SetValue(Camera.View);
             Effect.Parameters["Projection"].SetValue(Camera.Projection);
-            Effect.Parameters["DiffuseColor"].SetValue(Color.DarkBlue.ToVector3());
+           Effect.Parameters["DiffuseColor"].SetValue(Color.DarkBlue.ToVector3());
             var rotationMatrix = Matrix.CreateRotationY(Rotation);
+            unaSkyBox.Draw(Camera.View, Camera.Projection, new Vector3(0,0,0));
             Nivel.Draw(gameTime, Camera.View, Camera.Projection);
             Player.Draw(Camera.View, Camera.Projection);
 
