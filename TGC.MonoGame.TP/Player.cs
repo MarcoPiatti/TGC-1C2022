@@ -14,47 +14,54 @@ namespace TGC.MonoGame.TP
 {
     public class Player
     {
-        public  static Vector3 PositionE { get; private set; }
-        public static Vector3 VectorSpeed { get; set; }
-        public static Vector3 roundPosition { get; set; }
-        private static float Gravity = 0.7f;
-        private static float MoveForce = 1f;
-        private static float JumpForce = 2f;
-        private static float Bounce = 0.5f;
-        private static float CCC = 0.01f; //Collider Correction Constant
+        public Vector3 PositionE { get; private set; }
+        public Vector3 VectorSpeed { get; set; }
+        public Vector3 roundPosition { get; set; }
+        private float Gravity = 0.7f;
+        private float MoveForce = 1f;
+        private float JumpForce = 2f;
+        private float Bounce = 0.5f;
+        private float CCC = 0.01f; //Collider Correction Constant
 
-        private static Vector3 scale = new Vector3(5, 5, 5);
-        private static State estado { get; set; }
+        private  Vector3 scale = new Vector3(5, 5, 5);
+        private State estado { get; set; }
 
-        public static Sphere Body { get; set; }
+        public Sphere Body { get; set; }
 
-        public static Vector3 Position { get; set; }
+
+
+        public Cube JumpLine { get; set; }
+
+        public Vector3 Position { get; set; }
+
 
         public Player(GraphicsDevice graphics, ContentManager content)
         {
             Body = new Sphere(graphics, content, 1f, 16, Color.Green);
             Body.WorldUpdate(scale, new Vector3(0, 15, 0), Quaternion.Identity);
+            JumpLine = new Cube(graphics, content, Body.Position);
+            JumpLine.WorldUpdate(scale, Body.Position, Quaternion.Identity);
         }
 
-        public static void Draw(Matrix view, Matrix projection)
+        public void Draw(Matrix view, Matrix projection)
         {
-
+            JumpLine.Draw(view, projection);
             Body.Draw(view, projection);
         }
-
-        
 
         public void Update(GameTime gameTime, List<TP.Elements.Object> objects)
         {
             VectorSpeed += Vector3.Down * Gravity;
             var elapsedTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             var scaledSpeed = VectorSpeed * elapsedTime;
+            //float rotationSpeed = MathF.Sqrt(MathF.Pow(scaledSpeed.X, 2) + MathF.Pow(scaledSpeed.Z, 2));
             Body.WorldUpdate(scale, scaledSpeed, Quaternion.Identity);
             Position = Body.Position;
+            JumpLine.WorldUpdate(scale, Body.Position, Quaternion.Identity);
             PhyisicallyInteract(objects, elapsedTime);
         }
 
-        public static void PhyisicallyInteract(List<TP.Elements.Object> objects,float elapsedTime)
+        public void PhyisicallyInteract(List<TP.Elements.Object> objects,float elapsedTime)
         {
             foreach (TP.Elements.Object o in objects)
             {
@@ -69,7 +76,7 @@ namespace TGC.MonoGame.TP
                 }
             }
         }
-        public static void LogicalInteract(List<TP.Elements.LogicalObject> logicalObjects)
+        public void LogicalInteract(List<TP.Elements.LogicalObject> logicalObjects)
         {
             foreach (TP.Elements.LogicalObject o in logicalObjects)
             {
@@ -82,15 +89,24 @@ namespace TGC.MonoGame.TP
 
 
 
+        /*
         public static void Move(Vector3 direction)
         {
             VectorSpeed += direction * MoveForce;
         }
-        public static void Jump()
+        */
+
+        public void Move(Vector3 direction)
         {
-            VectorSpeed += Vector3.Up * JumpForce;
+            VectorSpeed += direction * MoveForce;
         }
 
+        public void Jump()
+
+        {
+            VectorSpeed += Vector3.Up * JumpForce;
+
+        }
     }
 
 }

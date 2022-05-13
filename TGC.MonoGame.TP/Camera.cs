@@ -91,6 +91,11 @@ namespace TGC.MonoGame.TP
         {
         }
 
+        public virtual float YAxisAngle()
+        {
+            return 0;
+        }
+
         /// <summary>
         ///     Allows updating the internal state of the camera if this method is overwritten.
         ///     By default it does not perform any action.

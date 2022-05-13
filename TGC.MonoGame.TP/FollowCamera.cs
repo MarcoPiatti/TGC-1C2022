@@ -9,11 +9,9 @@ namespace TGC.MonoGame.TP
         private readonly bool lockMouse;
 
         private readonly Point screenCenter;
-        private bool changed;
 
         private Vector2 pastMousePosition;
         private float pastMouseWheel;
-        private float pitch;
 
         private Vector3 PlayerPosition = Vector3.Zero;
 
@@ -24,14 +22,12 @@ namespace TGC.MonoGame.TP
         private Vector3 AnglePosition;
 
         // Angles
-        private float yaw = 0f;
 
         public FollowCamera(float aspectRatio, Vector3 position, Point screenCenter) : this(aspectRatio, position)
         {
             lockMouse = true;
             this.screenCenter = screenCenter;
         }
-
         public FollowCamera(float aspectRatio, Vector3 position) : base(aspectRatio)
         {
             AnglePosition = new Vector3(-Xdistance, 0, 0);
@@ -49,6 +45,11 @@ namespace TGC.MonoGame.TP
             View = Matrix.CreateLookAt(Position, PlayerPosition, UpDirection);
         }
 
+        public override float YAxisAngle()
+        {
+            return YaxisAngle;
+        }
+
         public override void UpdatePlayerPosition(Vector3 position)
         {
             PlayerPosition = position;
@@ -58,7 +59,7 @@ namespace TGC.MonoGame.TP
         public override void Update(GameTime gameTime)
         {
             var elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            changed = false;
+            
             ProcessMouseMovement(elapsedTime);
 
             Position = AnglePosition + PlayerPosition;
@@ -86,7 +87,6 @@ namespace TGC.MonoGame.TP
 
                 AnglePosition = new Vector3(Odistance * MathF.Cos(YaxisAngle), Yhigh * Xdistance, Odistance * MathF.Sin(YaxisAngle));
                 
-                changed = true;
                 UpdateCameraVectors();
 
                 if (lockMouse)
@@ -108,9 +108,9 @@ namespace TGC.MonoGame.TP
         {
             // Calculate the new Front vector
             Vector3 tempFront;
-            tempFront.X = MathF.Cos(MathHelper.ToRadians(yaw)) * MathF.Cos(MathHelper.ToRadians(pitch));
-            tempFront.Y = MathF.Sin(MathHelper.ToRadians(pitch));
-            tempFront.Z = MathF.Sin(MathHelper.ToRadians(yaw)) * MathF.Cos(MathHelper.ToRadians(pitch));
+            tempFront.X = PlayerPosition.X - Position.X;
+            tempFront.Y = 0;
+            tempFront.Z = PlayerPosition.Z - Position.Z;
 
             FrontDirection = Vector3.Normalize(tempFront);
 
