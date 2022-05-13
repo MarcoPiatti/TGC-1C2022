@@ -14,21 +14,21 @@ namespace TGC.MonoGame.TP
 {
     public class Player
     {
-        public Vector3 PositionE { get; private set; }
-        public Vector3 VectorSpeed { get; set; }
-        public Vector3 roundPosition { get; set; }
-        private static float Gravity = 0.2f;
+        public  static Vector3 PositionE { get; private set; }
+        public static Vector3 VectorSpeed { get; set; }
+        public static Vector3 roundPosition { get; set; }
+        private static float Gravity = 0.7f;
         private static float MoveForce = 1f;
         private static float JumpForce = 2f;
         private static float Bounce = 0.5f;
         private static float CCC = 0.01f; //Collider Correction Constant
 
         private static Vector3 scale = new Vector3(5, 5, 5);
-        private State estado { get; set; }
+        private static State estado { get; set; }
 
-        public Sphere Body { get; set; }
+        public static Sphere Body { get; set; }
 
-        public Vector3 Position { get; set; }
+        public static Vector3 Position { get; set; }
 
         public Player(GraphicsDevice graphics, ContentManager content)
         {
@@ -36,7 +36,7 @@ namespace TGC.MonoGame.TP
             Body.WorldUpdate(scale, new Vector3(0, 15, 0), Quaternion.Identity);
         }
 
-        public void Draw(Matrix view, Matrix projection)
+        public static void Draw(Matrix view, Matrix projection)
         {
 
             Body.Draw(view, projection);
@@ -54,7 +54,7 @@ namespace TGC.MonoGame.TP
             PhyisicallyInteract(objects, elapsedTime);
         }
 
-        public void PhyisicallyInteract(List<TP.Elements.Object> objects,float elapsedTime)
+        public static void PhyisicallyInteract(List<TP.Elements.Object> objects,float elapsedTime)
         {
             foreach (TP.Elements.Object o in objects)
             {
@@ -69,14 +69,24 @@ namespace TGC.MonoGame.TP
                 }
             }
         }
+        public static void LogicalInteract(List<TP.Elements.LogicalObject> logicalObjects)
+        {
+            foreach (TP.Elements.LogicalObject o in logicalObjects)
+            {
+                if (o.Intersects(Body))
+                {
+                    o.logicalAction(Body);
+                }
+            }
+        }
 
-        
 
-        public void Move(Vector3 direction)
+
+        public static void Move(Vector3 direction)
         {
             VectorSpeed += direction * MoveForce;
         }
-        public void Jump()
+        public static void Jump()
         {
             VectorSpeed += Vector3.Up * JumpForce;
         }

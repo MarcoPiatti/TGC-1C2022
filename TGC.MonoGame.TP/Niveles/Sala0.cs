@@ -53,5 +53,11 @@ namespace TGC.MonoGame.TP.Niveles
             l.Add(FirstPlatform);
             return l;
         }
+        public override List<TP.Elements.Object> GetLogicalObjects()
+        {
+            List<TP.Elements.Object> logicalObjects = base.GetLogicalObjects();
+            logicalObjects.Add(Coin);
+            return logicalObjects;
+        }
     }
 }

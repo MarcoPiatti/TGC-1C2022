@@ -124,6 +124,8 @@ namespace TGC.MonoGame.TP.Elements
         }
     }
 
+
+
     public class Cylinder : Object
     {
         public Cylinder(GraphicsDevice graphicsDevice, ContentManager content, float height = 1, float diameter = 1,int tessellation = 32)
@@ -144,5 +146,54 @@ namespace TGC.MonoGame.TP.Elements
             return Vector3.One;
         }
     }
+    public abstract class LogicalObject : Object
+    {
+        public abstract void logicalAction(Sphere player);
+  
+        public override bool Intersects(Sphere s)
+        {
+            return false;
+        }
+        public override Vector3 GetDirectionFromCollision(Sphere s)
+        {
+            return Vector3.One;
+        }
+    }
+
+    public class AlmostSphere : LogicalObject
+    {
+        private Color unColor { get; set; }
+        public OrientedBoundingBox Collider { get; set; }
+
+        public AlmostSphere(GraphicsDevice graphicsDevice, ContentManager content, float diameter, int tessellation, Color color)
+        {
+            unColor = color;
+            Collider = new OrientedBoundingBox(Position, new Vector3(1, 1, 1));
+            Body = new SpherePrimitive(graphicsDevice, content, diameter, tessellation, unColor);
+            this.Position = Position;
+        }
+
+        public AlmostSphere(GraphicsDevice graphicsDevice, ContentManager content, float diameter, int tessellation)
+        {
+            Collider = new OrientedBoundingBox(Position, new Vector3(1, 1, 1));
+            Body = new SpherePrimitive(graphicsDevice, content, diameter, tessellation, Color.White);
+            this.Position = Position;
+        }
+
+        public override void WorldUpdate(Vector3 scale, Vector3 traslation, Quaternion rotation)
+        {
+            base.WorldUpdate(scale, traslation, rotation);
+            Collider.Center += traslation;
+            Collider.Extents = Collider.Center + scale / 2;
+            Collider.Rotate(rotation);
+        }
+        public override bool Intersects(Sphere s)
+        {
+            var aabb = new BoundingBox(Collider.Center - Collider.Extents + Collider.Center, Collider.Extents);
+            return aabb.Intersects(s.Collider);
+        }
+        public override void logicalAction(Sphere player) { }
+    }
+
 
 }
