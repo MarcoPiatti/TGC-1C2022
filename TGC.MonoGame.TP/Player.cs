@@ -28,29 +28,33 @@ namespace TGC.MonoGame.TP
 
         public Sphere Body { get; set; }
 
+        public Cube JumpLine { get; set; }
+
         public Vector3 Position { get; set; }
 
         public Player(GraphicsDevice graphics, ContentManager content)
         {
             Body = new Sphere(graphics, content, 1f, 16, Color.Green);
             Body.WorldUpdate(scale, new Vector3(0, 15, 0), Quaternion.Identity);
+            JumpLine = new Cube(graphics, content, Body.Position);
+            JumpLine.WorldUpdate(scale, Body.Position, Quaternion.Identity);
         }
 
         public void Draw(Matrix view, Matrix projection)
         {
-
+            JumpLine.Draw(view, projection);
             Body.Draw(view, projection);
         }
-
-        
 
         public void Update(GameTime gameTime, List<TP.Elements.Object> objects)
         {
             VectorSpeed += Vector3.Down * Gravity;
             var elapsedTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             var scaledSpeed = VectorSpeed * elapsedTime;
+            //float rotationSpeed = MathF.Sqrt(MathF.Pow(scaledSpeed.X, 2) + MathF.Pow(scaledSpeed.Z, 2));
             Body.WorldUpdate(scale, scaledSpeed, Quaternion.Identity);
             Position = Body.Position;
+            JumpLine.WorldUpdate(scale, Body.Position, Quaternion.Identity);
             PhyisicallyInteract(objects, elapsedTime);
         }
 
@@ -70,12 +74,11 @@ namespace TGC.MonoGame.TP
             }
         }
 
-        
-
         public void Move(Vector3 direction)
         {
             VectorSpeed += direction * MoveForce;
         }
+
         public void Jump()
         {
             VectorSpeed += Vector3.Up * JumpForce;
