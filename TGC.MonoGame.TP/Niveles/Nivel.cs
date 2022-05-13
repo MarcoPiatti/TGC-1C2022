@@ -23,11 +23,12 @@ namespace TGC.MonoGame.TP.Niveles
         public List<Sala> Salas { get; set; }
 
         public List<TP.Elements.Object> PhysicalObjects { get; set; }
-
+        public List<TP.Elements.LogicalObject> LogicalObjects { get; set; }
         public Nivel(ContentManager content, GraphicsDevice graphicsDevice)
         {
             this.graphicsDevice = graphicsDevice;
             PhysicalObjects = new List<TP.Elements.Object>();
+            LogicalObjects = new List<TP.Elements.LogicalObject>();
             Salas = new List<Sala>();
             Random rnd = new Random();
             Salas.Add(new Sala0(content, graphicsDevice, new Vector3(0 * Sala.Size, 0, 0)));
@@ -51,6 +52,10 @@ namespace TGC.MonoGame.TP.Niveles
             Salas.Add(new SalaFin(content, graphicsDevice, new Vector3(i * Sala.Size, 0, 0)));
             foreach (Sala s in Salas) {
                 PhysicalObjects.AddRange(s.GetPhysicalObjects());
+            }
+            foreach (Sala s in Salas)
+            {
+                LogicalObjects.AddRange(s.GetLogicalObjects());
             }
             // Load an effect that will be used to draw the scene
             Effect = content.Load<Effect>(ContentFolderEffects + "BasicShader");

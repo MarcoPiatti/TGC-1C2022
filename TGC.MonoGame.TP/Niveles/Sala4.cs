@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -91,6 +92,12 @@ namespace TGC.MonoGame.TP.Niveles
             {
                 coin.Update(gameTime);
             }
+        }
+        public override List<TP.Elements.LogicalObject> GetLogicalObjects()
+        {
+            List<TP.Elements.LogicalObject> logicalObjects = base.GetLogicalObjects();
+            logicalObjects.Concat(Coins).ToList();
+            return logicalObjects;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using TGC.MonoGame.TP.Elements;
 
 namespace TGC.MonoGame.TP.Niveles
@@ -32,6 +33,13 @@ namespace TGC.MonoGame.TP.Niveles
             base.Draw(gameTime, view, projection);
             Pilar.Draw(view, projection);
             Coin.Draw(view, projection);
+        }
+
+        public override List<TP.Elements.LogicalObject> GetLogicalObjects()
+        {
+            List<TP.Elements.LogicalObject> logicalObjects = base.GetLogicalObjects();
+            logicalObjects.Add(Coin);
+            return logicalObjects;
         }
     }
 }

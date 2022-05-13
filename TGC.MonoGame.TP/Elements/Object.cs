@@ -192,7 +192,10 @@ namespace TGC.MonoGame.TP.Elements
             var aabb = new BoundingBox(Collider.Center - Collider.Extents + Collider.Center, Collider.Extents);
             return aabb.Intersects(s.Collider);
         }
-        public override void logicalAction(Sphere player) { }
+        public override void logicalAction(Sphere player)
+        {
+
+        }
     }
 
 

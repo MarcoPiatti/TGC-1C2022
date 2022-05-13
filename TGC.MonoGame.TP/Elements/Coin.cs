@@ -13,7 +13,6 @@ namespace TGC.MonoGame.TP.Elements
 {
     public class Coin : AlmostSphere
     {
-        private float CoinRotation { get; set; }
         private float CoinAngle { get; set; }
         private bool flagCollide {get; set;} = false;
         private ContentManager localContent {get; set;}
@@ -23,20 +22,18 @@ namespace TGC.MonoGame.TP.Elements
         {
             localContent = content;
             localGraphics = graphicsDevice;
-            Collider = new OrientedBoundingBox(posicion,new Vector3(1f,1f,1f));
+            Collider = new OrientedBoundingBox(posicion,new Vector3(5,30,5));
             Position = posicion;
             World = Matrix.CreateScale(1f, 5f, 5f) * Matrix.CreateTranslation(posicion);
         }
         public override void logicalAction(Sphere player)
         {
             flagCollide = true;
-            
-
         }
         public void Update(GameTime gameTime)
         {      
-            if(flagCollide == false) {
-                Body = new SpherePrimitive(localGraphics, localContent, 1f, 16, Color.Red);
+            if(flagCollide == true) {
+                CoinAngle = 10f;
             } else
             {
                 var elapsedTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);

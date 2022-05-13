@@ -232,7 +232,7 @@ namespace TGC.MonoGame.TP
             {
                 Player.Jump();
             }
-            Player.Update(gameTime, Nivel.PhysicalObjects);
+            Player.Update(gameTime, Nivel.PhysicalObjects, Nivel.LogicalObjects);
 
 
             Rotation += Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);

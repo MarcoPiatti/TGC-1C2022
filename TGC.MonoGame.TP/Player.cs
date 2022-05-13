@@ -49,7 +49,7 @@ namespace TGC.MonoGame.TP
             Body.Draw(view, projection);
         }
 
-        public void Update(GameTime gameTime, List<TP.Elements.Object> objects)
+        public void Update(GameTime gameTime, List<TP.Elements.Object> objects, List <TP.Elements.LogicalObject> logicalObjects)
         {
             VectorSpeed += Vector3.Down * Gravity;
             var elapsedTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
@@ -59,6 +59,7 @@ namespace TGC.MonoGame.TP
             Position = Body.Position;
             JumpLine.WorldUpdate(scale, Body.Position, Quaternion.Identity);
             PhyisicallyInteract(objects, elapsedTime);
+            LogicalInteract(logicalObjects);
         }
 
         public void PhyisicallyInteract(List<TP.Elements.Object> objects,float elapsedTime)

@@ -78,9 +78,9 @@ namespace TGC.MonoGame.TP.Niveles
             l.Add(Techo);
             return l;
         }
-        public virtual List <TP.Elements.Object> GetLogicalObjects()
+        public virtual List <TP.Elements.LogicalObject> GetLogicalObjects()
         {
-            List<TP.Elements.Object> logicalObjects = new List<TP.Elements.Object>();
+            List<TP.Elements.LogicalObject> logicalObjects = new List<TP.Elements.LogicalObject>();
             return logicalObjects;
         }
             public virtual void Update(GameTime gameTime) { }
