@@ -219,6 +219,10 @@ namespace TGC.MonoGame.TP
             {
                 Player.Jump();
             }
+            if (keyboardState.IsKeyDown(Keys.R))
+            {
+                Player.Restart();
+            }
             if (Keyboard.GetState().IsKeyDown(Keys.H))
             {
                 if (CameraChangeCooldown <= 0)

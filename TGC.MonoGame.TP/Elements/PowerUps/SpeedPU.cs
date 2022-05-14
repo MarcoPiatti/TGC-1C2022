@@ -28,12 +28,19 @@ namespace TGC.MonoGame.TP.Elements
 
         public override void Update(GameTime gameTime)
         {
-            destroyItself();
-            base.Update(gameTime);
-            Matrix triangleRotation = Matrix.CreateRotationY(Angle + MathF.PI/2);
-            triang[0].World = Matrix.CreateScale(1f, 1f, 1f) * Matrix.CreateRotationZ(3 * MathF.PI / 4) * Matrix.CreateTranslation(Position + P1) * triangleRotation;
-            triang[1].World = Matrix.CreateScale(1f, 1f, 1f) * Matrix.CreateRotationZ(3 * MathF.PI / 4) * Matrix.CreateTranslation(Position + P2) * triangleRotation;
-            triang[2].World = Matrix.CreateScale(1f, 1f, 1f) * Matrix.CreateRotationZ(3 * MathF.PI / 4) * Matrix.CreateTranslation(Position + P3) * triangleRotation;
+            if (flagCollide == true)
+            {
+                destroyItself();
+            }
+            else
+            {
+                base.Update(gameTime);
+                Matrix triangleRotation = Matrix.CreateRotationY(Angle + MathF.PI / 2);
+                triang[0].World = Matrix.CreateScale(1f, 1f, 1f) * Matrix.CreateRotationZ(3 * MathF.PI / 4) * Matrix.CreateTranslation(Position + P1) * triangleRotation;
+                triang[1].World = Matrix.CreateScale(1f, 1f, 1f) * Matrix.CreateRotationZ(3 * MathF.PI / 4) * Matrix.CreateTranslation(Position + P2) * triangleRotation;
+                triang[2].World = Matrix.CreateScale(1f, 1f, 1f) * Matrix.CreateRotationZ(3 * MathF.PI / 4) * Matrix.CreateTranslation(Position + P3) * triangleRotation;
+            }
+            
         }
 
         public override void Draw(Matrix view, Matrix projection) 
@@ -47,8 +54,16 @@ namespace TGC.MonoGame.TP.Elements
         public override void logicalAction(Player player)
         {
             flagCollide = true; 
-           // sound.Play();
+            sound.Play();
             base.logicalAction(player);
+        }
+        public override void destroyItself()
+        {
+            Collider = new BoundingSphere(new Vector3(0f, 1000f, 0f), 0f);
+            base.destroyItself();
+            triang[0].World = Matrix.CreateScale(0f, 0f, 0f) * Matrix.CreateTranslation(Position + new Vector3(0,100,0));
+            triang[1].World = Matrix.CreateScale(0f, 0f, 0f) * Matrix.CreateTranslation(Position + new Vector3(0, 100, 0));
+            triang[2].World = Matrix.CreateScale(0f, 0f, 0f) * Matrix.CreateTranslation(Position + new Vector3(0, 100, 0));
         }
 
 

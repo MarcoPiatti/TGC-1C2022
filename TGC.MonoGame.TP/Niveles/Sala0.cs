@@ -24,7 +24,6 @@ namespace TGC.MonoGame.TP.Niveles
         {
      
             Coin = new Coin(graphicsDevice,content,new Vector3(25, 20, 0) + posicion);
-
             FirstPlatform = new Cube(graphicsDevice, content, posicion);
             FirstPlatform.WorldUpdate(new Vector3(10f, 1f, 10f), new Vector3(25, 10, 0) + posicion, Quaternion.Identity);
 

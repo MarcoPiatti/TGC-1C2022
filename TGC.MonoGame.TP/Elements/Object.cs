@@ -194,18 +194,16 @@ namespace TGC.MonoGame.TP.Elements
     public abstract class LogicalObject : Object
     {
         public bool flagCollide { get; set; } = false;
-        public abstract void logicalAction(Player player);
-  
-        public override bool Intersects(Sphere s)
-        {
-            return false;
-        }
+        public virtual void logicalAction(Player player) { }
+
         public override Vector3 GetDirectionFromCollision(Sphere s)
         {
             return Vector3.One;
         }
-        public abstract void destroyItself();
- 
+        public virtual void destroyItself() {
+            World = Matrix.CreateScale(new Vector3(0, 0, 0)) * Matrix.CreateTranslation(Position + new Vector3(0, 100, 0));
+            //Collider = new BoundingSphere(new Vector3(0f, 1000f, 0f), 0f);
+        }
     }
     public class LogicalSphere : LogicalObject
     {
@@ -247,34 +245,22 @@ namespace TGC.MonoGame.TP.Elements
            // var BoundingSphere = new BoundingSphere(player.Collider.Center, player.Collider.Radius);
             var playerCenter = player.Collider.Center;
             var playerRadius = player.Collider.Radius;
-            return Math.Pow(Collider.Center.Length() - playerCenter.Length(), 2) > Math.Pow(Collider.Radius - playerRadius, 2);
+            return Math.Pow(Vector3.Dot((Collider.Center - playerCenter),(Collider.Center - playerCenter)), 2) <= Math.Pow(Collider.Radius - playerRadius, 2);
 
         }
-        public override Vector3 GetDirectionFromCollision(Sphere s)
-        {
-            return Vector3.One;
-        }
-        public override void destroyItself()
-        {
-            World = Matrix.CreateScale(new Vector3(0, 0, 0)) * Matrix.CreateTranslation(Position + new Vector3(0, 100, 0));
-            Collider = new BoundingSphere(new Vector3(0f, 100f, 0f), 0f);
-        }
-        public override void logicalAction(Player player)
-        {
 
-        }
+
     }
 
     public class LogicalCyllinder : LogicalObject
     {
-        private Color unColor { get; set; }
+
         public BoundingCylinder Collider { get; set; }
 
         public LogicalCyllinder(GraphicsDevice graphicsDevice, ContentManager content, Color color, float height = 1, float diameter = 1, int tessellation = 32)
         {
-            unColor = color;
             Collider = new BoundingCylinder(Position, diameter/2, height);
-            Body = new CylinderPrimitive(graphicsDevice, content, unColor, height, diameter, tessellation);
+            Body = new CylinderPrimitive(graphicsDevice, content, color, height, diameter, tessellation);
             this.Position = Position;
         }
 
@@ -285,10 +271,6 @@ namespace TGC.MonoGame.TP.Elements
             this.Position = Position;
         }
 
-        public override void logicalAction(Player player)
-        {
-
-        }
         public override bool Intersects(Sphere player)
         {
             var BoundingSphere = new BoundingSphere(player.Collider.Center, player.Collider.Radius);

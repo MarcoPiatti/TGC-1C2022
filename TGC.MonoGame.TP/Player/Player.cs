@@ -40,7 +40,7 @@ namespace TGC.MonoGame.TP
         public Player(GraphicsDevice graphics, ContentManager content)
         {
             Body = new Sphere(graphics, content, 1f, 16, Color.Green);
-            Body.WorldUpdate(scale, new Vector3(0, 15, 0), Quaternion.Identity);
+            Body.WorldUpdate(scale, new Vector3(0, 15, 20), Quaternion.Identity);
             JumpLine = new Sphere(graphics, content, 1f, 4, new Color(0f, 1f, 0f, 0.3f));
             JumpLine.WorldUpdate(new Vector3(7, 7, 7), Position + new Vector3(0, -1, 0), Quaternion.Identity);
         }
@@ -126,6 +126,11 @@ namespace TGC.MonoGame.TP
         public void AddCoin()
         {
             totalCoins++;
+        }
+        public void Restart()
+        {
+            //Body.World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(Position + traslation) * Matrix.CreateFromQuaternion(rotation);
+            //Body.Position = Position + traslation;
         }
     }
 

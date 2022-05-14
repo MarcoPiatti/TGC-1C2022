@@ -23,8 +23,8 @@ namespace TGC.MonoGame.TP.Niveles
 
         public Sala2(ContentManager content, GraphicsDevice graphicsDevice, Vector3 posicion) : base(content, graphicsDevice, posicion)
         {
-            Piso.World = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(new Vector3(-45f, 0, 0) + posicion);
-
+            Piso = new Cube(graphicsDevice, content, posicion);
+            Piso.WorldUpdate(platformScale, new Vector3(-45f, 0, 0) + posicion, Quaternion.Identity);
             PisoSalida = new Cube(graphicsDevice, content, posicion);
             PisoSalida.World = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(new Vector3(45f, 0, 0) + posicion);
 

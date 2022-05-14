@@ -13,9 +13,9 @@ namespace TGC.MonoGame.TP.Elements
         public float Angle { get; set; }
 
 
-        public PowerUp(GraphicsDevice graphicsDevice, ContentManager content, Vector3 posicion): base(graphicsDevice,content, 1f, 16, new Color(0.3f, 0.3f, 0.3f, 0.1f))
+        public PowerUp(GraphicsDevice graphicsDevice, ContentManager content, Vector3 posicion) : base(graphicsDevice, content, 1f, 16, new Color(0.3f, 0.3f, 0.3f, 0.1f))
         {
-
+            Collider = new BoundingSphere(posicion, 30f);
             Position = posicion;
             World = Matrix.CreateScale(1f, 5f, 5f) * Matrix.CreateTranslation(posicion);
         }
@@ -23,7 +23,7 @@ namespace TGC.MonoGame.TP.Elements
         public virtual void Update(GameTime gameTime)
         {
 
-            destroyItself();
+
             var elapsedTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             Angle += 1.5f * elapsedTime;
             Matrix rotation = Matrix.CreateRotationY(Angle);
@@ -38,11 +38,6 @@ namespace TGC.MonoGame.TP.Elements
         public virtual void Effect()
         {
             //Funcion abstracta donde pondriamos el effecto que haria cada PowerUp cuando el jugador lo piquee
-        }
-        public override void destroyItself()
-        {
-            World = Matrix.CreateScale(new Vector3(0, 0, 0)) * Matrix.CreateTranslation(Position + new Vector3(0, 100, 0));
-            Collider = new BoundingSphere(new Vector3(0f, 100f, 0f), 0f);
         }
     }
 }
