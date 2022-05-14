@@ -128,9 +128,9 @@ namespace TGC.MonoGame.TP.Elements
 
     public class Cylinder : Object
     {
-        public Cylinder(GraphicsDevice graphicsDevice, ContentManager content, float height = 1, float diameter = 1,int tessellation = 32)
+        public Cylinder(GraphicsDevice graphicsDevice, ContentManager content, Color color, float height = 1, float diameter = 1,int tessellation = 32)
         {
-            Body = new CylinderPrimitive(graphicsDevice, content, height, diameter, tessellation);
+            Body = new CylinderPrimitive(graphicsDevice, content, color, height, diameter, tessellation);
         }
 
         public override void WorldUpdate(Vector3 scale, Vector3 traslation, Quaternion rotation)
@@ -165,18 +165,18 @@ namespace TGC.MonoGame.TP.Elements
         private Color unColor { get; set; }
         public OrientedBoundingBox Collider { get; set; }
 
-        public AlmostSphere(GraphicsDevice graphicsDevice, ContentManager content, float diameter, int tessellation, Color color)
+        public AlmostSphere(GraphicsDevice graphicsDevice, ContentManager content, Color color, float height = 1, float diameter = 1, int tessellation = 32)
         {
             unColor = color;
             Collider = new OrientedBoundingBox(Position, new Vector3(1, 1, 1));
-            Body = new SpherePrimitive(graphicsDevice, content, diameter, tessellation, unColor);
+            Body = new CylinderPrimitive(graphicsDevice, content, unColor, height, diameter, tessellation);
             this.Position = Position;
         }
 
-        public AlmostSphere(GraphicsDevice graphicsDevice, ContentManager content, float diameter, int tessellation)
+        public AlmostSphere(GraphicsDevice graphicsDevice, ContentManager content, float height = 1, float diameter = 1, int tessellation = 1)
         {
             Collider = new OrientedBoundingBox(Position, new Vector3(1, 1, 1));
-            Body = new SpherePrimitive(graphicsDevice, content, diameter, tessellation, Color.White);
+            Body = new CylinderPrimitive(graphicsDevice, content, Color.White, height, diameter, tessellation);
             this.Position = Position;
         }
 

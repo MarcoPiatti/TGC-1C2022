@@ -11,15 +11,15 @@ namespace TGC.MonoGame.TP.Elements
     {
         private TrianglePrismPrimitive t1;
         private Matrix t1W;
-        private Vector3 t1P = new Vector3(2, 0, 0);
+        private Vector3 t1P = new Vector3(1f, 0, 0);
 
         private TrianglePrismPrimitive t2;
         private Matrix t2W;
-        private Vector3 t2P = new Vector3(-0.5f, 0, 0);
+        private Vector3 t2P = new Vector3(-0.2f, 0, 0);
 
         private TrianglePrismPrimitive t3;
         private Matrix t3W;
-        private Vector3 t3P = new Vector3(-3, 0, 0);
+        private Vector3 t3P = new Vector3(-1.4f, 0, 0);
 
         public SpeedPU(GraphicsDevice graphicsDevice, ContentManager content, Vector3 posicion): base(graphicsDevice, content, posicion)
         {
@@ -32,9 +32,9 @@ namespace TGC.MonoGame.TP.Elements
         {
             base.Update(gameTime);
             Matrix triangleRotation = Matrix.CreateRotationY(Angle + MathF.PI/2);
-            t1W = Matrix.CreateScale(2f, 2f, 1f) * Matrix.CreateRotationZ(3 * MathF.PI / 4) * Matrix.CreateTranslation(Position + t1P) * triangleRotation;
-            t2W = Matrix.CreateScale(2f, 2f, 1f) * Matrix.CreateRotationZ(3 * MathF.PI / 4) * Matrix.CreateTranslation(Position + t2P) * triangleRotation;
-            t3W = Matrix.CreateScale(2f, 2f, 1f) * Matrix.CreateRotationZ(3 * MathF.PI / 4) * Matrix.CreateTranslation(Position + t3P) * triangleRotation;
+            t1W = Matrix.CreateScale(1f, 1f, 1f) * Matrix.CreateRotationZ(3 * MathF.PI / 4) * Matrix.CreateTranslation(Position + t1P) * triangleRotation;
+            t2W = Matrix.CreateScale(1f, 1f, 1f) * Matrix.CreateRotationZ(3 * MathF.PI / 4) * Matrix.CreateTranslation(Position + t2P) * triangleRotation;
+            t3W = Matrix.CreateScale(1f, 1f, 1f) * Matrix.CreateRotationZ(3 * MathF.PI / 4) * Matrix.CreateTranslation(Position + t3P) * triangleRotation;
         }
 
         public override void Draw(Matrix view, Matrix projection) 

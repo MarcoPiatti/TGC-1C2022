@@ -18,13 +18,13 @@ namespace TGC.MonoGame.TP.Elements
         private ContentManager localContent {get; set;}
         private GraphicsDevice localGraphics { get; set; }
 
-        public Coin(GraphicsDevice graphicsDevice, ContentManager content, Vector3 posicion): base(graphicsDevice,content, 1f, 16, Color.Gold)
+        public Coin(GraphicsDevice graphicsDevice, ContentManager content, Vector3 posicion): base(graphicsDevice,content, Color.Gold)
         {
             localContent = content;
             localGraphics = graphicsDevice;
             Collider = new OrientedBoundingBox(posicion,new Vector3(5,30,5));
             Position = posicion;
-            World = Matrix.CreateScale(1f, 5f, 5f) * Matrix.CreateTranslation(posicion);
+            World = Matrix.CreateScale(5f, 1f, 5f) * Matrix.CreateTranslation(posicion);
         }
         public override void logicalAction(Sphere player)
         {
@@ -32,14 +32,14 @@ namespace TGC.MonoGame.TP.Elements
         }
         public void Update(GameTime gameTime)
         {      
-            if(flagCollide == true) {
+            if(false) {
                 CoinAngle = 10f;
             } else
             {
                 var elapsedTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
                 CoinAngle += 1.5f * elapsedTime;
                 Matrix rotation = Matrix.CreateRotationY(CoinAngle);
-                World = Matrix.CreateScale(1f, 10f, 10f) * rotation * Matrix.CreateTranslation(Position);
+                World = Matrix.CreateScale(5f, 0.5f, 5f) * Matrix.CreateRotationZ(MathF.PI/2) * rotation * Matrix.CreateTranslation(Position);
             }
 
         }

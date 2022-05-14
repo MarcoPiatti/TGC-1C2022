@@ -22,7 +22,7 @@ namespace TGC.MonoGame.TP.Elements
             var elapsedTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             Angle += 1.5f * elapsedTime;
             Matrix rotation = Matrix.CreateRotationY(Angle);
-            World = Matrix.CreateScale(10f, 10f, 10f) * rotation * Matrix.CreateTranslation(Position);
+            World = Matrix.CreateScale(5f, 5f, 5f) * rotation * Matrix.CreateTranslation(Position);
         }
 
         public override void Draw(Matrix view, Matrix projection) 

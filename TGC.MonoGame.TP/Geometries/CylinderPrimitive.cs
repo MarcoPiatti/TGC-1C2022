@@ -23,14 +23,19 @@ namespace TGC.MonoGame.TP.Geometries
     /// <summary>
     ///     Geometric primitive class for drawing cylinders.
     /// </summary>
+    /// 
+    
     public class CylinderPrimitive : GeometricPrimitive
     {
         /// <summary>
         ///     Constructs a new cylinder primitive, with the specified size and tessellation level.
         /// </summary>
-        public CylinderPrimitive(GraphicsDevice graphicsDevice,ContentManager content, float height = 1, float diameter = 1,
+        /// 
+        private Color color;
+        public CylinderPrimitive(GraphicsDevice graphicsDevice,ContentManager content, Color color, float height = 1, float diameter = 1,
             int tessellation = 32)
         {
+            this.color = color;
             if (tessellation < 3)
                 throw new ArgumentOutOfRangeException(nameof(tessellation));
 
@@ -43,8 +48,8 @@ namespace TGC.MonoGame.TP.Geometries
             {
                 var normal = GetCircleVector(i, tessellation);
 
-                AddVertex(normal * radius + Vector3.Up * height, Color.AliceBlue, normal);
-                AddVertex(normal * radius + Vector3.Down * height, Color.DarkGray, normal);
+                AddVertex(normal * radius + Vector3.Up * height, color, normal);
+                AddVertex(normal * radius + Vector3.Down * height, color, normal);
 
                 AddIndex(i * 2);
                 AddIndex(i * 2 + 1);
@@ -87,7 +92,7 @@ namespace TGC.MonoGame.TP.Geometries
             {
                 var position = GetCircleVector(i, tessellation) * radius + normal * height;
 
-                AddVertex(position, Color.Azure, normal);
+                AddVertex(position, color, normal);
             }
         }
 
