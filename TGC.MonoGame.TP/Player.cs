@@ -54,8 +54,7 @@ namespace TGC.MonoGame.TP
             VectorSpeed += Vector3.Down * Gravity;
             var elapsedTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             var scaledSpeed = VectorSpeed * elapsedTime;
-            //float rotationSpeed = MathF.Sqrt(MathF.Pow(scaledSpeed.X, 2) + MathF.Pow(scaledSpeed.Z, 2));
-            Body.WorldUpdate(scale, scaledSpeed, Quaternion.Identity);
+            Body.WorldUpdate(scale, scaledSpeed, Matrix.CreateRotationZ(VectorSpeed.X) * Matrix.CreateRotationX(VectorSpeed.Z));
             Position = Body.Position;
             JumpLine.WorldUpdate(scale, Body.Position, Quaternion.Identity);
             PhyisicallyInteract(objects, elapsedTime);
@@ -87,8 +86,6 @@ namespace TGC.MonoGame.TP
                 }
             }
         }
-
-
 
         /*
         public static void Move(Vector3 direction)

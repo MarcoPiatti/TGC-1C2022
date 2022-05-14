@@ -27,6 +27,12 @@ namespace TGC.MonoGame.TP.Elements
             Position = Position + traslation;
         }
 
+        public virtual void WorldUpdate(Vector3 scale, Vector3 traslation, Matrix rotationMatrix)
+        {
+            World = Matrix.CreateScale(scale) * rotationMatrix * Matrix.CreateTranslation(Position + traslation);
+            Position = Position + traslation;
+        }
+
         public abstract bool Intersects(Sphere s);
 
         public abstract Vector3 GetDirectionFromCollision(Sphere s);
@@ -134,6 +140,15 @@ namespace TGC.MonoGame.TP.Elements
         public override void WorldUpdate(Vector3 scale, Vector3 traslation, Quaternion rotation)
         {
             base.WorldUpdate(scale, traslation, rotation);
+            BoundingSphere collider = Collider;
+            collider.Radius = scale.X / 2;
+            collider.Center += traslation;
+            Collider = collider;
+        }
+
+        public override void WorldUpdate(Vector3 scale, Vector3 traslation, Matrix rotationMatrix)
+        {
+            base.WorldUpdate(scale, traslation, rotationMatrix);
             BoundingSphere collider = Collider;
             collider.Radius = scale.X / 2;
             collider.Center += traslation;
