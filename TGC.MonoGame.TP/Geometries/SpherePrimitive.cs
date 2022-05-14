@@ -26,7 +26,7 @@ namespace TGC.MonoGame.TP.Geometries
     public class SpherePrimitive : GeometricPrimitive
     {
         private GraphicsDevice graphicsDevice;
-        private float diameter;
+        public float diameter {get; }
         private int tessellation;
         private Color white;
 

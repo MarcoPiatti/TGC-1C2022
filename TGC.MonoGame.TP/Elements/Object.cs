@@ -124,11 +124,14 @@ namespace TGC.MonoGame.TP.Elements
     {
 
         public BoundingSphere Collider { get; set; }
+        private SpherePrimitive currentBody { get; set; }
 
         public Sphere(GraphicsDevice graphicsDevice, ContentManager content, float diameter, int tessellation, Color color)
         {
             Collider = new BoundingSphere(Vector3.Zero, 1f);
-            Body = new SpherePrimitive(graphicsDevice, content, diameter, tessellation, color);
+ 
+            currentBody = new SpherePrimitive(graphicsDevice, content, diameter, tessellation, color);
+            Body = currentBody;
         }
 
         public Sphere(GraphicsDevice graphicsDevice, ContentManager content, float diameter, int tessellation)
@@ -157,7 +160,8 @@ namespace TGC.MonoGame.TP.Elements
 
         public override bool Intersects(Sphere s)
         {
-            return false;
+            var boundingSphere = new BoundingSphere(Position, currentBody.diameter/2);
+            return boundingSphere.Intersects(s.Collider);
         }
         public override Vector3 GetDirectionFromCollision(Sphere s)
         {
@@ -189,7 +193,8 @@ namespace TGC.MonoGame.TP.Elements
     }
     public abstract class LogicalObject : Object
     {
-        public abstract void logicalAction(Sphere player);
+        public bool flagCollide { get; set; } = false;
+        public abstract void logicalAction(Player player);
   
         public override bool Intersects(Sphere s)
         {
@@ -199,45 +204,102 @@ namespace TGC.MonoGame.TP.Elements
         {
             return Vector3.One;
         }
+        public abstract void destroyItself();
+ 
     }
-
-    public class AlmostSphere : LogicalObject
+    public class LogicalSphere : LogicalObject
     {
-        private Color unColor { get; set; }
-        public OrientedBoundingBox Collider { get; set; }
 
-        public AlmostSphere(GraphicsDevice graphicsDevice, ContentManager content, Color color, float height = 1, float diameter = 1, int tessellation = 32)
+        public BoundingSphere Collider { get; set; }
+
+        public LogicalSphere(GraphicsDevice graphicsDevice, ContentManager content, float diameter, int tessellation, Color color)
         {
-            unColor = color;
-            Collider = new OrientedBoundingBox(Position, new Vector3(1, 1, 1));
-            Body = new CylinderPrimitive(graphicsDevice, content, unColor, height, diameter, tessellation);
-            this.Position = Position;
+            Collider = new BoundingSphere(Position, diameter/2);
+            Body = new SpherePrimitive(graphicsDevice, content, diameter, tessellation, color);
         }
 
-        public AlmostSphere(GraphicsDevice graphicsDevice, ContentManager content, float height = 1, float diameter = 1, int tessellation = 1)
+        public LogicalSphere(GraphicsDevice graphicsDevice, ContentManager content, float diameter, int tessellation)
         {
-            Collider = new OrientedBoundingBox(Position, new Vector3(1, 1, 1));
-            Body = new CylinderPrimitive(graphicsDevice, content, Color.White, height, diameter, tessellation);
-            this.Position = Position;
+            Collider = new BoundingSphere(Position, diameter / 2);
+            Body = new SpherePrimitive(graphicsDevice, content, diameter, tessellation);
         }
 
         public override void WorldUpdate(Vector3 scale, Vector3 traslation, Quaternion rotation)
         {
             base.WorldUpdate(scale, traslation, rotation);
-            Collider.Center += traslation;
-            Collider.Extents = Collider.Center + scale / 2;
-            Collider.Rotate(rotation);
+            BoundingSphere collider = Collider;
+            collider.Radius = scale.X / 2;
+            collider.Center += traslation;
+            Collider = collider;
         }
-        public override bool Intersects(Sphere s)
+
+        public override void WorldUpdate(Vector3 scale, Vector3 traslation, Matrix rotationMatrix)
         {
-            var aabb = new BoundingBox(Collider.Center - Collider.Extents + Collider.Center, Collider.Extents);
-            return aabb.Intersects(s.Collider);
+            base.WorldUpdate(scale, traslation, rotationMatrix);
+            BoundingSphere collider = Collider;
+            collider.Radius = scale.X / 2;
+            collider.Center += traslation;
+            Collider = collider;
         }
-        public override void logicalAction(Sphere player)
+
+        public override bool Intersects(Sphere player)
+        {
+           // var BoundingSphere = new BoundingSphere(player.Collider.Center, player.Collider.Radius);
+            var playerCenter = player.Collider.Center;
+            var playerRadius = player.Collider.Radius;
+            return Math.Pow(Collider.Center.Length() - playerCenter.Length(), 2) > Math.Pow(Collider.Radius - playerRadius, 2);
+
+        }
+        public override Vector3 GetDirectionFromCollision(Sphere s)
+        {
+            return Vector3.One;
+        }
+        public override void destroyItself()
+        {
+            World = Matrix.CreateScale(new Vector3(0, 0, 0)) * Matrix.CreateTranslation(Position + new Vector3(0, 100, 0));
+            Collider = new BoundingSphere(new Vector3(0f, 100f, 0f), 0f);
+        }
+        public override void logicalAction(Player player)
         {
 
         }
     }
+
+    public class LogicalCyllinder : LogicalObject
+    {
+        private Color unColor { get; set; }
+        public BoundingCylinder Collider { get; set; }
+
+        public LogicalCyllinder(GraphicsDevice graphicsDevice, ContentManager content, Color color, float height = 1, float diameter = 1, int tessellation = 32)
+        {
+            unColor = color;
+            Collider = new BoundingCylinder(Position, diameter/2, height);
+            Body = new CylinderPrimitive(graphicsDevice, content, unColor, height, diameter, tessellation);
+            this.Position = Position;
+        }
+
+        public LogicalCyllinder(GraphicsDevice graphicsDevice, ContentManager content, float height = 1, float diameter = 1, int tessellation = 1)
+        {
+            Collider = new BoundingCylinder(Position, diameter / 2, height);
+            Body = new CylinderPrimitive(graphicsDevice, content, Color.White, height, diameter, tessellation);
+            this.Position = Position;
+        }
+
+        public override void logicalAction(Player player)
+        {
+
+        }
+        public override bool Intersects(Sphere player)
+        {
+            var BoundingSphere = new BoundingSphere(player.Collider.Center, player.Collider.Radius);
+            return Collider.Intersects(BoundingSphere);
+        }
+
+         public override void destroyItself(){
+            World = Matrix.CreateScale(new Vector3(0, 0, 0)) * Matrix.CreateTranslation(Position + new Vector3(0, 100, 0));
+            Collider = new BoundingCylinder(Position + new Vector3(0f, 100f, 0f), 0f, 0f);
+        }
+}
 
 
 }

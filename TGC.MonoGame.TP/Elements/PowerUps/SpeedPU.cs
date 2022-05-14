@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -9,6 +10,7 @@ namespace TGC.MonoGame.TP.Elements
 {
     public class SpeedPU : PowerUp
     {
+        private SoundEffect sound { get; set; }
         private List<TrianglePrism> triang = new List<TrianglePrism>();
 
         private Vector3 P1 = new Vector3(1f, 0, 0);
@@ -17,6 +19,8 @@ namespace TGC.MonoGame.TP.Elements
 
         public SpeedPU(GraphicsDevice graphicsDevice, ContentManager content, Vector3 posicion): base(graphicsDevice, content, posicion)
         {
+            var SoundName = "powerUpPicked";
+            sound = content.Load<SoundEffect>("Music/" + SoundName);
             triang.Add(new TrianglePrism(graphicsDevice, content, posicion, Color.Aqua));
             triang.Add(new TrianglePrism(graphicsDevice, content, posicion, Color.Aqua));
             triang.Add(new TrianglePrism(graphicsDevice, content, posicion, Color.Aqua));
@@ -24,6 +28,7 @@ namespace TGC.MonoGame.TP.Elements
 
         public override void Update(GameTime gameTime)
         {
+            destroyItself();
             base.Update(gameTime);
             Matrix triangleRotation = Matrix.CreateRotationY(Angle + MathF.PI/2);
             triang[0].World = Matrix.CreateScale(1f, 1f, 1f) * Matrix.CreateRotationZ(3 * MathF.PI / 4) * Matrix.CreateTranslation(Position + P1) * triangleRotation;
@@ -39,6 +44,13 @@ namespace TGC.MonoGame.TP.Elements
             }
             base.Draw(view, projection);
         }
+        public override void logicalAction(Player player)
+        {
+            flagCollide = true; 
+           // sound.Play();
+            base.logicalAction(player);
+        }
+
 
     }
 }

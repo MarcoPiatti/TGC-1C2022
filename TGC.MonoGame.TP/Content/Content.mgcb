@@ -81,6 +81,12 @@
 /processorParam:Quality=Best
 /build:Music/crystal_dolphin.mp3
 
+#begin Music/powerUpPicked.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/powerUpPicked.wav
+
 #begin SpriteFonts/Arial.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

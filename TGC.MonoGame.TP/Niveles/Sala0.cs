@@ -62,6 +62,7 @@ namespace TGC.MonoGame.TP.Niveles
         {
             List<TP.Elements.LogicalObject> logicalObjects = base.GetLogicalObjects();
             logicalObjects.Add(Coin);
+            logicalObjects.Add(powerUp);
             return logicalObjects;
         }
     }
