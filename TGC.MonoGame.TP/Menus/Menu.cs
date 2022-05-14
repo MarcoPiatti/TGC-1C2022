@@ -35,6 +35,7 @@ namespace TGC.MonoGame.TP.Menus
         public virtual void Draw(GraphicsDevice graphicsDevice)
         {
             graphicsDevice.Clear(Color.Black);
+            MenuHelper();
         }
 
         public void DrawCenterText(string msg, float escala, Color color)
@@ -70,6 +71,16 @@ namespace TGC.MonoGame.TP.Menus
             SpriteBatch.End();
         }
 
+        public void DrawTextFromCenterNotCentered(string msg, float X, float Y, float escala, Color color)
+        {
+            var W = windowSize.X;
+            var H = windowSize.Y;
+            SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null,
+                Matrix.CreateScale(escala) * Matrix.CreateTranslation((W / 2) + X, (H / 2) + Y, 0));
+            SpriteBatch.DrawString(SpriteFont, msg, new Vector2(0, 0), color);
+            SpriteBatch.End();
+        }
+
         public void DrawSelectedText(string msg, float X, float Y, float escala, float selectorY, float selectorX = 0)
         {
             if(selectorY == 0 && selectorX == 0)
@@ -87,6 +98,13 @@ namespace TGC.MonoGame.TP.Menus
         public virtual int SelectedPlayer()
         {
             return -1;
+        }
+
+        public void MenuHelper()
+        {
+            DrawTextFromCenterNotCentered("WASD | Flechas = Seleccionar", - windowSize.X * 1 / 2 + 10f, windowSize.Y * 26 / 70, 0.5f, Color.White);
+            DrawTextFromCenterNotCentered("Enter = Aceptar", -windowSize.X * 1 / 2 + 10f, windowSize.Y * 28 / 70, 0.5f, Color.White);
+            DrawTextFromCenterNotCentered("Esc = Volver", -windowSize.X * 1 / 2 + 10f, windowSize.Y * 30 / 70, 0.5f, Color.White);
         }
 
     }

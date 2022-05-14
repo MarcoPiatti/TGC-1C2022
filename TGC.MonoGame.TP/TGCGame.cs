@@ -57,6 +57,7 @@ namespace TGC.MonoGame.TP
         private Camera Camera { get; set; }
 
         private float CameraChangeCooldown = 0f;
+        private float MenuChangeCooldown = 0f;
 
         private Vector3 CameraInitPosition = new Vector3(-30, 30, 0);
 
@@ -111,13 +112,7 @@ namespace TGC.MonoGame.TP
         protected override void LoadContent()
         {
 
-            Nivel = new Nivel(Content, GraphicsDevice);
-
-            PlayerTypes = new Player[]{
-                new PlayerGum(GraphicsDevice, Content),
-                new PlayerIron(GraphicsDevice, Content),
-                new PlayerWood(GraphicsDevice, Content)
-            };
+            NewGame();
 
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             SpriteFont = Content.Load<SpriteFont>(ContentFolderSpriteFonts + "Cascadia/CascadiaCodePL");
@@ -187,6 +182,9 @@ namespace TGC.MonoGame.TP
 
             if (CameraChangeCooldown > 0)
             CameraChangeCooldown -= Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
+
+            if (MenuChangeCooldown > 0)
+                MenuChangeCooldown -= Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             // Aca deberiamos poner toda la logica de actualizacion del juego.
 
             Camera.UpdatePlayerPosition(Player.Position);
@@ -195,9 +193,11 @@ namespace TGC.MonoGame.TP
 
             Nivel.Update(gameTime);
             // Capturar Input teclado
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-                //Salgo del juego.
-                Exit();
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && MenuChangeCooldown <= 0)
+            {
+                ChangeMenu(2);
+                MediaPlayer.Volume = MediaPlayer.Volume / 2;
+            }
 
             if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
             {
@@ -345,11 +345,19 @@ namespace TGC.MonoGame.TP
             }
             if (menu == 2)
             {
-
+                selectedMenu = new PauseMenu(SpriteFont, SpriteBatch);
             }
             if (menu == 3)
             {
 
+            }
+
+            if(selectedMenu == null)
+            {
+                MenuChangeCooldown = 0.25f;
+            } else
+            {
+                selectedMenu.KeyCoolDown = 0.1f;
             }
         }
 
@@ -366,9 +374,9 @@ namespace TGC.MonoGame.TP
                 {
                     MediaPlayer.Play(Song);
                 }
-                if (selectedMenu.operations.Exists(op => op == "downMusic"))
+                if (selectedMenu.operations.Exists(op => op == "resetGame"))
                 {
-                    MediaPlayer.Volume = MediaPlayer.Volume / 2;
+                    NewGame();
                 }
                 if (selectedMenu.operations.Exists(op => op == "upMusic"))
                 {
@@ -382,6 +390,19 @@ namespace TGC.MonoGame.TP
                 if (selectedMenu != null)
                     selectedMenu.operations = new List<string>();
             }
+        }
+
+        public void NewGame()
+        {
+            Nivel = new Nivel(Content, GraphicsDevice);
+
+            PlayerTypes = new Player[]{
+                new PlayerGum(GraphicsDevice, Content),
+                new PlayerIron(GraphicsDevice, Content),
+                new PlayerWood(GraphicsDevice, Content)
+            };
+
+            MediaPlayer.Stop();
         }
     }
 }
