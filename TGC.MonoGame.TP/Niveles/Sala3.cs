@@ -24,7 +24,7 @@ namespace TGC.MonoGame.TP.Niveles
         {
             
             Piso.World = Matrix.CreateScale(Size / (float)Math.Cos(angle), 1f, Size) * Matrix.CreateRotationZ(angle) * Matrix.CreateTranslation(new Vector3(0, (float)Math.Sin(angle)*Size/2, 0) + Posicion);
-
+            
             obstacles = new List<MovingCube>();
 
             obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, -0.05f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, -0.05f * Size) }, graphicsDevice, content, Color.Red,1,obstaclespeed));
