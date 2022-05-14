@@ -22,6 +22,7 @@ namespace TGC.MonoGame.TP
         private float JumpForce = 2f;
         public float Bounce = 0.5f;
         private float CCC = 0.01f; //Collider Correction Constant
+        private int totalCoins = 0;
 
         public string typeName = "base";
 
@@ -98,7 +99,7 @@ namespace TGC.MonoGame.TP
             {
                 if (o.Intersects(Body))
                 {
-                    o.logicalAction(Body);
+                    o.logicalAction(this);
                 }
             }
         }
@@ -120,6 +121,11 @@ namespace TGC.MonoGame.TP
         {
             VectorSpeed += Vector3.Up * JumpForce;
 
+        }
+
+        public void AddCoin()
+        {
+            totalCoins++;
         }
     }
 
