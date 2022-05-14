@@ -3,9 +3,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using TGC.MonoGame.TP.Niveles;
-using TGC.MonoGame.TP.Geometries;
+using TGC.MonoGame.TP.Menus;
 using Microsoft.Xna.Framework.Media;
 using TGC.MonoGame.Niveles.SkyBox;
+using System.Collections.Generic;
 
 namespace TGC.MonoGame.TP
 {
@@ -50,6 +51,8 @@ namespace TGC.MonoGame.TP
         private Matrix View { get; set; }
         private Matrix Projection { get; set; }
         private Player Player { get; set; }
+
+        private Player[] PlayerTypes { get; set; }
         //private FollowCamera Camera { get; set; }
         private Camera Camera { get; set; }
 
@@ -61,12 +64,11 @@ namespace TGC.MonoGame.TP
        //Canciones
         private string SongName { get; set; }
         private Song Song { get; set; }
-        //Menu
-        private const int mainMenu = 0; 
-        private const int estado1 = 1;
-        private const int estado2 = 2; 
 
-        private int estadoMenu = mainMenu; 
+        //Menu
+
+        public Menu selectedMenu; 
+
         private Point screenSize { get; set; } 
 
         //Skybox
@@ -85,7 +87,7 @@ namespace TGC.MonoGame.TP
             //Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), screenSize);
             Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, Player.Position, screenSize);
             //Camera = new TargetCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), new Vector3(0,0,0));
-            
+
             // La logica de inicializacion que no depende del contenido se recomienda poner en este metodo.
 
             // Configuramos nuestras matrices de la escena.
@@ -111,8 +113,16 @@ namespace TGC.MonoGame.TP
 
             Nivel = new Nivel(Content, GraphicsDevice);
 
+            PlayerTypes = new Player[]{
+                new PlayerGum(GraphicsDevice, Content),
+                new PlayerIron(GraphicsDevice, Content),
+                new PlayerWood(GraphicsDevice, Content)
+            };
+
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             SpriteFont = Content.Load<SpriteFont>(ContentFolderSpriteFonts + "Cascadia/CascadiaCodePL");
+
+            selectedMenu = new MainMenu(SpriteFont, SpriteBatch, PlayerTypes);
 
             Effect = Content.Load<Effect>(ContentFolderEffects + "ShaderBlingPhong");
 
@@ -169,50 +179,20 @@ namespace TGC.MonoGame.TP
 
         protected override void Update(GameTime gameTime)
         {
-            if (estadoMenu == mainMenu)
-            {
-                if (Keyboard.GetState().IsKeyDown(Keys.C))
-                {
+            var keyboardState = Keyboard.GetState();
 
-                    estadoMenu = estado1;
-                }
-
-                if (Keyboard.GetState().IsKeyDown(Keys.G))
-                {
-                    estadoMenu = estado2;
-                    MediaPlayer.Play(Song);
-                }
+            UpdateMenu(gameTime, keyboardState);
+            if (selectedMenu != null)
                 return;
-            }
-            else if (estadoMenu == estado1)
-            {
-                if (Keyboard.GetState().IsKeyDown(Keys.P))
-                {
-                    estadoMenu = mainMenu;
-                }
-                return;
-            }else if (estadoMenu == estado2)
-            {
-                if (Keyboard.GetState().IsKeyDown(Keys.H))
-                {
-                    //se supone que cada segundo puedas presionar recién xd pero no supe como hacerlo
-                    if(CameraChangeCooldown <= 0) { 
-                        cambiarCamara(); 
-                        CameraChangeCooldown = 0.25f; 
-                    }
-                    
-                }
-            }
 
-            if(CameraChangeCooldown > 0)
-                CameraChangeCooldown -= Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
+            if (CameraChangeCooldown > 0)
+            CameraChangeCooldown -= Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             // Aca deberiamos poner toda la logica de actualizacion del juego.
 
             Camera.UpdatePlayerPosition(Player.Position);
             Camera.Update(gameTime);
             //Camera.Update(gameTime,Player.Position);
 
-            var keyboardState = Keyboard.GetState();
             Nivel.Update(gameTime);
             // Capturar Input teclado
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -239,6 +219,14 @@ namespace TGC.MonoGame.TP
             {
                 Player.Jump();
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.H))
+            {
+                if (CameraChangeCooldown <= 0)
+                {
+                    cambiarCamara();
+                    CameraChangeCooldown = 0.25f;
+                }
+            }
             Player.Update(gameTime, Nivel.PhysicalObjects, Nivel.LogicalObjects);
 
 
@@ -260,7 +248,9 @@ namespace TGC.MonoGame.TP
             Vector3 playerPositionE = Player.PositionE;
             playerRoundPosition = new Vector3(MathF.Round(playerPositionE.X, 2), MathF.Round(playerPositionE.Y, 2), MathF.Round(playerPositionE.Z, 2));
             */
-            
+
+
+            /*
             if (estadoMenu == mainMenu)
             {
                 DrawCenterText("Marble it up!", 1);
@@ -273,19 +263,25 @@ namespace TGC.MonoGame.TP
                 return;
             }else if (estadoMenu == estado2)
             {
-                /*
+                
                 DrawCenterTextY("Las teclas WASD se usan para moverse", GraphicsDevice.Viewport.Height * 1 / 12, 1);
                 DrawCenterTextY("SPACE para saltar", GraphicsDevice.Viewport.Height * 3 / 12, 1);
                 DrawCenterTextY("R para reiniciar", GraphicsDevice.Viewport.Height * 5 / 12, 1);
 
                 DrawCenterTextY("ESC para salir del juego", GraphicsDevice.Viewport.Height * 9 / 12, 1);
                 DrawCenterTextY("P para volver a la Main Menu", GraphicsDevice.Viewport.Height * 11 / 12, 1);
-                */
+                
 
+            }*/
+
+            if(selectedMenu != null)
+            {
+                selectedMenu.Draw(GraphicsDevice);
+                return;
             }
 
             //Despues del menu restablezco
-            
+
             GraphicsDevice.RasterizerState = new RasterizerState { CullMode = CullMode.None };
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
@@ -304,6 +300,7 @@ namespace TGC.MonoGame.TP
             //Logica para dibujar en pantalla posicion exacta del jugador, actualmente no funcionando
             //  SpriteBatch.DrawString(SpriteFont, playerRoundPosition.ToString(), new Vector2(GraphicsDevice.Viewport.Width / 2, 0), Color.White);
         }
+        
         public void DrawCenterText(string msg, float escala)
         {
             var W = GraphicsDevice.Viewport.Width;
@@ -334,6 +331,57 @@ namespace TGC.MonoGame.TP
             Content.Unload();
 
             base.UnloadContent();
+        }
+
+        private void ChangeMenu(int menu)
+        {
+            if(menu == 0)
+            {
+                selectedMenu = null;
+            }
+            if (menu == 1)
+            {
+                selectedMenu = new MainMenu(SpriteFont, SpriteBatch, PlayerTypes);
+            }
+            if (menu == 2)
+            {
+
+            }
+            if (menu == 3)
+            {
+
+            }
+        }
+
+        private void UpdateMenu(GameTime gameTime, KeyboardState keyboardState)
+        {
+            if (selectedMenu != null)
+            {
+                selectedMenu.Update(GraphicsDevice, gameTime, keyboardState);
+                if (selectedMenu.operations.Exists(op => op == "exitGame"))
+                {
+                    Exit();
+                }
+                if (selectedMenu.operations.Exists(op => op == "playMusic"))
+                {
+                    MediaPlayer.Play(Song);
+                }
+                if (selectedMenu.operations.Exists(op => op == "downMusic"))
+                {
+                    MediaPlayer.Volume = MediaPlayer.Volume / 2;
+                }
+                if (selectedMenu.operations.Exists(op => op == "upMusic"))
+                {
+                    MediaPlayer.Volume = MediaPlayer.Volume * 2;
+                }
+                if (selectedMenu.operations.Exists(op => op == "changeMenu"))
+                {
+                    Player = PlayerTypes[selectedMenu.SelectedPlayer()];
+                    ChangeMenu(selectedMenu.nextMenu);
+                }
+                if (selectedMenu != null)
+                    selectedMenu.operations = new List<string>();
+            }
         }
     }
 }
