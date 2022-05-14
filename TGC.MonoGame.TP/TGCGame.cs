@@ -292,8 +292,8 @@ namespace TGC.MonoGame.TP
            Effect.Parameters["DiffuseColor"].SetValue(Color.DarkBlue.ToVector3());
             var rotationMatrix = Matrix.CreateRotationY(Rotation);
             unaSkyBox.Draw(Camera.View, Camera.Projection, new Vector3(0,0,0));
-            Nivel.Draw(gameTime, Camera.View, Camera.Projection);
             Player.Draw(Camera.View, Camera.Projection);
+            Nivel.Draw(gameTime, Camera.View, Camera.Projection);
 
             //Logica para dibujar en pantalla posicion exacta del jugador, actualmente no funcionando
             //  SpriteBatch.DrawString(SpriteFont, playerRoundPosition.ToString(), new Vector2(GraphicsDevice.Viewport.Width / 2, 0), Color.White);

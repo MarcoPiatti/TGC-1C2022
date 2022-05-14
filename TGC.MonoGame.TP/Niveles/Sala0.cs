@@ -18,6 +18,8 @@ namespace TGC.MonoGame.TP.Niveles
 
         private Coin Coin { get; set; }
 
+        private PowerUp powerUp;
+
         public Sala0(ContentManager content, GraphicsDevice graphicsDevice, Vector3 posicion) : base(content, graphicsDevice, posicion)
         {
      
@@ -26,6 +28,7 @@ namespace TGC.MonoGame.TP.Niveles
             FirstPlatform = new Cube(graphicsDevice, content, posicion);
             FirstPlatform.WorldUpdate(new Vector3(10f, 1f, 10f), new Vector3(25, 10, 0) + posicion, Quaternion.Identity);
 
+            powerUp = new SpeedPU(graphicsDevice, content, new Vector3(0, 10, 0));
 
             ParedSur = new Cube(graphicsDevice, content, posicion);
             ParedSur.WorldUpdate(new Vector3(1f, Size, Size), new Vector3(-Size / 2, Size / 2, 0) + posicion,Quaternion.Identity);
@@ -37,12 +40,14 @@ namespace TGC.MonoGame.TP.Niveles
             FirstPlatform.Draw( view, projection);
             ParedSur.Draw( view, projection);
             Coin.Draw( view, projection);
+            powerUp.Draw(view, projection);
         }
         
         
         public override void Update(GameTime gameTime)
         {
             Coin.Update(gameTime);
+            powerUp.Update(gameTime);
             base.Update(gameTime);
         }
 

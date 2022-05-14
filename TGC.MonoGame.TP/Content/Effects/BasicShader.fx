@@ -18,6 +18,7 @@ float4x4 View;
 float4x4 Projection;
 
 float3 DiffuseColor;
+float Alpha;
 
 float Time = 0;
 
@@ -47,7 +48,7 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {	
-    return float4(DiffuseColor, 1.0);
+    return float4(DiffuseColor, Alpha);
 }
 
 technique BasicColorDrawing

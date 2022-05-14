@@ -167,6 +167,8 @@ namespace TGC.MonoGame.TP.Geometries
             Effect.Parameters["View"].SetValue(view);
             Effect.Parameters["Projection"].SetValue(projection);
             Effect.Parameters["DiffuseColor"].SetValue(Vertices[0].Color.ToVector3());
+            Effect.Parameters["Alpha"].SetValue((float) Vertices[0].Color.A / 255);
+
             // Draw the model, using BasicEffect.
             Draw(Effect);
         }

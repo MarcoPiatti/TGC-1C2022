@@ -17,7 +17,7 @@ namespace TGC.MonoGame.TP.Elements
 
         public GeometricPrimitive Body { get; set; }
 
-        public void Draw(Matrix view, Matrix projection)
+        public virtual void Draw(Matrix view, Matrix projection)
         {
             Body.Draw(World, view, projection);
         }
