@@ -91,7 +91,7 @@ namespace TGC.MonoGame.TP.Geometries
             IndexBuffer.SetData(Indices.ToArray());
 
             // Create a BasicEffect, which will be used to render the primitive.
-            Effect = content.Load<Effect>(ContentFolderEffects + "BasicShader");
+            Effect = content.Load<Effect>(ContentFolderEffects + "ShaderBlingPhong");
             //Effect.VertexColorEnabled = true;
             //Effect.EnableDefaultLighting();
         }
@@ -166,8 +166,6 @@ namespace TGC.MonoGame.TP.Geometries
             Effect.Parameters["World"].SetValue(world);
             Effect.Parameters["View"].SetValue(view);
             Effect.Parameters["Projection"].SetValue(projection);
-            Effect.Parameters["DiffuseColor"].SetValue(Vertices[0].Color.ToVector3());
-            Effect.Parameters["Alpha"].SetValue((float) Vertices[0].Color.A / 255);
 
             // Draw the model, using BasicEffect.
             Draw(Effect);

@@ -94,7 +94,7 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
     output.WorldPosition = worldPosition;
 
     float4x4 inverseTransposeWorld = transpose(inverse(World));
-    output.Normal = mul(input.Normal, InverseTransposeWorld);
+    output.Normal = mul(input.Normal, inverseTransposeWorld);
 	
     output.Color = input.Color;
 

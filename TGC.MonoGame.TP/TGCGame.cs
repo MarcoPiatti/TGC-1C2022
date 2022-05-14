@@ -109,16 +109,23 @@ namespace TGC.MonoGame.TP
         protected override void LoadContent()
         {
 
-            
-
             Nivel = new Nivel(Content, GraphicsDevice);
 
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             SpriteFont = Content.Load<SpriteFont>(ContentFolderSpriteFonts + "Cascadia/CascadiaCodePL");
 
+            Effect = Content.Load<Effect>(ContentFolderEffects + "ShaderBlingPhong");
 
+            Effect.Parameters["lightPosition"].SetValue(new Vector3(0, 1000, 0));
 
-            Effect = Content.Load<Effect>(ContentFolderEffects + "BasicShader");
+            Effect.Parameters["ambientColor"].SetValue(Color.White.ToVector3());
+            Effect.Parameters["diffuseColor"].SetValue(Color.White.ToVector3());
+            Effect.Parameters["specularColor"].SetValue(Color.White.ToVector3());
+
+            Effect.Parameters["KAmbient"].SetValue(0.7f);
+            Effect.Parameters["KDiffuse"].SetValue(0.6f);
+            Effect.Parameters["KSpecular"].SetValue(0.3f);
+
             SongName = "crystal_dolphin";
             Song = Content.Load<Song>(ContentFolderMusic + SongName);
 
@@ -289,9 +296,8 @@ namespace TGC.MonoGame.TP
             // Para dibujar le modelo necesitamos pasarle informacion que el efecto esta esperando.
             Effect.Parameters["View"].SetValue(Camera.View);
             Effect.Parameters["Projection"].SetValue(Camera.Projection);
-           Effect.Parameters["DiffuseColor"].SetValue(Color.DarkBlue.ToVector3());
-            var rotationMatrix = Matrix.CreateRotationY(Rotation);
-            unaSkyBox.Draw(Camera.View, Camera.Projection, new Vector3(0,0,0));
+            Effect.Parameters["eyePosition"].SetValue(Camera.Position);
+            //unaSkyBox.Draw(Camera.View, Camera.Projection, new Vector3(0,0,0));
             Player.Draw(Camera.View, Camera.Projection);
             Nivel.Draw(gameTime, Camera.View, Camera.Projection);
 

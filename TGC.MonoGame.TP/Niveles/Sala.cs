@@ -34,7 +34,7 @@ namespace TGC.MonoGame.TP.Niveles
 
             Effect = content.Load<Effect>(ContentFolderEffects + "BasicShader");
 
-            Piso = new Cube(graphicsDevice, content, posicion,Color.Gray);
+            Piso = new Cube(graphicsDevice, content, posicion, Color.Gray);
             Piso.WorldUpdate(new Vector3(Size, 1f, Size), new Vector3(0, 0, 0) , Quaternion.Identity);
             
             ParedOeste = new Cube(graphicsDevice, content, posicion, Color.Orange);
