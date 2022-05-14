@@ -28,7 +28,7 @@ namespace TGC.MonoGame.TP.Niveles
             FirstPlatform = new Cube(graphicsDevice, content, posicion);
             FirstPlatform.WorldUpdate(new Vector3(10f, 1f, 10f), new Vector3(25, 10, 0) + posicion, Quaternion.Identity);
 
-            powerUp = new GladePU(graphicsDevice, content, new Vector3(0, 10, 0));
+            powerUp = new SpeedPU(graphicsDevice, content, new Vector3(0, 10, 0));
 
             ParedSur = new Cube(graphicsDevice, content, posicion);
             ParedSur.WorldUpdate(new Vector3(1f, Size, Size), new Vector3(-Size / 2, Size / 2, 0) + posicion,Quaternion.Identity);
