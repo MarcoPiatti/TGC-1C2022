@@ -88,6 +88,32 @@ namespace TGC.MonoGame.TP.Elements
         }
     }
 
+    public class TrianglePrism : Object
+    {
+
+        public TrianglePrism(GraphicsDevice graphicsDevice, ContentManager content, Vector3 Position, Color color)
+        {
+            Body = new TrianglePrismPrimitive(graphicsDevice, content, 1, color);
+            this.Position = Position;
+        }
+
+        public TrianglePrism(GraphicsDevice graphicsDevice, ContentManager content, Vector3 Position)
+        {
+            Body = new TrianglePrismPrimitive(graphicsDevice, content, 1, Color.White);
+            this.Position = Position;
+        }
+
+        public override bool Intersects(Sphere s)
+        {
+            return false;
+        }
+        public override Vector3 GetDirectionFromCollision(Sphere s)
+        {
+            return Vector3.One;
+        }
+
+    }
+
     public class Sphere : Object
     {
 
