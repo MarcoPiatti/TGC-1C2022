@@ -229,7 +229,7 @@ namespace TGC.MonoGame.TP
             {
                 Player.Move(Camera.FrontDirection * -1);
             }
-            if (keyboardState.IsKeyDown(Keys.Space))
+            if (keyboardState.IsKeyDown(Keys.Space) && Player.canJump)
             {
                 Player.Jump();
             }
@@ -365,12 +365,11 @@ namespace TGC.MonoGame.TP
             if(menu == 0)
             {
                 selectedMenu = null;
-                MediaPlayer.Stop();
-                MediaPlayer.Play(level_start);
             }
             if (menu == 1)
             {
                 selectedMenu = new MainMenu(SpriteFont, SpriteBatch, PlayerTypes, Content);
+                MediaPlayer.Play(Song);
             }
             if (menu == 2)
             {

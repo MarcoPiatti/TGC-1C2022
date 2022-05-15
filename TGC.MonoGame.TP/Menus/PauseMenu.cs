@@ -62,6 +62,7 @@ namespace TGC.MonoGame.TP.Menus
                 if (selector.Y == 2)
                 {
                     operations.Add("resetGame");
+                    operations.Add("upMusic");
                     ChangeMenu(1);
                 }
             }
