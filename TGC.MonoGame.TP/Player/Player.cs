@@ -20,7 +20,7 @@ namespace TGC.MonoGame.TP
         private float Gravity = 0.7f;
         private float MoveForce = 1f;
         private float MoveForceAir = 0.3f;
-        private float JumpForce = 6f;
+        private float JumpForce = 10f;
         private float friction = 0.01f;
         public float Bounce = 0.5f;
         private float CCC = 0.01f; //Collider Correction Constant
@@ -65,7 +65,7 @@ namespace TGC.MonoGame.TP
             var scaledSpeed = VectorSpeed * elapsedTime;
             Body.WorldUpdate(scale, Position + scaledSpeed, Matrix.CreateRotationZ(VectorSpeed.X) * Matrix.CreateRotationX(VectorSpeed.Z));
             Position = Body.Position;
-            JumpLine.WorldUpdate(new Vector3(1, 1f, 1), Position + scaledSpeed, Quaternion.Identity);
+            JumpLine.WorldUpdate(new Vector3(1, 1f, 1), Position + JumpLinePos, Quaternion.Identity);
             PhyisicallyInteract(objects, elapsedTime);
             LogicalInteract(logicalObjects);
             grounded = CanJump(objects);
@@ -83,7 +83,7 @@ namespace TGC.MonoGame.TP
                     {
                         Body.WorldUpdate(scale, Position + VectorSpeed * CCC, Quaternion.Identity);
                         Position = Body.Position;
-                        JumpLine.WorldUpdate(new Vector3(1, 1f, 1), Position + VectorSpeed * CCC, Quaternion.Identity);
+                        JumpLine.WorldUpdate(new Vector3(1, 1f, 1), Position + JumpLinePos, Quaternion.Identity);
                     }
                     VectorSpeed *= Bounce;
                 }
@@ -136,6 +136,7 @@ namespace TGC.MonoGame.TP
             Position = Position + new Vector3(45, 0, 0);
             Body.Position = Position;
             Body.WorldUpdate(scale, Position, Quaternion.Identity);
+            JumpLine.WorldUpdate(new Vector3(1, 1f, 1), Position + JumpLinePos, Quaternion.Identity);
             grounded = false;
         }
 
