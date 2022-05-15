@@ -69,6 +69,7 @@ namespace TGC.MonoGame.TP
             PhyisicallyInteract(objects, elapsedTime);
             LogicalInteract(logicalObjects);
             grounded = CanJump(objects);
+            if(Position.Y < -50) returnToCheckPoint();
         }
 
         public void PhyisicallyInteract(List<TP.Elements.Object> objects, float elapsedTime)
