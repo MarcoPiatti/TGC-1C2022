@@ -46,15 +46,17 @@ namespace TGC.MonoGame.TP.Niveles
             Coins.Add(new Coin(graphicsDevice, content, new Vector3(0, 10, 22.5f) + posicion));
             Coins.Add(new Coin(graphicsDevice, content, new Vector3(0, 10, -22.5f) + posicion));
 
+            foreach (MovingSphere sphere in Spheres)
+            {
+                sphere.Body.WorldUpdate(arrowScale, sphere.Body.Position + posicion, Quaternion.Identity);
+                sphere.MovePoints(Posicion);
+            }
+
             foreach (Cube cube in Platforms)
             {
                 cube.World = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(cube.Position + posicion);
             }
 
-            foreach (MovingSphere sphere in Spheres)
-            {
-                sphere.World = Matrix.CreateScale(arrowScale) * Matrix.CreateTranslation(sphere.Position + Posicion);
-            }
         }
 
         public override void Draw(GameTime gameTime, Matrix view, Matrix projection)
@@ -69,7 +71,7 @@ namespace TGC.MonoGame.TP.Niveles
             
             foreach(MovingSphere sphere in Spheres)
             {
-                sphere.Body.Draw(sphere.World, view, projection);
+                sphere.Body.Draw(view, projection);
             }
 
             foreach(Coin coin in Coins)
@@ -85,7 +87,7 @@ namespace TGC.MonoGame.TP.Niveles
             foreach (MovingSphere sphere in Spheres)
             {
                 sphere.Move(gameTime);
-                sphere.World = Matrix.CreateScale(arrowScale) * Matrix.CreateTranslation(sphere.Position + Posicion);
+                sphere.Body.WorldUpdate(arrowScale, sphere.Body.Position,Quaternion.Identity); 
             }
 
             foreach(Coin coin in Coins)

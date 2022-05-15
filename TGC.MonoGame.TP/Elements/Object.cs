@@ -22,15 +22,22 @@ namespace TGC.MonoGame.TP.Elements
             Body.Draw(World, view, projection);
         }
 
-        public virtual void WorldUpdate(Vector3 scale, Vector3 traslation, Quaternion rotation) { 
-            World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(Position + traslation) * Matrix.CreateFromQuaternion(rotation);
-            Position = Position + traslation;
+        public virtual void WorldUpdate(Vector3 scale, Vector3 newPosition, Quaternion rotation)
+        {
+            World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(newPosition) * Matrix.CreateFromQuaternion(rotation);
+            Position = newPosition;
+        }
+        
+
+        public virtual void WorldUpdate(Vector3 scale, Quaternion rotation)
+        {
+            World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(Position) * Matrix.CreateFromQuaternion(rotation);
         }
 
-        public virtual void WorldUpdate(Vector3 scale, Vector3 traslation, Matrix rotationMatrix)
+        public virtual void WorldUpdate(Vector3 scale, Vector3 newPosition, Matrix rotationMatrix)
         {
-            World = Matrix.CreateScale(scale) * rotationMatrix * Matrix.CreateTranslation(Position + traslation);
-            Position = Position + traslation;
+            World = Matrix.CreateScale(scale) * rotationMatrix * Matrix.CreateTranslation(newPosition);
+            Position = newPosition;
         }
 
         public abstract bool Intersects(Sphere s);
@@ -56,10 +63,10 @@ namespace TGC.MonoGame.TP.Elements
             this.Position = Position;
         }
 
-        public override void WorldUpdate(Vector3 scale, Vector3 traslation, Quaternion rotation)
+        public override void WorldUpdate(Vector3 scale, Vector3 newPosition, Quaternion rotation)
         {
-            base.WorldUpdate(scale, traslation, rotation);
-            Collider.Center += traslation; 
+            base.WorldUpdate(scale, newPosition, rotation);
+            Collider.Center = newPosition; 
             Collider.Extents = Collider.Center + scale/2;
             Collider.Rotate(rotation); 
         }
@@ -138,21 +145,21 @@ namespace TGC.MonoGame.TP.Elements
             Body = new SpherePrimitive(graphicsDevice, content, diameter, tessellation);
         }
 
-        public override void WorldUpdate(Vector3 scale, Vector3 traslation, Quaternion rotation)
+        public override void WorldUpdate(Vector3 scale, Vector3 newPosition, Quaternion rotation)
         {
-            base.WorldUpdate(scale, traslation, rotation);
+            base.WorldUpdate(scale, newPosition, rotation);
             BoundingSphere collider = Collider;
             collider.Radius = scale.X / 2;
-            collider.Center += traslation;
+            collider.Center = newPosition;
             Collider = collider;
         }
 
-        public override void WorldUpdate(Vector3 scale, Vector3 traslation, Matrix rotationMatrix)
+        public override void WorldUpdate(Vector3 scale, Vector3 newPosition, Matrix rotationMatrix)
         {
-            base.WorldUpdate(scale, traslation, rotationMatrix);
+            base.WorldUpdate(scale, newPosition, rotationMatrix);
             BoundingSphere collider = Collider;
             collider.Radius = scale.X / 2;
-            collider.Center += traslation;
+            collider.Center = newPosition;
             Collider = collider;
         }
 
@@ -176,9 +183,9 @@ namespace TGC.MonoGame.TP.Elements
             Body = new CylinderPrimitive(graphicsDevice, content, color, height, diameter, tessellation);
         }
 
-        public override void WorldUpdate(Vector3 scale, Vector3 traslation, Quaternion rotation)
+        public override void WorldUpdate(Vector3 scale, Vector3 newPosition, Quaternion rotation)
         {
-            base.WorldUpdate(scale, traslation, rotation);
+            base.WorldUpdate(scale, newPosition, rotation);
         }
         public override bool Intersects(Sphere s)
         {
@@ -220,21 +227,21 @@ namespace TGC.MonoGame.TP.Elements
             Body = new SpherePrimitive(graphicsDevice, content, diameter, tessellation);
         }
 
-        public override void WorldUpdate(Vector3 scale, Vector3 traslation, Quaternion rotation)
+        public override void WorldUpdate(Vector3 scale, Vector3 newPosition, Quaternion rotation)
         {
-            base.WorldUpdate(scale, traslation, rotation);
+            base.WorldUpdate(scale, newPosition, rotation);
             BoundingSphere collider = Collider;
             collider.Radius = scale.X / 2;
-            collider.Center += traslation;
+            collider.Center = newPosition;
             Collider = collider;
         }
 
-        public override void WorldUpdate(Vector3 scale, Vector3 traslation, Matrix rotationMatrix)
+        public override void WorldUpdate(Vector3 scale, Vector3 newPosition, Matrix rotationMatrix)
         {
-            base.WorldUpdate(scale, traslation, rotationMatrix);
+            base.WorldUpdate(scale, newPosition, rotationMatrix);
             BoundingSphere collider = Collider;
             collider.Radius = scale.X / 2;
-            collider.Center += traslation;
+            collider.Center = newPosition;
             Collider = collider;
         }
 
