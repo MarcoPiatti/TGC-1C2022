@@ -11,10 +11,11 @@ using TGC.MonoGame.TP.Elements;
 
 namespace TGC.MonoGame.TP.Elements
 {
-    public class MovingObject : Object
+    public class MovingObject
     {
         private List<Vector3> Points { get; set; }
 
+        public Object Body { get; set; }
         private int movementType { get; set; } //1 = Linear, 2 = Circuit, 3 = Random
         private float speed { get; set; }
 
@@ -23,7 +24,7 @@ namespace TGC.MonoGame.TP.Elements
         private int lastPos { get; set; }
         private int nextPos { get; set; }
 
-        public MovingObject(List<Vector3> Points, GraphicsDevice graphicsDevice, ContentManager content, Color color, int movementType = 1, float speed = 10f)
+        public void InitializeMovingObject(List<Vector3> Points, GraphicsDevice graphicsDevice, ContentManager content, Color color, int movementType = 1, float speed = 10f)
         {
             this.Points = Points;
             this.movementType = movementType;
@@ -62,7 +63,7 @@ namespace TGC.MonoGame.TP.Elements
                 lastPos = rnd.Next(0, Points.Count - 1);
                 nextPos = rnd.Next(0, Points.Count - 1);
             }
-            Position = Points[lastPos];
+            Body.Position = Points[lastPos];
 
         }
             
@@ -71,8 +72,8 @@ namespace TGC.MonoGame.TP.Elements
             if (Points.Count < 2) return;
             float deltaTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             float marginError = 2 * speed * deltaTime;
-            Position = ConstantSpeedLerp(Position, Points[lastPos], Points[nextPos], speed * deltaTime);
-            if (Vector3.Distance(Position, Points[nextPos]) < marginError)
+            Body.Position = ConstantSpeedLerp(Body.Position, Points[lastPos], Points[nextPos], speed * deltaTime);
+            if (Vector3.Distance(Body.Position, Points[nextPos]) < marginError)
             {
                 if(movementType == 1 || movementType == -1) //Linear movement, el objeto va del punto 0 al ultimo y vuelve del punto 0 al ultimo, recorriendo cada punto en medio. En negativo el bloque empieza en el ultimo punto y va para el primero. 
             {
@@ -100,13 +101,13 @@ namespace TGC.MonoGame.TP.Elements
             return position - (start - end) / Vector3.Distance(start, end) * speed;
         }
 
-        public override bool Intersects(Sphere s)
+        public void MovePoints(Vector3 traslation)
         {
-            return false;
-        }
-        public override Vector3 GetDirectionFromCollision(Sphere s)
-        {
-            return Vector3.One;
+            List<Vector3> points = new List<Vector3>();
+            foreach (Vector3 p in Points) {
+                points.Add(p + traslation);
+            }
+            Points = points;
         }
 
     }

@@ -36,8 +36,10 @@ namespace TGC.MonoGame.TP.Niveles
             
             foreach (MovingCube cube in MovingPlatforms)
             {
-                cube.World = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(cube.Position + posicion);
+                cube.Body.WorldUpdate(platformScale, cube.Body.Position + posicion, Quaternion.Identity);
+                cube.MovePoints(posicion);
             }
+            
 
             Coins = new List<Coin>();
 
@@ -59,7 +61,7 @@ namespace TGC.MonoGame.TP.Niveles
 
             foreach (MovingCube cube in MovingPlatforms)
             {
-                cube.Draw(view, projection);
+                cube.Body.Draw(view, projection);
             }
 
             foreach (Coin coin in Coins)
@@ -73,7 +75,7 @@ namespace TGC.MonoGame.TP.Niveles
             foreach (MovingCube cube in MovingPlatforms)
             {
                 cube.Move(gameTime);
-                cube.World = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(cube.Position + Posicion);
+                cube.Body.WorldUpdate(platformScale,cube.Body.Position, Quaternion.Identity);
             }
 
             foreach (Coin coin in Coins)
