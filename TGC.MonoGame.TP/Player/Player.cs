@@ -133,6 +133,7 @@ namespace TGC.MonoGame.TP
         {
             VectorSpeed = Vector3.Zero;
             Position = new Vector3(MathF.Truncate(Position.X / 100) * 100, 10, 0);
+            Position = Position + new Vector3(45, 0, 0);
             Body.Position = Position;
             Body.WorldUpdate(scale, Position, Quaternion.Identity);
             grounded = false;
