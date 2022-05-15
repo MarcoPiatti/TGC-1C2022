@@ -57,6 +57,7 @@ namespace TGC.MonoGame.TP
 
         public void Update(GameTime gameTime, List<TP.Elements.Object> objects, List <TP.Elements.LogicalObject> logicalObjects)
         {
+            if(Position.Y < -50) returnToCheckPoint();
             if(!grounded)
                 VectorSpeed += Vector3.Down * Gravity;
             else
@@ -70,6 +71,14 @@ namespace TGC.MonoGame.TP
             PhyisicallyInteract(objects, elapsedTime);
             LogicalInteract(logicalObjects);
             grounded = CanJump(objects);
+        }
+
+        public void returnToCheckPoint(){
+            VectorSpeed = Vector3.Zero;
+            Position = new Vector3(MathF.Truncate(Position.X/100)*100, 10, 0);
+            Body.Position = Position;
+            Body.WorldUpdate(scale, Position, Quaternion.Identity);
+            grounded = false;
         }
 
         public void PhyisicallyInteract(List<TP.Elements.Object> objects,float elapsedTime)
