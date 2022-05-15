@@ -132,8 +132,8 @@ namespace TGC.MonoGame.TP
         public void returnToCheckPoint()
         {
             VectorSpeed = Vector3.Zero;
-            Position = new Vector3(MathF.Truncate(Position.X / 100) * 100, 10, 0);
-            Position = Position + new Vector3(45, 0, 0);
+            Position = new Vector3(MathF.Truncate((Position.X+50) / 100) * 100, 10, 0);
+            Position = Position + new Vector3(-45, 0, 0);
             Body.Position = Position;
             Body.WorldUpdate(scale, Position, Quaternion.Identity);
             JumpLine.WorldUpdate(new Vector3(1, 1f, 1), Position + JumpLinePos, Quaternion.Identity);
