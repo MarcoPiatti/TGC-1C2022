@@ -28,7 +28,7 @@ namespace TGC.MonoGame.TP
 
         public string typeName = "base";
 
-        private  Vector3 scale = new Vector3(5, 5, 5);
+        private Vector3 scale = new Vector3(5, 5, 5);
         private State estado { get; set; }
 
         public Sphere Body { get; set; }
@@ -55,43 +55,34 @@ namespace TGC.MonoGame.TP
             JumpLine.Draw(view, projection);
         }
 
-        public void Update(GameTime gameTime, List<TP.Elements.Object> objects, List <TP.Elements.LogicalObject> logicalObjects)
+        public void Update(GameTime gameTime, List<TP.Elements.Object> objects, List<TP.Elements.LogicalObject> logicalObjects)
         {
-            if(Position.Y < -50) returnToCheckPoint();
-            if(!grounded)
+            if (!grounded)
                 VectorSpeed += Vector3.Down * Gravity;
             else
-                VectorSpeed -= VectorSpeed*friction;
+                VectorSpeed -= VectorSpeed * friction;
             var elapsedTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             var scaledSpeed = VectorSpeed * elapsedTime;
-            Body.WorldUpdate(scale, scaledSpeed, Matrix.CreateRotationZ(VectorSpeed.X) * Matrix.CreateRotationX(VectorSpeed.Z));
+            Body.WorldUpdate(scale, Position + scaledSpeed, Matrix.CreateRotationZ(VectorSpeed.X) * Matrix.CreateRotationX(VectorSpeed.Z));
             Position = Body.Position;
-            JumpLine.WorldUpdate(new Vector3(1, 1f, 1), scaledSpeed, Quaternion.Identity);
-            //JumpLine.Position = Vector3.Zero;
+            JumpLine.WorldUpdate(new Vector3(1, 1f, 1), Position + scaledSpeed, Quaternion.Identity);
             PhyisicallyInteract(objects, elapsedTime);
             LogicalInteract(logicalObjects);
             grounded = CanJump(objects);
         }
 
-        public void returnToCheckPoint(){
-            VectorSpeed = Vector3.Zero;
-            Position = new Vector3(MathF.Truncate(Position.X/100)*100, 10, 0);
-            Body.Position = Position;
-            Body.WorldUpdate(scale, Position, Quaternion.Identity);
-            grounded = false;
-        }
-
-        public void PhyisicallyInteract(List<TP.Elements.Object> objects,float elapsedTime)
+        public void PhyisicallyInteract(List<TP.Elements.Object> objects, float elapsedTime)
         {
             foreach (TP.Elements.Object o in objects)
             {
                 if (o.Intersects(Body))
                 {
                     VectorSpeed = VectorSpeed * o.GetDirectionFromCollision(Body);
-                    while (o.Intersects(Body)) {
-                        Body.WorldUpdate(scale, VectorSpeed * CCC, Quaternion.Identity);
+                    while (o.Intersects(Body))
+                    {
+                        Body.WorldUpdate(scale, Position + VectorSpeed * CCC, Quaternion.Identity);
                         Position = Body.Position;
-                        JumpLine.WorldUpdate(new Vector3(1, 1f, 1), VectorSpeed * CCC, Quaternion.Identity);
+                        JumpLine.WorldUpdate(new Vector3(1, 1f, 1), Position + VectorSpeed * CCC, Quaternion.Identity);
                     }
                     VectorSpeed *= Bounce;
                 }
@@ -121,27 +112,29 @@ namespace TGC.MonoGame.TP
             }
         }
 
-        /*
-        public static void Move(Vector3 direction)
-        {
-            VectorSpeed += direction * MoveForce;
-        }
-        */
-
         public void Move(Vector3 direction)
         {
-            if(grounded)
+            if (grounded)
                 VectorSpeed += direction * MoveForce;
             else
                 VectorSpeed += direction * MoveForceAir;
         }
 
         public void Jump()
-
         {
-            if(grounded)
+            if (grounded)
                 VectorSpeed += Vector3.Up * JumpForce;
 
+        }
+
+
+        public void returnToCheckPoint()
+        {
+            VectorSpeed = Vector3.Zero;
+            Position = new Vector3(MathF.Truncate(Position.X / 100) * 100, 10, 0);
+            Body.Position = Position;
+            Body.WorldUpdate(scale, Position, Quaternion.Identity);
+            grounded = false;
         }
 
         public void AddCoin()
