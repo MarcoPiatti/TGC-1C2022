@@ -40,6 +40,8 @@ namespace TGC.MonoGame.TP
 
         public Vector3 Position { get; set; }
 
+        public Vector3 PreFallPosition { get; set; }
+
         public Player(GraphicsDevice graphics, ContentManager content)
         {
             Body = new Sphere(graphics, content, 1f, 16, Color.Green);
@@ -69,7 +71,8 @@ namespace TGC.MonoGame.TP
             PhyisicallyInteract(objects, elapsedTime);
             LogicalInteract(logicalObjects);
             grounded = CanJump(objects);
-            if(Position.Y < -50) returnToCheckPoint();
+            if(Position.Y > 0) PreFallPosition = Position;
+            else if(Position.Y < -100) returnToCheckPoint();
         }
 
         public void PhyisicallyInteract(List<TP.Elements.Object> objects, float elapsedTime)
@@ -132,7 +135,7 @@ namespace TGC.MonoGame.TP
         public void returnToCheckPoint()
         {
             VectorSpeed = Vector3.Zero;
-            Position = new Vector3(MathF.Truncate((Position.X+50) / 100) * 100, 10, 0);
+            Position = new Vector3(MathF.Truncate((PreFallPosition.X+50) / 100) * 100, 10, 0);
             Position = Position + new Vector3(-45, 0, 0);
             Body.Position = Position;
             Body.WorldUpdate(scale, Position, Quaternion.Identity);
