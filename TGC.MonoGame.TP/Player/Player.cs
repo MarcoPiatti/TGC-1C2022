@@ -24,7 +24,7 @@ namespace TGC.MonoGame.TP
         private float friction = 0.01f;
         public float Bounce = 0.5f;
         private float CCC = 0.01f; //Collider Correction Constant
-        private int totalCoins = 0;
+        public int totalCoins { get; set; } = 0;
 
         public string typeName = "base";
 

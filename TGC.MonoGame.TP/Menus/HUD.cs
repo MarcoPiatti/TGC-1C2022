@@ -8,20 +8,35 @@ using System.Text;
 
 namespace TGC.MonoGame.TP.Menus
 {
-    public class HUD : Menu
+    public class HUD
     {
-        public HUD(SpriteFont spriteFont, SpriteBatch SpriteBatch, ContentManager content, Player player) : base(spriteFont, SpriteBatch, content)
+        public Vector2 windowSize;
+        private Player Player { get; set; }
+        private SpriteBatch SpriteBatch {get; set;}
+        private SpriteFont SpriteFont { get; set; }
+        private ContentManager ContentManager { get; set; }
+
+
+        public HUD(SpriteFont SpriteFont, SpriteBatch SpriteBatch, ContentManager content, Player player) 
         {
-
-
+            this.SpriteFont = SpriteFont;
+            this.SpriteBatch = SpriteBatch;
+            this.Player = player;
         }
-        public override void Draw(GraphicsDevice graphicsDevice)
+        public void Draw(GraphicsDevice graphicsDevice, GameTime gameTime)
         {
+            this.SpriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null);
+            this.SpriteBatch.DrawString(this.SpriteFont, Player.totalCoins.ToString(), new Vector2(graphicsDevice.Viewport.Width - 400, 0), Color.White);
+            this.SpriteBatch.End();
             //this.SpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend,
             //SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
-            //MenuHelper();
+            //
             //SpriteBatch.End();
 
+        }
+        public void Update(GraphicsDevice graphicsDevice, GameTime gameTime, KeyboardState keyboardState)
+        {
+            windowSize = new Vector2(graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height);
         }
 
 

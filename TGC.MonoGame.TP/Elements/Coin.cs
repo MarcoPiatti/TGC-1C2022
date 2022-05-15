@@ -31,7 +31,7 @@ namespace TGC.MonoGame.TP.Elements
         public override void logicalAction(Player player)
         {
             flagCollide = true;
-            playSound();
+            //playSound();
             player.AddCoin();
 
         }

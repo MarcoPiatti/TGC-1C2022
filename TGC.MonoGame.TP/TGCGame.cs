@@ -119,10 +119,10 @@ namespace TGC.MonoGame.TP
         {
 
             NewGame();
-            HUD = new HUD(SpriteFont, SpriteBatch, Content, Player);
+            
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             SpriteFont = Content.Load<SpriteFont>(ContentFolderSpriteFonts + "Cascadia/CascadiaCodePL");
-
+            HUD = new HUD(SpriteFont, SpriteBatch, Content, Player);
             selectedMenu = new MainMenu(SpriteFont, SpriteBatch, PlayerTypes, Content);
 
             Effect = Content.Load<Effect>(ContentFolderEffects + "ShaderBlingPhong");
@@ -294,7 +294,7 @@ namespace TGC.MonoGame.TP
             //unaSkyBox.Draw(Camera.View, Camera.Projection, new Vector3(0,0,0));
             Player.Draw(Camera.View, Camera.Projection);
             Nivel.Draw(gameTime, Camera.View, Camera.Projection);
-            HUD.Draw(GraphicsDevice);
+            HUD.Draw(GraphicsDevice, gameTime);
             //Logica para dibujar en pantalla posicion exacta del jugador, actualmente no funcionando
             /*
             var W = GraphicsDevice.Viewport.Width;
