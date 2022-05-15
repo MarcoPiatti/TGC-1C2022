@@ -92,6 +92,8 @@ namespace TGC.MonoGame.TP
             Player = new Player(GraphicsDevice, Content);
             //Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), screenSize);
             Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, Player.Position, screenSize);
+            Camera.FrontDirection = Vector3.Normalize(new Vector3(Player.Position.X - Camera.Position.X, 0, Player.Position.Z - Camera.Position.Z));
+            Camera.RightDirection = Vector3.Normalize(Vector3.Cross(Camera.FrontDirection, Vector3.Up));
             //Camera = new TargetCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), new Vector3(0,0,0));
 
             // La logica de inicializacion que no depende del contenido se recomienda poner en este metodo.
@@ -175,6 +177,8 @@ namespace TGC.MonoGame.TP
             else
             {
                 Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, Player.Position, screenSize);
+                Camera.FrontDirection = Vector3.Normalize(new Vector3(Player.Position.X - Camera.Position.X, 0, Player.Position.Z - Camera.Position.Z));
+                Camera.RightDirection = Vector3.Normalize(Vector3.Cross(Camera.FrontDirection, Vector3.Up));
                 flag = 0;
             }
         }
@@ -210,7 +214,7 @@ namespace TGC.MonoGame.TP
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) && MenuChangeCooldown <= 0)
             {
                 ChangeMenu(2);
-                MediaPlayer.Volume = MediaPlayer.Volume / 2;
+                MediaPlayer.Volume = MediaPlayer.Volume / 3;
             }
 
             if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
@@ -408,7 +412,7 @@ namespace TGC.MonoGame.TP
                 }
                 if (selectedMenu.operations.Exists(op => op == "upMusic"))
                 {
-                    MediaPlayer.Volume = MediaPlayer.Volume * 2;
+                    MediaPlayer.Volume = MediaPlayer.Volume * 3;
                 }
                 if (selectedMenu.operations.Exists(op => op == "changeMenu"))
                 {
