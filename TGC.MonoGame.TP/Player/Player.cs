@@ -21,6 +21,7 @@ namespace TGC.MonoGame.TP
         private float MoveForce = 1f;
         private float MoveForceAir = 0.3f;
         private float JumpForce = 6f;
+        private float friction = 0.01f;
         public float Bounce = 0.5f;
         private float CCC = 0.01f; //Collider Correction Constant
         private int totalCoins = 0;
@@ -58,6 +59,8 @@ namespace TGC.MonoGame.TP
         {
             if(!grounded)
                 VectorSpeed += Vector3.Down * Gravity;
+            else
+                VectorSpeed -= VectorSpeed*friction;
             var elapsedTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             var scaledSpeed = VectorSpeed * elapsedTime;
             Body.WorldUpdate(scale, scaledSpeed, Matrix.CreateRotationZ(VectorSpeed.X) * Matrix.CreateRotationX(VectorSpeed.Z));
