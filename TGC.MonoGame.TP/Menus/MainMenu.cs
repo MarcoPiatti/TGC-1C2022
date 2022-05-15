@@ -82,7 +82,10 @@ namespace TGC.MonoGame.TP.Menus
 
 
                     operations.Add("playMusic");
+                    operations.Add("showCoins");
                     ChangeMenu(0);
+
+
                 }
                 if (selector.Y == 3)
                     //menu_select.Play();

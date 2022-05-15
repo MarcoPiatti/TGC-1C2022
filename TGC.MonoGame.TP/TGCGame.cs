@@ -72,6 +72,7 @@ namespace TGC.MonoGame.TP
         //Menu
 
         public Menu selectedMenu; 
+        public HUD HUD { get; set; }
         private bool flag_play { get; set; }
 
         private Point screenSize { get; set; } 
@@ -118,7 +119,7 @@ namespace TGC.MonoGame.TP
         {
 
             NewGame();
-
+            HUD = new HUD(SpriteFont, SpriteBatch, Content, Player);
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             SpriteFont = Content.Load<SpriteFont>(ContentFolderSpriteFonts + "Cascadia/CascadiaCodePL");
 
@@ -249,6 +250,7 @@ namespace TGC.MonoGame.TP
 
 
             Rotation += Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
+            HUD.Update(GraphicsDevice, gameTime, keyboardState);
 
             base.Update(gameTime);
         }
@@ -268,29 +270,7 @@ namespace TGC.MonoGame.TP
             
 
 
-            /*
-            if (estadoMenu == mainMenu)
-            {
-                DrawCenterText("Marble it up!", 1);
-                DrawCenterTextY("Presiona G para comenzar", GraphicsDevice.Viewport.Height * 1 / 12, 1);
-                return;
-            }
-            else if (estadoMenu == estado1)
-            {
-
-                return;
-            }else if (estadoMenu == estado2)
-            {
-                
-                DrawCenterTextY("Las teclas WASD se usan para moverse", GraphicsDevice.Viewport.Height * 1 / 12, 1);
-                DrawCenterTextY("SPACE para saltar", GraphicsDevice.Viewport.Height * 3 / 12, 1);
-                DrawCenterTextY("R para reiniciar", GraphicsDevice.Viewport.Height * 5 / 12, 1);
-
-                DrawCenterTextY("ESC para salir del juego", GraphicsDevice.Viewport.Height * 9 / 12, 1);
-                DrawCenterTextY("P para volver a la Main Menu", GraphicsDevice.Viewport.Height * 11 / 12, 1);
-                
-
-            }*/
+        
 
             if(selectedMenu != null)
             {
@@ -314,7 +294,7 @@ namespace TGC.MonoGame.TP
             //unaSkyBox.Draw(Camera.View, Camera.Projection, new Vector3(0,0,0));
             Player.Draw(Camera.View, Camera.Projection);
             Nivel.Draw(gameTime, Camera.View, Camera.Projection);
-
+            HUD.Draw(GraphicsDevice);
             //Logica para dibujar en pantalla posicion exacta del jugador, actualmente no funcionando
             /*
             var W = GraphicsDevice.Viewport.Width;
@@ -364,7 +344,9 @@ namespace TGC.MonoGame.TP
         {
             if(menu == 0)
             {
+
                 selectedMenu = null;
+
             }
             if (menu == 1)
             {
@@ -415,6 +397,13 @@ namespace TGC.MonoGame.TP
                     Player = PlayerTypes[selectedMenu.SelectedPlayer()];
                     ChangeMenu(selectedMenu.nextMenu);
                 }
+                /*
+                if (selectedMenu.operations.Exists(op => op == "showCoins"))
+                {
+                    Player = PlayerTypes[selectedMenu.SelectedPlayer()];
+                    ChangeMenu(selectedMenu.nextMenu);
+                }
+                */
                 if (selectedMenu != null)
                     selectedMenu.operations = new List<string>();
             }
