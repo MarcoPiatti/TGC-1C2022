@@ -19,7 +19,8 @@ namespace TGC.MonoGame.TP
         public Vector3 roundPosition { get; set; }
         private float Gravity = 0.7f;
         private float MoveForce = 1f;
-        private float JumpForce = 2f;
+        private float MoveForceAir = 0.3f;
+        private float JumpForce = 6f;
         public float Bounce = 0.5f;
         private float CCC = 0.01f; //Collider Correction Constant
         private int totalCoins = 0;
@@ -31,9 +32,10 @@ namespace TGC.MonoGame.TP
 
         public Sphere Body { get; set; }
 
-        public bool canJump = false;
+        public bool grounded = false;
 
         public Sphere JumpLine { get; set; }
+        public Vector3 JumpLinePos = new Vector3(0, -3f, 0);
 
         public Vector3 Position { get; set; }
 
@@ -41,8 +43,9 @@ namespace TGC.MonoGame.TP
         {
             Body = new Sphere(graphics, content, 1f, 16, Color.Green);
             Body.WorldUpdate(scale, new Vector3(0, 15, 20), Quaternion.Identity);
+            Position = Body.Position;
             JumpLine = new Sphere(graphics, content, 1f, 4, new Color(0f, 1f, 0f, 0.3f));
-            JumpLine.WorldUpdate(new Vector3(7, 7, 7), Position + new Vector3(0, -1, 0), Quaternion.Identity);
+            JumpLine.WorldUpdate(new Vector3(3, 3, 3), Position + JumpLinePos, Quaternion.Identity);
         }
 
         public void Draw(Matrix view, Matrix projection)
@@ -53,16 +56,17 @@ namespace TGC.MonoGame.TP
 
         public void Update(GameTime gameTime, List<TP.Elements.Object> objects, List <TP.Elements.LogicalObject> logicalObjects)
         {
-            VectorSpeed += Vector3.Down * Gravity;
+            if(!grounded)
+                VectorSpeed += Vector3.Down * Gravity;
             var elapsedTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             var scaledSpeed = VectorSpeed * elapsedTime;
             Body.WorldUpdate(scale, scaledSpeed, Matrix.CreateRotationZ(VectorSpeed.X) * Matrix.CreateRotationX(VectorSpeed.Z));
             Position = Body.Position;
-            JumpLine.Position = Vector3.Zero;
-            JumpLine.WorldUpdate(new Vector3(1, 1f, 1), Position + new Vector3(0, -3f, 0), Quaternion.Identity);
+            JumpLine.WorldUpdate(new Vector3(1, 1f, 1), scaledSpeed, Quaternion.Identity);
+            //JumpLine.Position = Vector3.Zero;
             PhyisicallyInteract(objects, elapsedTime);
             LogicalInteract(logicalObjects);
-            canJump = CanJump(objects);
+            grounded = CanJump(objects);
         }
 
         public void PhyisicallyInteract(List<TP.Elements.Object> objects,float elapsedTime)
@@ -75,6 +79,7 @@ namespace TGC.MonoGame.TP
                     while (o.Intersects(Body)) {
                         Body.WorldUpdate(scale, VectorSpeed * CCC, Quaternion.Identity);
                         Position = Body.Position;
+                        JumpLine.WorldUpdate(new Vector3(1, 1f, 1), VectorSpeed * CCC, Quaternion.Identity);
                     }
                     VectorSpeed *= Bounce;
                 }
@@ -113,13 +118,17 @@ namespace TGC.MonoGame.TP
 
         public void Move(Vector3 direction)
         {
-            VectorSpeed += direction * MoveForce;
+            if(grounded)
+                VectorSpeed += direction * MoveForce;
+            else
+                VectorSpeed += direction * MoveForceAir;
         }
 
         public void Jump()
 
         {
-            VectorSpeed += Vector3.Up * JumpForce;
+            if(grounded)
+                VectorSpeed += Vector3.Up * JumpForce;
 
         }
 

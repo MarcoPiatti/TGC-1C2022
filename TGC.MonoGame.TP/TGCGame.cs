@@ -229,7 +229,7 @@ namespace TGC.MonoGame.TP
             {
                 Player.Move(Camera.FrontDirection * -1);
             }
-            if (keyboardState.IsKeyDown(Keys.Space) && Player.canJump)
+            if (keyboardState.IsKeyDown(Keys.Space))
             {
                 Player.Jump();
             }
