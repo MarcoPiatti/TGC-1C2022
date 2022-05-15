@@ -73,10 +73,10 @@ namespace TGC.MonoGame.TP.Elements
             float X = Math.Abs(Collider.Center.X - Collider.Extents.X);
             float Y = Math.Abs(Collider.Center.Y - Collider.Extents.Y);
             float Z = Math.Abs(Collider.Center.Z - Collider.Extents.Z);
-            float Xdistance = Math.Abs(Collider.Center.X - s.Collider.Center.X) + s.Collider.Radius;
-            float Ydistance = Math.Abs(Collider.Center.X - s.Collider.Center.X) + s.Collider.Radius;
-            float Zdistance = Math.Abs(Collider.Center.X - s.Collider.Center.X) + s.Collider.Radius;
-            if (X > Xdistance && Y > Ydistance)
+            float Xdistance = Math.Abs(Collider.Center.X - s.Collider.Center.X);
+            float Ydistance = Math.Abs(Collider.Center.Y - s.Collider.Center.Y);
+            float Zdistance = Math.Abs(Collider.Center.Z - s.Collider.Center.Z);
+             if (X > Xdistance && Y > Ydistance)
                 return new Vector3(1, 1, -1);
             if (X > Xdistance && Z > Zdistance)
                 return new Vector3(1, -1, 1);
@@ -88,9 +88,7 @@ namespace TGC.MonoGame.TP.Elements
                 return new Vector3(-1, 1, -1);
             if (Z > Zdistance)
                 return new Vector3(-1, -1, 1);
-            Vector3 v = s.Collider.Center - Collider.Center;
-            v.Normalize();
-            return v;
+            return new Vector3(-1, -1, -1);
         }
     }
 
