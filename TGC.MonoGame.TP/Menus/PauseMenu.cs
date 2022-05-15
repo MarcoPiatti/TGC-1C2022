@@ -16,7 +16,7 @@ namespace TGC.MonoGame.TP.Menus
 
 
 
-        public PauseMenu(SpriteFont SpriteFont, SpriteBatch SpriteBatch) : base(SpriteFont, SpriteBatch)
+        public PauseMenu(SpriteFont SpriteFont, SpriteBatch SpriteBatch, ContentManager content) : base(SpriteFont, SpriteBatch, content)
         {
         }
 

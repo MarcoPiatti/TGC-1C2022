@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 using TGC.MonoGame.TP.Geometries;
 
@@ -16,13 +18,21 @@ namespace TGC.MonoGame.TP.Menus
         private SpriteBatch SpriteBatch;
 
         public List<string> operations = new List<string>();
+        public SoundEffect menu_move { get; set; }
+        public SoundEffect menu_select { get; set; }
+        public Song menu_music { get; set; }
 
         public int nextMenu;
 
         public float KeyCoolDown = 0f;
 
-        public Menu(SpriteFont SpriteFont, SpriteBatch SpriteBatch)
+        public Menu(SpriteFont SpriteFont, SpriteBatch SpriteBatch, ContentManager content)
         {
+            var menuMove = "menu_move";
+            menu_move = content.Load<SoundEffect>("Music/" + menuMove);
+            var menuSelect = "menu_select";
+            menu_select = content.Load<SoundEffect>("Music/" + menuSelect);
+
             this.SpriteFont = SpriteFont;
             this.SpriteBatch = SpriteBatch;
         }
@@ -102,9 +112,9 @@ namespace TGC.MonoGame.TP.Menus
 
         public void MenuHelper()
         {
-            DrawTextFromCenterNotCentered("WASD | Flechas = Seleccionar", - windowSize.X * 1 / 2 + 10f, windowSize.Y * 26 / 70, 0.5f, Color.White);
-            DrawTextFromCenterNotCentered("Enter = Aceptar", -windowSize.X * 1 / 2 + 10f, windowSize.Y * 28 / 70, 0.5f, Color.White);
-            DrawTextFromCenterNotCentered("Esc = Volver", -windowSize.X * 1 / 2 + 10f, windowSize.Y * 30 / 70, 0.5f, Color.White);
+            DrawTextFromCenterNotCentered("WASD | Flechas = Seleccionar", - windowSize.X * 1 / 2 + 10f, windowSize.Y * 26 / 70, 0.5f, Color.Purple);
+            DrawTextFromCenterNotCentered("Enter = Aceptar", -windowSize.X * 1 / 2 + 10f, windowSize.Y * 28 / 70, 0.5f, Color.MediumPurple);
+            DrawTextFromCenterNotCentered("Esc = Volver", -windowSize.X * 1 / 2 + 10f, windowSize.Y * 30 / 70, 0.5f, Color.Violet);
         }
 
     }

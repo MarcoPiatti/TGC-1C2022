@@ -81,6 +81,30 @@
 /processorParam:Quality=Best
 /build:Music/crystal_dolphin.mp3
 
+#begin Music/level_start.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/level_start.mp3
+
+#begin Music/menu_move.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/menu_move.wav
+
+#begin Music/menu_music.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/menu_music.mp3
+
+#begin Music/menu_select.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/menu_select.wav
+
 #begin Music/powerUpPicked.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

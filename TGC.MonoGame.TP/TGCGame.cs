@@ -66,14 +66,19 @@ namespace TGC.MonoGame.TP
         private string SongName { get; set; }
         private Song Song { get; set; }
 
+        private string levelStart { get; set; }
+        private Song level_start { get; set; }
+
         //Menu
 
         public Menu selectedMenu; 
+        private bool flag_play { get; set; }
 
         private Point screenSize { get; set; } 
 
         //Skybox
         private SkyBox unaSkyBox { get; set; }
+    
 
         /// <summary>
         ///     Se llama una sola vez, al principio cuando se ejecuta el ejemplo.
@@ -117,7 +122,7 @@ namespace TGC.MonoGame.TP
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             SpriteFont = Content.Load<SpriteFont>(ContentFolderSpriteFonts + "Cascadia/CascadiaCodePL");
 
-            selectedMenu = new MainMenu(SpriteFont, SpriteBatch, PlayerTypes);
+            selectedMenu = new MainMenu(SpriteFont, SpriteBatch, PlayerTypes, Content);
 
             Effect = Content.Load<Effect>(ContentFolderEffects + "ShaderBlingPhong");
 
@@ -131,9 +136,11 @@ namespace TGC.MonoGame.TP
             Effect.Parameters["KDiffuse"].SetValue(0.6f);
             Effect.Parameters["KSpecular"].SetValue(0.3f);
 
-            SongName = "crystal_dolphin";
+            SongName = "menu_music";
             Song = Content.Load<Song>(ContentFolderMusic + SongName);
 
+            levelStart = "level_start";
+            level_start = Content.Load<Song>(ContentFolderMusic + levelStart);
             var skyBox = Content.Load<Model>(ContentFolder3D + "skybox/cube");
             //var skyBoxTexture = Content.Load<TextureCube>(ContentFolderTextures + "skyboxes/sunset/sunset");
             var skyBoxTexture = Content.Load<TextureCube>(ContentFolderTextures + "skyboxes/islands/islands");
@@ -177,8 +184,15 @@ namespace TGC.MonoGame.TP
             var keyboardState = Keyboard.GetState();
 
             UpdateMenu(gameTime, keyboardState);
-            if (selectedMenu != null)
+            if (selectedMenu != null) {
+                if (!flag_play)
+                {
+                    MediaPlayer.Play(Song);
+                    flag_play = true;
+                }
                 return;
+            }
+                
 
             if (CameraChangeCooldown > 0)
             CameraChangeCooldown -= Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
@@ -247,11 +261,11 @@ namespace TGC.MonoGame.TP
         {
             //Logica para dibujar en pantalla posicion exacta del jugador, actualmente no funcionando
 
-            /*
+            
             Vector3 playerRoundPosition = Player.roundPosition;
             Vector3 playerPositionE = Player.PositionE;
             playerRoundPosition = new Vector3(MathF.Round(playerPositionE.X, 2), MathF.Round(playerPositionE.Y, 2), MathF.Round(playerPositionE.Z, 2));
-            */
+            
 
 
             /*
@@ -302,7 +316,16 @@ namespace TGC.MonoGame.TP
             Nivel.Draw(gameTime, Camera.View, Camera.Projection);
 
             //Logica para dibujar en pantalla posicion exacta del jugador, actualmente no funcionando
-            //  SpriteBatch.DrawString(SpriteFont, playerRoundPosition.ToString(), new Vector2(GraphicsDevice.Viewport.Width / 2, 0), Color.White);
+            /*
+            var W = GraphicsDevice.Viewport.Width;
+            var H = GraphicsDevice.Viewport.Height;
+            var escala = 2f;
+            var size = SpriteFont.MeasureString("Holaa") * escala;
+            
+            SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null,
+    Matrix.CreateScale(escala) * Matrix.CreateTranslation((W - size.X) / 2, (H - size.Y) / 2, 0));
+            SpriteBatch.DrawString(SpriteFont, playerRoundPosition.ToString(), new Vector2(GraphicsDevice.Viewport.Width / 2, 0), Color.White);
+            */
         }
         
         public void DrawCenterText(string msg, float escala)
@@ -342,14 +365,16 @@ namespace TGC.MonoGame.TP
             if(menu == 0)
             {
                 selectedMenu = null;
+                MediaPlayer.Stop();
+                MediaPlayer.Play(level_start);
             }
             if (menu == 1)
             {
-                selectedMenu = new MainMenu(SpriteFont, SpriteBatch, PlayerTypes);
+                selectedMenu = new MainMenu(SpriteFont, SpriteBatch, PlayerTypes, Content);
             }
             if (menu == 2)
             {
-                selectedMenu = new PauseMenu(SpriteFont, SpriteBatch);
+                selectedMenu = new PauseMenu(SpriteFont, SpriteBatch, Content);
             }
             if (menu == 3)
             {
@@ -376,7 +401,7 @@ namespace TGC.MonoGame.TP
                 }
                 if (selectedMenu.operations.Exists(op => op == "playMusic"))
                 {
-                    MediaPlayer.Play(Song);
+                    MediaPlayer.Play(level_start);
                 }
                 if (selectedMenu.operations.Exists(op => op == "resetGame"))
                 {
