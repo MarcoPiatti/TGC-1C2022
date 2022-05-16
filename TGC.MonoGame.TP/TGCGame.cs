@@ -122,6 +122,7 @@ namespace TGC.MonoGame.TP
             
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             SpriteFont = Content.Load<SpriteFont>(ContentFolderSpriteFonts + "Cascadia/CascadiaCodePL");
+            
             HUD = new HUD(SpriteFont, SpriteBatch, Content, Player);
             selectedMenu = new MainMenu(SpriteFont, SpriteBatch, PlayerTypes, Content);
 
