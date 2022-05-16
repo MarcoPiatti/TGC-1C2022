@@ -27,16 +27,16 @@ namespace TGC.MonoGame.TP.Menus
         {
            
             this.SpriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null);
-            Vector3 playerRoundPosition = Player.Position;
+            Vector3 playerRoundPosition;
             Vector3 playerPosition = Player.Position;
-            playerRoundPosition = new Vector3(MathF.Round(playerPosition.X, 2), MathF.Round(playerPosition.Y, 2), MathF.Round(playerPosition.Z, 2));
+            playerRoundPosition = new Vector3(MathF.Round(playerPosition.X, 0), MathF.Round(playerPosition.Y, 0), MathF.Round(playerPosition.Z, 0));
 
             //var W = graphicsDevice.Viewport.Width;
             //var H = graphicsDevice.Viewport.Height;
             //var escala = 2f;
             //var size = SpriteFont.MeasureString("Holaa") * escala;
 
-            SpriteBatch.DrawString(SpriteFont, playerRoundPosition.ToString(), new Vector2(graphicsDevice.Viewport.Width / 2, 0), Color.White);
+            SpriteBatch.DrawString(SpriteFont, playerRoundPosition.ToString(), new Vector2(graphicsDevice.Viewport.Width -300, graphicsDevice.Viewport.Height -50), Color.White);
 
             this.SpriteBatch.DrawString(this.SpriteFont, Player.totalCoins.ToString(), new Vector2(graphicsDevice.Viewport.Width - 400, 0), Color.White);
             this.SpriteBatch.End();

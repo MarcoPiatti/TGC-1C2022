@@ -77,7 +77,7 @@ namespace TGC.MonoGame.TP.Menus
                         //play song
                     }
                    
-                    goodStartoo(flag);
+                    //goodStartoo(flag);
                   
 
 
