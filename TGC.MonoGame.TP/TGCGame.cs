@@ -399,6 +399,7 @@ namespace TGC.MonoGame.TP
                 if (selectedMenu.operations.Exists(op => op == "changeMenu"))
                 {
                     Player = PlayerTypes[selectedMenu.SelectedPlayer()];
+                    HUD.Player = Player;
                     ChangeMenu(selectedMenu.nextMenu);
                 }
                 /*
