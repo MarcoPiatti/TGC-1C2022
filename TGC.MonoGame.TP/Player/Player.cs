@@ -20,7 +20,7 @@ namespace TGC.MonoGame.TP
         private float Gravity = 0.7f;
         private float MoveForce = 1f;
         private float MoveForceAir = 0.3f;
-        private float JumpForce = 10f;
+        private float JumpForce = 20f;
         private float friction = 0.01f;
         public float Bounce = 0.5f;
         private float CCC = 0.01f; //Collider Correction Constant
@@ -149,6 +149,14 @@ namespace TGC.MonoGame.TP
         }
         public void Restart()
         {
+            VectorSpeed = Vector3.Zero;
+            Position = new Vector3(0,0,0);
+            Position = Position + new Vector3(0, 15, 0);
+            Body.Position = Position;
+            Body.WorldUpdate(scale, Position, Quaternion.Identity);
+            JumpLine.WorldUpdate(new Vector3(1, 1f, 1), Position + JumpLinePos, Quaternion.Identity);
+            grounded = false;
+
             //Body.World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(Position + traslation) * Matrix.CreateFromQuaternion(rotation);
             //Body.Position = Position + traslation;
         }
