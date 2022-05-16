@@ -22,7 +22,7 @@ namespace TGC.MonoGame.TP.Niveles
         private List<Coin> Coins { get; set; }
         public Sala3(ContentManager content, GraphicsDevice graphicsDevice, Vector3 posicion) : base(content, graphicsDevice, posicion)
         {
-            
+            //Aca hay que arreglar esto
             Piso.World = Matrix.CreateScale(Size / (float)Math.Cos(angle), 1f, Size) * Matrix.CreateRotationZ(angle) * Matrix.CreateTranslation(new Vector3(0, (float)Math.Sin(angle)*Size/2, 0) + Posicion);
             
             obstacles = new List<MovingCube>();
@@ -90,6 +90,16 @@ namespace TGC.MonoGame.TP.Niveles
             List<TP.Elements.LogicalObject> logicalObjects = base.GetLogicalObjects();
             logicalObjects.AddRange(Coins);
             return logicalObjects;
+        }
+
+        public override List<TP.Elements.Object> GetPhysicalObjects()
+        {
+            List<TP.Elements.Object> l = base.GetPhysicalObjects();
+            for (int i = 0; i < obstacles.Count; i++)
+            {
+                l.Add(obstacles[i].Body);
+            }
+            return l;
         }
     }
 }

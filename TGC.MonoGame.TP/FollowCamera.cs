@@ -27,7 +27,9 @@ namespace TGC.MonoGame.TP
         {
             lockMouse = true;
             this.screenCenter = screenCenter;
+            UpdateCameraVectors();
         }
+
         public FollowCamera(float aspectRatio, Vector3 position) : base(aspectRatio)
         {
             AnglePosition = new Vector3(-Xdistance, 0, 0);
@@ -63,6 +65,7 @@ namespace TGC.MonoGame.TP
             ProcessMouseMovement(elapsedTime);
 
             Position = AnglePosition + PlayerPosition;
+            Position = new Vector3(Position.X, Math.Max(0, Position.Y), Position.Z);
 
             CalculateView();
         }
@@ -104,7 +107,7 @@ namespace TGC.MonoGame.TP
             pastMouseWheel = Mouse.GetState().ScrollWheelValue;
         }
 
-        private void UpdateCameraVectors()
+        public void UpdateCameraVectors()
         {
             // Calculate the new Front vector
             Vector3 tempFront;

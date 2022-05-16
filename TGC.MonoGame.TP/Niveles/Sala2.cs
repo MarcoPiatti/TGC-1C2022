@@ -90,6 +90,17 @@ namespace TGC.MonoGame.TP.Niveles
             logicalObjects.AddRange(Coins);
             return logicalObjects;
         }
+
+        public override List<TP.Elements.Object> GetPhysicalObjects()
+        {
+            List<TP.Elements.Object> l = base.GetPhysicalObjects();
+            l.Add(PisoSalida);
+            for (int i = 0; i < MovingPlatforms.Count; i++)
+            {
+                l.Add(MovingPlatforms[i].Body);
+            }
+            return l;
+        }
     }
 }
 
