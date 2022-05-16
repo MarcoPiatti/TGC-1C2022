@@ -65,6 +65,7 @@ namespace TGC.MonoGame.TP
             ProcessMouseMovement(elapsedTime);
 
             Position = AnglePosition + PlayerPosition;
+            Position = new Vector3(Position.X, Math.Max(0, Position.Y), Position.Z);
 
             CalculateView();
         }

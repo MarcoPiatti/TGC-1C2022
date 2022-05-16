@@ -23,7 +23,6 @@ namespace TGC.MonoGame.TP.Niveles
             Piso = new Cube(graphicsDevice, content, posicion);
             Piso.WorldUpdate(platformScale, new Vector3(-45f, 0, 0) + posicion, Quaternion.Identity);
             PisoSalida = new Cube(graphicsDevice, content, posicion);
-            PisoSalida.World = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(new Vector3(45f, 0, 0) + posicion);
 
             Platforms = new List<Cube>();
             Platforms.Add(new Cube(graphicsDevice, content, new Vector3(-22.5f, 0, 0)));
@@ -100,6 +99,18 @@ namespace TGC.MonoGame.TP.Niveles
             List<TP.Elements.LogicalObject> logicalObjects = base.GetLogicalObjects();
             logicalObjects.AddRange(Coins);
             return logicalObjects;
+        }
+
+        public override List<TP.Elements.Object> GetPhysicalObjects()
+        {
+            List<TP.Elements.Object> l = base.GetPhysicalObjects();
+            l.Add(PisoSalida);
+            l.AddRange(Platforms);
+            for (int i = 0; i < Spheres.Count; i++)
+            {
+                l.Add(Spheres[i].Body);
+            }
+            return l;
         }
     }
 }
