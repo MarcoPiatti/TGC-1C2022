@@ -15,7 +15,7 @@ namespace TGC.MonoGame.TP.Menus
 
         private SpriteFont SpriteFont;
 
-        private SpriteBatch SpriteBatch;
+        public SpriteBatch SpriteBatch;
 
         public List<string> operations = new List<string>();
         public SoundEffect menu_move { get; set; }

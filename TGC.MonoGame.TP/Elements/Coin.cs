@@ -32,7 +32,7 @@ namespace TGC.MonoGame.TP.Elements
         {
             flagCollide = true;
             playSound();
-            player.AddCoin();
+             player.AddCoin();
 
         }
         public void Update(GameTime gameTime)

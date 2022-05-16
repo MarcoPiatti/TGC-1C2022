@@ -82,7 +82,10 @@ namespace TGC.MonoGame.TP.Menus
 
 
                     operations.Add("playMusic");
+                    operations.Add("showCoins");
                     ChangeMenu(0);
+
+
                 }
                 if (selector.Y == 3)
                     //menu_select.Play();
@@ -121,7 +124,7 @@ namespace TGC.MonoGame.TP.Menus
         }
         public bool goodStartoo(bool flag)
         {
-            /*System.Threading.Thread.Sleep(500);
+            System.Threading.Thread.Sleep(500);
             menu_select.Play();
             flag = true;
             System.Threading.Thread.Sleep(400);
@@ -150,7 +153,6 @@ namespace TGC.MonoGame.TP.Menus
             System.Threading.Thread.Sleep(50);
             menu_select.Play();
             //Wait();
-            */
             flag = false;
             return flag;
 
