@@ -31,10 +31,10 @@ namespace TGC.MonoGame.TP.Menus
             Vector3 playerPosition = Player.Position;
             playerRoundPosition = new Vector3(MathF.Round(playerPosition.X, 2), MathF.Round(playerPosition.Y, 2), MathF.Round(playerPosition.Z, 2));
 
-            var W = graphicsDevice.Viewport.Width;
-            var H = graphicsDevice.Viewport.Height;
-            var escala = 2f;
-            var size = SpriteFont.MeasureString("Holaa") * escala;
+            //var W = graphicsDevice.Viewport.Width;
+            //var H = graphicsDevice.Viewport.Height;
+            //var escala = 2f;
+            //var size = SpriteFont.MeasureString("Holaa") * escala;
 
             SpriteBatch.DrawString(SpriteFont, playerRoundPosition.ToString(), new Vector2(graphicsDevice.Viewport.Width / 2, 0), Color.White);
 
