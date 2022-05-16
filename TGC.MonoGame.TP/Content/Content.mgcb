@@ -87,6 +87,12 @@
 /processorParam:Quality=Best
 /build:Music/dead.wav
 
+#begin Music/fall.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/fall.wav
+
 #begin Music/jump.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -98,6 +104,12 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:Music/level_start.mp3
+
+#begin Music/long_fall.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/long_fall.wav
 
 #begin Music/menu_move.wav
 /importer:WavImporter

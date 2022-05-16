@@ -81,6 +81,13 @@ namespace TGC.MonoGame.TP.Niveles
                 s.Update(gameTime);
             }
         }
+        public void RestartLogicalObjects()
+        {
+            foreach(Sala s in Salas)
+            {
+                s.RestartLogicalObjects();
+            }
+        }
 
     }
 }

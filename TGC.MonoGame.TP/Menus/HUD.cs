@@ -37,7 +37,20 @@ namespace TGC.MonoGame.TP.Menus
 
             this.SpriteBatch.DrawString(this.SpriteFont, "Coins: "+Player.totalCoins.ToString(), new Vector2(W - 780, 35), Color.ForestGreen);
             this.SpriteBatch.DrawString(this.SpriteFont, "Lifes: " + Player.lifes.ToString(), new Vector2(W - 780, 10), Color.Red);
-            if(Player.lifesZero)
+            if(!Player.currentPowerUp_1.Equals("N/A"))
+            {
+                this.SpriteBatch.DrawString(this.SpriteFont, "++" + Player.currentPowerUp_1.ToString(), new Vector2(W - 780, 55), Color.IndianRed);
+            }
+            if (!Player.currentPowerUp_2.Equals("N/A"))
+            {
+                this.SpriteBatch.DrawString(this.SpriteFont,"++" + Player.currentPowerUp_2.ToString(), new Vector2(W - 780, 75), Color.AliceBlue);
+            }
+            if (!Player.currentPowerUp_3.Equals("N/A"))
+            {
+                this.SpriteBatch.DrawString(this.SpriteFont, "++" + Player.currentPowerUp_3.ToString(), new Vector2(W - 780, 95), Color.Red);
+            }
+
+            if (Player.lifesZero)
             {
                 this.SpriteBatch.DrawString(this.SpriteFont, "Press R to Restart", new Vector2(W - 500, H - 280), Color.Red);
             }

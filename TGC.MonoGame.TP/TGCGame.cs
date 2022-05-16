@@ -269,10 +269,8 @@ namespace TGC.MonoGame.TP
             //Logica para dibujar en pantalla posicion exacta del jugador, actualmente no funcionando
 
             
-            Vector3 playerRoundPosition = Player.roundPosition;
-            Vector3 playerPositionE = Player.PositionE;
-            playerRoundPosition = new Vector3(MathF.Round(playerPositionE.X, 2), MathF.Round(playerPositionE.Y, 2), MathF.Round(playerPositionE.Z, 2));
-            
+           
+
 
 
         
@@ -300,17 +298,7 @@ namespace TGC.MonoGame.TP
             Player.Draw(Camera.View, Camera.Projection);
             Nivel.Draw(gameTime, Camera.View, Camera.Projection);
             HUD.Draw(GraphicsDevice, gameTime);
-            //Logica para dibujar en pantalla posicion exacta del jugador, actualmente no funcionando
-            /*
-            var W = GraphicsDevice.Viewport.Width;
-            var H = GraphicsDevice.Viewport.Height;
-            var escala = 2f;
-            var size = SpriteFont.MeasureString("Holaa") * escala;
-            
-            SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null,
-    Matrix.CreateScale(escala) * Matrix.CreateTranslation((W - size.X) / 2, (H - size.Y) / 2, 0));
-            SpriteBatch.DrawString(SpriteFont, playerRoundPosition.ToString(), new Vector2(GraphicsDevice.Viewport.Width / 2, 0), Color.White);
-            */
+           
         }
         
         public void DrawCenterText(string msg, float escala)
@@ -388,6 +376,7 @@ namespace TGC.MonoGame.TP
                 if (selectedMenu.operations.Exists(op => op == "playMusic"))
                 {
                     MediaPlayer.Play(level_start);
+                   
                 }
                 if (selectedMenu.operations.Exists(op => op == "resetGame"))
                 {
@@ -418,7 +407,7 @@ namespace TGC.MonoGame.TP
         public void NewGame()
         {
             Nivel = new Nivel(Content, GraphicsDevice);
-
+            Player.Nivel = Nivel;
             PlayerTypes = new Player[]{
                 new PlayerGum(GraphicsDevice, Content),
                 new PlayerIron(GraphicsDevice, Content),

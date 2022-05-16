@@ -11,6 +11,7 @@ using TGC.MonoGame.TP.Elements;
 using TGC.MonoGame.Samples.Collisions;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
+using TGC.MonoGame.TP.Niveles;
 
 namespace TGC.MonoGame.TP
 {
@@ -29,9 +30,12 @@ namespace TGC.MonoGame.TP
         public int totalCoins { get; set; } = 0;
         public int lifes { get; set; } = 3;
         public bool lifesZero { get; set; } = false;
-
+        public Nivel Nivel { get; set; }
         public float speedPuTime = 0;
         public float gladePuTime = 0;
+        public string currentPowerUp_1 { get; set; } = "N/A";
+        public string currentPowerUp_2 { get; set; } = "N/A";
+        public string currentPowerUp_3 { get; set; } = "N/A";
 
         public string typeName = "base";
 
@@ -40,7 +44,8 @@ namespace TGC.MonoGame.TP
 
         public Sphere Body { get; set; }
         public bool flag_play { get; set; } = false;
-
+        public bool flag_fall { get; set; } = false;
+        public bool flag_longfall { get; set; } = false;
         public bool grounded = false;
 
         public Sphere JumpLine { get; set; }
@@ -52,13 +57,18 @@ namespace TGC.MonoGame.TP
 
         public SoundEffect dead_sound { get; set; }
         public SoundEffect jump_sound { get; set; }
-
+        public SoundEffect fall_sound { get; set; }
+        public SoundEffect longfall_sound { get; set; }
         public Player(GraphicsDevice graphics, ContentManager content)
         {
             var deadSound = "dead";
             dead_sound = content.Load<SoundEffect>("Music/" + deadSound);
             var jumpSound = "jump";
             jump_sound = content.Load<SoundEffect>("Music/" + jumpSound);
+            var fallSound = "fall";
+            fall_sound = content.Load<SoundEffect>("Music/" + fallSound);
+            var longFallSound = "long_fall";
+            longfall_sound = content.Load<SoundEffect>("Music/" + longFallSound);
             Body = new Sphere(graphics, content, 1f, 16, Color.Green);
             Body.WorldUpdate(scale, new Vector3(0, 15, 20), Quaternion.Identity);
             Position = Body.Position;
@@ -89,9 +99,21 @@ namespace TGC.MonoGame.TP
             LogicalInteract(logicalObjects);
             grounded = CanJump(objects);
             if (Position.Y > 0) PreFallPosition = Position;
-            else if (Position.Y < -100) { 
+            else if(Position.Y < -10 && Position.Y > -200) { 
+                if (!flag_fall && !lifesZero) 
+                { 
+                    fall_sound.Play();
+                    flag_fall = true;
+                }
+                else if(flag_longfall)
+                {
+                    longfall_sound.Play();
+                }
+            }
+            else if (Position.Y < -200) { 
                 returnToCheckPoint();
-                
+                flag_fall = false;
+                flag_longfall = false;
             }
         }
 
@@ -101,11 +123,13 @@ namespace TGC.MonoGame.TP
 
             if (speedPuTime > 0)
             {
+                currentPowerUp_1 = "Speed";
                 finalScaledSpeed = scaledSpeed * 2;
                 speedPuTime -= elapsedTime;
             }
             else
             {
+                currentPowerUp_1 = "N/A";
                 finalScaledSpeed = scaledSpeed;
             }
 
@@ -118,10 +142,12 @@ namespace TGC.MonoGame.TP
 
             if (gladePuTime > 0)
             {
+                currentPowerUp_2 = "Glade";
                 finalGravity = 0.4f;
                 gladePuTime -= elapsedTime;
             } else
             {
+                currentPowerUp_2 = "N/A";
                 finalGravity = Gravity;
             }
 
@@ -209,10 +235,12 @@ namespace TGC.MonoGame.TP
             }
             else
             {
-                if (!flag_play) { dead_sound.Play();
+                if (!flag_play) { 
+                    dead_sound.Play();
+                    
                     flag_play = true;
                 }
-                
+                flag_longfall = true;
                 lifesZero = true;
                 
             }
@@ -236,8 +264,8 @@ namespace TGC.MonoGame.TP
             lifes = 3;
             lifesZero = false;
             flag_play = false;
-            //Body.World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(Position + traslation) * Matrix.CreateFromQuaternion(rotation);
-            //Body.Position = Position + traslation;
+            //totalCoins = 0;
+           // Nivel.RestartLogicalObjects();
         }
     }
 

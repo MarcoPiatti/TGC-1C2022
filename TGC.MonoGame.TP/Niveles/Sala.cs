@@ -84,5 +84,13 @@ namespace TGC.MonoGame.TP.Niveles
             return logicalObjects;
         }
             public virtual void Update(GameTime gameTime) { }
+        public virtual void RestartLogicalObjects()
+        {
+            var logicalObjects = GetLogicalObjects();
+            foreach (TP.Elements.LogicalObject logicalObject in logicalObjects)
+            {
+                logicalObject.Restart();
+            }
+        }
     }
 }

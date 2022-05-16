@@ -24,9 +24,13 @@ namespace TGC.MonoGame.TP.Elements
             localContent = content;
             var SoundName = "coin_get";
             sound = content.Load<SoundEffect>("Music/" + SoundName);
-            Collider = new BoundingCylinder(posicion, 5f, 5f);
+            
+            Collider = new BoundingCylinder(posicion, 3f, 1f);
+            InitialCollider = Collider;
             Position = posicion;
+            InitialPosition = posicion;
             World = Matrix.CreateScale(5f, 1f, 5f) * Matrix.CreateTranslation(posicion);
+            InitialWorld = World;
         }
         public override void logicalAction(Player player)
         {
@@ -52,6 +56,12 @@ namespace TGC.MonoGame.TP.Elements
         {
             sound.Play();
         }
+        public override void Restart()
+        {
+            Collider = InitialCollider;
+            Position = InitialPosition;
+            World = InitialWorld;
 
+        }
     }
 }

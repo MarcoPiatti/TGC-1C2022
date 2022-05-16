@@ -9,11 +9,12 @@ using TGC.MonoGame.TP.Geometries;
 namespace TGC.MonoGame.TP.Elements
 {
 
-   public abstract class Object
+    public abstract class Object
     {
         public Matrix World;
 
         public Vector3 Position { get; set; }
+        public static Vector3 InitialPosition{get;set;}
 
         public GeometricPrimitive Body { get; set; }
 
@@ -48,7 +49,7 @@ namespace TGC.MonoGame.TP.Elements
     public class Cube : Object
     {
         public OrientedBoundingBox Collider { get; set; }
-
+        public OrientedBoundingBox InitialCollider { get; set; }
         public Cube(GraphicsDevice graphicsDevice, ContentManager content, Vector3 Position, Color color)
         {
             Collider = new OrientedBoundingBox(Position, new Vector3(1, 1, 1));
@@ -129,6 +130,7 @@ namespace TGC.MonoGame.TP.Elements
     {
 
         public BoundingSphere Collider { get; set; }
+        public BoundingSphere InitialCollider { get; set; }
         private SpherePrimitive currentBody { get; set; }
 
         public Sphere(GraphicsDevice graphicsDevice, ContentManager content, float diameter, int tessellation, Color color)
@@ -213,12 +215,13 @@ namespace TGC.MonoGame.TP.Elements
             World = Matrix.CreateScale(new Vector3(0, 0, 0)) * Matrix.CreateTranslation(Position + new Vector3(0, 100, 0));
             //Collider = new BoundingSphere(new Vector3(0f, 1000f, 0f), 0f);
         }
+        public virtual void Restart() { }
     }
     public class LogicalSphere : LogicalObject
     {
 
         public BoundingSphere Collider { get; set; }
-
+        public BoundingSphere InitialCollider { get; set; }
         public LogicalSphere(GraphicsDevice graphicsDevice, ContentManager content, float diameter, int tessellation, Color color)
         {
             Collider = new BoundingSphere(Position, diameter/2);
@@ -265,7 +268,8 @@ namespace TGC.MonoGame.TP.Elements
     {
 
         public BoundingCylinder Collider { get; set; }
-
+        public BoundingCylinder InitialCollider { get; set; }
+        public static Matrix InitialWorld { get; set; }
         public LogicalCyllinder(GraphicsDevice graphicsDevice, ContentManager content, Color color, float height = 1, float diameter = 1, int tessellation = 32)
         {
             Collider = new BoundingCylinder(Position, diameter/2, height);
