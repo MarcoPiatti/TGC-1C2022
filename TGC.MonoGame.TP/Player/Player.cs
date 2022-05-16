@@ -26,6 +26,9 @@ namespace TGC.MonoGame.TP
         private float CCC = 0.01f; //Collider Correction Constant
         public int totalCoins { get; set; } = 0;
 
+        public float speedPuTime = 0;
+        public float gladePuTime = 0;
+
         public string typeName = "base";
 
         private Vector3 scale = new Vector3(5, 5, 5);
@@ -59,13 +62,15 @@ namespace TGC.MonoGame.TP
 
         public void Update(GameTime gameTime, List<TP.Elements.Object> objects, List<TP.Elements.LogicalObject> logicalObjects)
         {
+            var elapsedTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
+            float finalGravity = handleGladePowerUp(elapsedTime);
             if (!grounded)
-                VectorSpeed += Vector3.Down * Gravity;
+                VectorSpeed += Vector3.Down * finalGravity;
             else
                 VectorSpeed -= VectorSpeed * friction;
-            var elapsedTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             var scaledSpeed = VectorSpeed * elapsedTime;
-            Body.WorldUpdate(scale, Position + scaledSpeed, Matrix.CreateRotationZ(VectorSpeed.X) * Matrix.CreateRotationX(VectorSpeed.Z));
+            Vector3 finalScaledSpeed = handleSpeedPowerUp(scaledSpeed, elapsedTime);
+            Body.WorldUpdate(scale, Position + finalScaledSpeed, Matrix.CreateRotationZ(VectorSpeed.X) * Matrix.CreateRotationX(VectorSpeed.Z));
             Position = Body.Position;
             JumpLine.WorldUpdate(new Vector3(1, 1f, 1), Position + JumpLinePos, Quaternion.Identity);
             PhyisicallyInteract(objects, elapsedTime);
@@ -75,7 +80,40 @@ namespace TGC.MonoGame.TP
             else if(Position.Y < -100) returnToCheckPoint();
         }
 
-        public void PhyisicallyInteract(List<TP.Elements.Object> objects, float elapsedTime)
+        private Vector3 handleSpeedPowerUp(Vector3 scaledSpeed, float elapsedTime)
+        {
+            Vector3 finalScaledSpeed;
+
+            if (speedPuTime > 0)
+            {
+                finalScaledSpeed = scaledSpeed * 2;
+                speedPuTime -= elapsedTime;
+            }
+            else
+            {
+                finalScaledSpeed = scaledSpeed;
+            }
+
+            return finalScaledSpeed;
+        }
+
+        private float handleGladePowerUp(float elapsedTime)
+        {
+            float finalGravity;
+
+            if (gladePuTime > 0)
+            {
+                finalGravity = 0.4f;
+                gladePuTime -= elapsedTime;
+            } else
+            {
+                finalGravity = Gravity;
+            }
+
+            return finalGravity;
+        }
+
+        public void PhyisicallyInteract(List<TP.Elements.Object> objects,float elapsedTime)
         {
             foreach (TP.Elements.Object o in objects)
             {
@@ -163,4 +201,3 @@ namespace TGC.MonoGame.TP
     }
 
 }
-

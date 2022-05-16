@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace TGC.MonoGame.TP.Elements
     public class GladePU : PowerUp
     {
         private List<Cylinder> cyl = new List<Cylinder>();
-
+        private SoundEffect sound { get; set; }
         private List<TrianglePrism> triang = new List<TrianglePrism>();
 
         private Vector3 P1 = new Vector3(0.8f, -1.2f, 0);
@@ -20,6 +21,8 @@ namespace TGC.MonoGame.TP.Elements
 
         public GladePU(GraphicsDevice graphicsDevice, ContentManager content, Vector3 posicion): base(graphicsDevice, content, posicion)
         {
+            var SoundName = "powerUpPicked";
+            sound = content.Load<SoundEffect>("Music/" + SoundName);
             triang.Add(new TrianglePrism(graphicsDevice, content, posicion, Color.White));
             triang.Add(new TrianglePrism(graphicsDevice, content, posicion, Color.White));
             triang.Add(new TrianglePrism(graphicsDevice, content, posicion, Color.White));
@@ -32,17 +35,42 @@ namespace TGC.MonoGame.TP.Elements
 
         public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
-            Matrix rotation1 = Matrix.CreateRotationY(Angle + MathF.PI/2);
-            Matrix rotation2 = Matrix.CreateRotationY(Angle - MathF.PI / 2);
-            triang[0].World = Matrix.CreateScale(1f, 0.8f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-130)) * Matrix.CreateTranslation(Position + P1) * rotation1;
-            triang[1].World = Matrix.CreateScale(1f, 1.2f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-100)) * Matrix.CreateTranslation(Position + P2) * rotation1;
-            triang[2].World = Matrix.CreateScale(1f, 1.6f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-70)) * Matrix.CreateTranslation(Position + P3) * rotation1;
-            triang[3].World = Matrix.CreateScale(1f, 0.8f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-130)) * Matrix.CreateTranslation(Position + P1) * rotation2;
-            triang[4].World = Matrix.CreateScale(1f, 1.2f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-100)) * Matrix.CreateTranslation(Position + P2) * rotation2;
-            triang[5].World = Matrix.CreateScale(1f, 1.6f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-70)) * Matrix.CreateTranslation(Position + P3) * rotation2;
-            cyl[0].World = Matrix.CreateScale(0.4f, 1f, 0.4f) * Matrix.CreateRotationX(MathC.ToRadians(90)) * Matrix.CreateTranslation(Position + P4) * rotation1;
-            cyl[1].World = Matrix.CreateScale(0.4f, 1f, 0.4f) * Matrix.CreateRotationX(MathC.ToRadians(90)) * Matrix.CreateTranslation(Position + P4) * rotation2;
+            if (flagCollide == true)
+            {
+                destroyItself();
+            }
+            else
+            {
+                base.Update(gameTime);
+                Matrix rotation1 = Matrix.CreateRotationY(Angle + MathF.PI / 2);
+                Matrix rotation2 = Matrix.CreateRotationY(Angle - MathF.PI / 2);
+                triang[0].World = Matrix.CreateScale(1f, 0.8f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-130)) * Matrix.CreateTranslation(Position + P1) * rotation1;
+                triang[1].World = Matrix.CreateScale(1f, 1.2f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-100)) * Matrix.CreateTranslation(Position + P2) * rotation1;
+                triang[2].World = Matrix.CreateScale(1f, 1.6f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-70)) * Matrix.CreateTranslation(Position + P3) * rotation1;
+                triang[3].World = Matrix.CreateScale(1f, 0.8f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-130)) * Matrix.CreateTranslation(Position + P1) * rotation2;
+                triang[4].World = Matrix.CreateScale(1f, 1.2f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-100)) * Matrix.CreateTranslation(Position + P2) * rotation2;
+                triang[5].World = Matrix.CreateScale(1f, 1.6f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-70)) * Matrix.CreateTranslation(Position + P3) * rotation2;
+                cyl[0].World = Matrix.CreateScale(0.4f, 1f, 0.4f) * Matrix.CreateRotationX(MathC.ToRadians(90)) * Matrix.CreateTranslation(Position + P4) * rotation1;
+                cyl[1].World = Matrix.CreateScale(0.4f, 1f, 0.4f) * Matrix.CreateRotationX(MathC.ToRadians(90)) * Matrix.CreateTranslation(Position + P4) * rotation2;
+            }
+        }
+        public override void destroyItself()
+        {
+            Collider = new BoundingSphere(new Vector3(0f, 1000f, 0f), 0f);
+            base.destroyItself();
+            triang[0].World = Matrix.CreateScale(0f, 0f, 0f) * Matrix.CreateTranslation(Position + new Vector3(0, 100, 0));
+            triang[1].World = Matrix.CreateScale(0f, 0f, 0f) * Matrix.CreateTranslation(Position + new Vector3(0, 100, 0));
+            triang[2].World = Matrix.CreateScale(0f, 0f, 0f) * Matrix.CreateTranslation(Position + new Vector3(0, 100, 0));
+            triang[3].World = Matrix.CreateScale(0f, 0f, 0f) * Matrix.CreateTranslation(Position + new Vector3(0, 100, 0));
+            triang[4].World = Matrix.CreateScale(0f, 0f, 0f) * Matrix.CreateTranslation(Position + new Vector3(0, 100, 0));
+            triang[5].World = Matrix.CreateScale(0f, 0f, 0f) * Matrix.CreateTranslation(Position + new Vector3(0, 100, 0));
+            cyl[0].World = Matrix.CreateScale(0f, 0f, 00f) * Matrix.CreateRotationX(MathC.ToRadians(90)) * Matrix.CreateTranslation(Position + P4);
+            cyl[1].World = Matrix.CreateScale(0f, 0f, 00f) * Matrix.CreateRotationX(MathC.ToRadians(90)) * Matrix.CreateTranslation(Position + P4);
+        }
+        public override void logicalAction(Player player)
+        {
+            sound.Play();
+            base.logicalAction(player);
         }
 
         public override void Draw(Matrix view, Matrix projection) 
@@ -58,5 +86,9 @@ namespace TGC.MonoGame.TP.Elements
             base.Draw(view, projection);
         }
 
+        public override void Effect(Player player)
+        {
+            player.gladePuTime = 5;
+        }
     }
 }

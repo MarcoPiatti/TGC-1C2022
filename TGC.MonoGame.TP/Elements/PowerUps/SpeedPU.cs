@@ -40,7 +40,6 @@ namespace TGC.MonoGame.TP.Elements
                 triang[1].World = Matrix.CreateScale(1f, 1f, 1f) * Matrix.CreateRotationZ(3 * MathF.PI / 4) * Matrix.CreateTranslation(Position + P2) * triangleRotation;
                 triang[2].World = Matrix.CreateScale(1f, 1f, 1f) * Matrix.CreateRotationZ(3 * MathF.PI / 4) * Matrix.CreateTranslation(Position + P3) * triangleRotation;
             }
-            
         }
 
         public override void Draw(Matrix view, Matrix projection) 
@@ -51,12 +50,13 @@ namespace TGC.MonoGame.TP.Elements
             }
             base.Draw(view, projection);
         }
+
         public override void logicalAction(Player player)
         {
-            flagCollide = true; 
             sound.Play();
             base.logicalAction(player);
         }
+
         public override void destroyItself()
         {
             Collider = new BoundingSphere(new Vector3(0f, 1000f, 0f), 0f);
@@ -66,6 +66,10 @@ namespace TGC.MonoGame.TP.Elements
             triang[2].World = Matrix.CreateScale(0f, 0f, 0f) * Matrix.CreateTranslation(Position + new Vector3(0, 100, 0));
         }
 
+        public override void Effect(Player player)
+        {
+            player.speedPuTime = 10;
+        }
 
     }
 }

@@ -33,7 +33,10 @@ namespace TGC.MonoGame.TP.Elements
             flagCollide = true;
             playSound();
             player.AddCoin();
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         }
         public void Update(GameTime gameTime)
         {

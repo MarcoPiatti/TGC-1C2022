@@ -199,7 +199,11 @@ namespace TGC.MonoGame.TP.Elements
     public abstract class LogicalObject : Object
     {
         public bool flagCollide { get; set; } = false;
-        public virtual void logicalAction(Player player) { }
+
+        public virtual void logicalAction(Player player)
+        {
+            flagCollide = true;
+        }
 
         public override Vector3 GetDirectionFromCollision(Sphere s)
         {
