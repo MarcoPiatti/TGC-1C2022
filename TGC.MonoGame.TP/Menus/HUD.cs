@@ -11,7 +11,7 @@ namespace TGC.MonoGame.TP.Menus
     public class HUD
     {
         public Vector2 windowSize;
-        private Player Player { get; set; }
+        public Player Player { get; set; }
         private SpriteBatch SpriteBatch {get; set;}
         private SpriteFont SpriteFont { get; set; }
         private ContentManager ContentManager { get; set; }
