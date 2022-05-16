@@ -26,7 +26,7 @@ namespace TGC.MonoGame.TP.Niveles
             Piso = new Cube(graphicsDevice, content, posicion);
             Piso.WorldUpdate(platformScale, new Vector3(-45f, 0, 0) + posicion, Quaternion.Identity);
             PisoSalida = new Cube(graphicsDevice, content, posicion);
-            PisoSalida.World = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(new Vector3(45f, 0, 0) + posicion);
+            PisoSalida.WorldUpdate(platformScale, new Vector3(45f, 0, 0) + posicion, Quaternion.Identity);
 
             MovingPlatforms = new List<MovingCube>();
             MovingPlatforms.Add(new MovingCube(new List<Vector3> { new Vector3(0, 0, -40), new Vector3(0, 0, 40) }, graphicsDevice, content ,Color.White));

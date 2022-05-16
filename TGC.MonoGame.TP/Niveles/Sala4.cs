@@ -53,7 +53,7 @@ namespace TGC.MonoGame.TP.Niveles
 
             foreach (Cube cube in Platforms)
             {
-                cube.World = Matrix.CreateScale(platformScale) * Matrix.CreateTranslation(cube.Position + posicion);
+                cube.WorldUpdate(platformScale, cube.Position + posicion, Quaternion.Identity);
             }
 
         }
