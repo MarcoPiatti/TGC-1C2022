@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Input;
 using TGC.MonoGame.TP.Geometries;
 using TGC.MonoGame.TP.Elements;
 using TGC.MonoGame.Samples.Collisions;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace TGC.MonoGame.TP
 {
@@ -25,6 +27,8 @@ namespace TGC.MonoGame.TP
         public float Bounce = 0.5f;
         private float CCC = 0.01f; //Collider Correction Constant
         public int totalCoins { get; set; } = 0;
+        public int lifes { get; set; } = 3;
+        public bool lifesZero { get; set; } = false;
 
         public float speedPuTime = 0;
         public float gladePuTime = 0;
@@ -35,6 +39,7 @@ namespace TGC.MonoGame.TP
         private State estado { get; set; }
 
         public Sphere Body { get; set; }
+        public bool flag_play { get; set; } = false;
 
         public bool grounded = false;
 
@@ -45,8 +50,15 @@ namespace TGC.MonoGame.TP
 
         public Vector3 PreFallPosition { get; set; }
 
+        public SoundEffect dead_sound { get; set; }
+        public SoundEffect jump_sound { get; set; }
+
         public Player(GraphicsDevice graphics, ContentManager content)
         {
+            var deadSound = "dead";
+            dead_sound = content.Load<SoundEffect>("Music/" + deadSound);
+            var jumpSound = "jump";
+            jump_sound = content.Load<SoundEffect>("Music/" + jumpSound);
             Body = new Sphere(graphics, content, 1f, 16, Color.Green);
             Body.WorldUpdate(scale, new Vector3(0, 15, 20), Quaternion.Identity);
             Position = Body.Position;
@@ -76,8 +88,11 @@ namespace TGC.MonoGame.TP
             PhyisicallyInteract(objects, elapsedTime);
             LogicalInteract(logicalObjects);
             grounded = CanJump(objects);
-            if(Position.Y > 0) PreFallPosition = Position;
-            else if(Position.Y < -100) returnToCheckPoint();
+            if (Position.Y > 0) PreFallPosition = Position;
+            else if (Position.Y < -100) { 
+                returnToCheckPoint();
+                
+            }
         }
 
         private Vector3 handleSpeedPowerUp(Vector3 scaledSpeed, float elapsedTime)
@@ -164,21 +179,45 @@ namespace TGC.MonoGame.TP
 
         public void Jump()
         {
-            if (grounded)
+            var flag_jump = false;
+            if (grounded) {
+                
                 VectorSpeed += Vector3.Up * JumpForce;
+                if (!flag_jump) { 
+                    jump_sound.Play(); 
+                    flag_jump = true; 
+                }
+                flag_jump = false;
+            }
+            
+                
 
         }
 
 
         public void returnToCheckPoint()
         {
-            VectorSpeed = Vector3.Zero;
-            Position = new Vector3(MathF.Truncate((PreFallPosition.X+50) / 100) * 100, 10, 0);
-            Position = Position + new Vector3(-45, 0, 0);
-            Body.Position = Position;
-            Body.WorldUpdate(scale, Position, Quaternion.Identity);
-            JumpLine.WorldUpdate(new Vector3(1, 1f, 1), Position + JumpLinePos, Quaternion.Identity);
-            grounded = false;
+            if(!(lifes == 0)) {
+                VectorSpeed = Vector3.Zero;
+                Position = new Vector3(MathF.Truncate((PreFallPosition.X + 50) / 100) * 100, 10, 0);
+                Position = Position + new Vector3(-45, 0, 0);
+                Body.Position = Position;
+                Body.WorldUpdate(scale, Position, Quaternion.Identity);
+                JumpLine.WorldUpdate(new Vector3(1, 1f, 1), Position + JumpLinePos, Quaternion.Identity);
+                grounded = false;
+                lifes--;
+            }
+            else
+            {
+                if (!flag_play) { dead_sound.Play();
+                    flag_play = true;
+                }
+                
+                lifesZero = true;
+                
+            }
+
+            
         }
 
         public void AddCoin()
@@ -194,7 +233,9 @@ namespace TGC.MonoGame.TP
             Body.WorldUpdate(scale, Position, Quaternion.Identity);
             JumpLine.WorldUpdate(new Vector3(1, 1f, 1), Position + JumpLinePos, Quaternion.Identity);
             grounded = false;
-
+            lifes = 3;
+            lifesZero = false;
+            flag_play = false;
             //Body.World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(Position + traslation) * Matrix.CreateFromQuaternion(rotation);
             //Body.Position = Position + traslation;
         }

@@ -31,14 +31,16 @@ namespace TGC.MonoGame.TP.Menus
             Vector3 playerPosition = Player.Position;
             playerRoundPosition = new Vector3(MathF.Round(playerPosition.X, 0), MathF.Round(playerPosition.Y, 0), MathF.Round(playerPosition.Z, 0));
 
-            //var W = graphicsDevice.Viewport.Width;
-            //var H = graphicsDevice.Viewport.Height;
-            //var escala = 2f;
-            //var size = SpriteFont.MeasureString("Holaa") * escala;
+            var W = graphicsDevice.Viewport.Width;
+            var H = graphicsDevice.Viewport.Height;
+            SpriteBatch.DrawString(SpriteFont, playerRoundPosition.ToString(), new Vector2(W-300, H -50), Color.Gold);
 
-            SpriteBatch.DrawString(SpriteFont, playerRoundPosition.ToString(), new Vector2(graphicsDevice.Viewport.Width -300, graphicsDevice.Viewport.Height -50), Color.White);
-
-            this.SpriteBatch.DrawString(this.SpriteFont, Player.totalCoins.ToString(), new Vector2(graphicsDevice.Viewport.Width - 400, 0), Color.White);
+            this.SpriteBatch.DrawString(this.SpriteFont, "Coins: "+Player.totalCoins.ToString(), new Vector2(W - 780, 35), Color.ForestGreen);
+            this.SpriteBatch.DrawString(this.SpriteFont, "Lifes: " + Player.lifes.ToString(), new Vector2(W - 780, 10), Color.Red);
+            if(Player.lifesZero)
+            {
+                this.SpriteBatch.DrawString(this.SpriteFont, "Press R to Restart", new Vector2(W - 500, H - 280), Color.Red);
+            }
             this.SpriteBatch.End();
             //this.SpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend,
             //SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise);

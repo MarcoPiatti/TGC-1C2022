@@ -81,6 +81,18 @@
 /processorParam:Quality=Best
 /build:Music/crystal_dolphin.mp3
 
+#begin Music/dead.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/dead.wav
+
+#begin Music/jump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/jump.wav
+
 #begin Music/level_start.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
@@ -110,6 +122,24 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Music/powerUpPicked.wav
+
+#begin Music/rebote1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/rebote1.wav
+
+#begin Music/rebote2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/rebote2.wav
+
+#begin Music/rebote3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/rebote3.wav
 
 #begin SpriteFonts/Arial.spritefont
 /importer:FontDescriptionImporter
