@@ -26,7 +26,7 @@ namespace TGC.MonoGame.TP.Niveles
         {
             //Aca hay que arreglar esto
             Piso.WorldUpdate(new Vector3(Size / (float)Math.Cos(angle), 1f, Size), new Vector3(0, (float)Math.Sin(angle) * Size / 2, 0) + Posicion, Matrix.CreateRotationZ(angle));
-
+            Piso.Collider.Orientation = Matrix.CreateRotationZ(-angle);
             
             obstacles = new List<MovingKillerCube>();
 

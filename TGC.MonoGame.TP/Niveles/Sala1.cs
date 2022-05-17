@@ -38,6 +38,12 @@ namespace TGC.MonoGame.TP.Niveles
             Coin.Draw(view, projection);
         }
 
+        public override List<TP.Elements.Object> GetPhysicalObjects()
+        {
+            List<TP.Elements.Object> l = base.GetPhysicalObjects();
+            l.Add(Pilar);
+            return l;
+        }
         public override List<TP.Elements.LogicalObject> GetLogicalObjects()
         {
             List<TP.Elements.LogicalObject> logicalObjects = base.GetLogicalObjects();

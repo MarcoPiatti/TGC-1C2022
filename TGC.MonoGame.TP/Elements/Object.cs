@@ -76,7 +76,7 @@ namespace TGC.MonoGame.TP.Elements
             base.WorldUpdate(scale, newPosition, rotationMatrix);
             Collider.Center = newPosition;
             Collider.Extents = scale / 2;
-            Collider.Rotate(Matrix.Invert(rotationMatrix));
+            Collider.Orientation = rotationMatrix;
         }
         public override bool Intersects(Sphere s)
         {
