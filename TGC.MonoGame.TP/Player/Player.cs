@@ -148,7 +148,7 @@ namespace TGC.MonoGame.TP
                   gladeActivated = true;
               }
               if (gladeActivated) {
-                currentPowerUp_2 = "Glade";
+                currentPowerUp_2 = "Glide";
                 finalGravity = 0.4f;
                 gladePuTime -= elapsedTime;
                 }

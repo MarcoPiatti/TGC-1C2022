@@ -90,7 +90,7 @@ namespace TGC.MonoGame.TP.Elements
 
         public override void Effect(Player player)
         {
-            player.gladePuTime = 5;
+            player.gladePuTime = 30;
         }
     }
 }
