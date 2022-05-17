@@ -21,6 +21,7 @@ namespace TGC.MonoGame.TP
         public Vector3 VectorSpeed { get; set; }
         public Vector3 roundPosition { get; set; }
         private float Gravity = 0.7f;
+        public float MoveForceVariation = 0f;
         private float MoveForce = 2f;
         private float MoveForceAir = 0.5f;
         private float JumpForce = 15f;
@@ -205,9 +206,9 @@ namespace TGC.MonoGame.TP
         public void Move(Vector3 direction)
         {
             if (grounded)
-                VectorSpeed += direction * MoveForce;
+                VectorSpeed += direction * (MoveForce + MoveForceVariation);
             else
-                VectorSpeed += direction * MoveForceAir;
+                VectorSpeed += direction * (MoveForceAir + MoveForceVariation);
         }
 
         public void Jump()
