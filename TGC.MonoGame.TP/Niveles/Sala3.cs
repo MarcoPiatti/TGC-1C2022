@@ -23,7 +23,8 @@ namespace TGC.MonoGame.TP.Niveles
         public Sala3(ContentManager content, GraphicsDevice graphicsDevice, Vector3 posicion) : base(content, graphicsDevice, posicion)
         {
             //Aca hay que arreglar esto
-            Piso.World = Matrix.CreateScale(Size / (float)Math.Cos(angle), 1f, Size) * Matrix.CreateRotationZ(angle) * Matrix.CreateTranslation(new Vector3(0, (float)Math.Sin(angle)*Size/2, 0) + Posicion);
+            Piso.WorldUpdate(new Vector3(Size / (float)Math.Cos(angle), 1f, Size), new Vector3(0, (float)Math.Sin(angle) * Size / 2, 0) + Posicion, Matrix.CreateRotationZ(angle));
+
             
             obstacles = new List<MovingCube>();
 

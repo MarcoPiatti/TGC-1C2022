@@ -25,14 +25,14 @@ namespace TGC.MonoGame.TP.Elements
 
         public virtual void WorldUpdate(Vector3 scale, Vector3 newPosition, Quaternion rotation)
         {
-            World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(newPosition) * Matrix.CreateFromQuaternion(rotation);
+            World = Matrix.CreateScale(scale) * Matrix.CreateFromQuaternion(rotation) * Matrix.CreateTranslation(newPosition) ;
             Position = newPosition;
         }
         
 
         public virtual void WorldUpdate(Vector3 scale, Quaternion rotation)
         {
-            World = Matrix.CreateScale(scale) * Matrix.CreateTranslation(Position) * Matrix.CreateFromQuaternion(rotation);
+            World = Matrix.CreateScale(scale) * Matrix.CreateFromQuaternion(rotation) * Matrix.CreateTranslation(Position) ;
         }
 
         public virtual void WorldUpdate(Vector3 scale, Vector3 newPosition, Matrix rotationMatrix)
@@ -68,35 +68,38 @@ namespace TGC.MonoGame.TP.Elements
         {
             base.WorldUpdate(scale, newPosition, rotation);
             Collider.Center = newPosition; 
-            Collider.Extents = Collider.Center + scale/2;
+            Collider.Extents = scale/2;
             Collider.Rotate(rotation); 
+        }
+        public override void WorldUpdate(Vector3 scale, Vector3 newPosition, Matrix rotationMatrix)
+        {
+            base.WorldUpdate(scale, newPosition, rotationMatrix);
+            Collider.Center = newPosition;
+            Collider.Extents = scale / 2;
+            Collider.Rotate(Matrix.Invert(rotationMatrix));
         }
         public override bool Intersects(Sphere s)
         {
-            var aabb = new BoundingBox(Collider.Center - Collider.Extents + Collider.Center, Collider.Extents);
-            return aabb.Intersects(s.Collider);
+            return Collider.Intersects(s.Collider);
         }
         public override Vector3 GetDirectionFromCollision(Sphere s)
         {
-            float X = Math.Abs(Collider.Center.X - Collider.Extents.X);
-            float Y = Math.Abs(Collider.Center.Y - Collider.Extents.Y);
-            float Z = Math.Abs(Collider.Center.Z - Collider.Extents.Z);
-            float Xdistance = Math.Abs(Collider.Center.X - s.Collider.Center.X);
-            float Ydistance = Math.Abs(Collider.Center.Y - s.Collider.Center.Y);
-            float Zdistance = Math.Abs(Collider.Center.Z - s.Collider.Center.Z);
-             if (X > Xdistance && Y > Ydistance)
-                return new Vector3(1, 1, -1);
-            if (X > Xdistance && Z > Zdistance)
-                return new Vector3(1, -1, 1);
-            if (Y > Ydistance && Z > Zdistance)
-                return new Vector3(-1, 1, 1);
-            if (X > Xdistance)
-                return new Vector3(1, -1, -1);
-            if (Y > Ydistance)
-                return new Vector3(-1, 1, -1);
-            if (Z > Zdistance)
-                return new Vector3(-1, -1, 1);
-            return new Vector3(-1, -1, -1);
+            Matrix m = Matrix.Invert(Collider.Orientation);
+            Vector3 v = new Vector3(0, 0, 0);
+            float X = Math.Abs(Collider.Extents.X);
+            float Y = Math.Abs(Collider.Extents.Y);
+            float Z = Math.Abs(Collider.Extents.Z);
+            float Xdistance = Collider.Center.X - s.Collider.Center.X;
+            float Ydistance = Collider.Center.Y - s.Collider.Center.Y;
+            float Zdistance = Collider.Center.Z - s.Collider.Center.Z;
+            if (X < Xdistance || -X > Xdistance)
+                v += m.Left * Math.Sign(Xdistance);
+            if (Y < Ydistance || -Y > Ydistance)
+                v += m.Down * Math.Sign(Ydistance);
+            if (Z < Zdistance || -Z > Zdistance)
+                v += m.Forward * Math.Sign(Zdistance);
+            v.Normalize();
+            return v;
         }
     }
 
