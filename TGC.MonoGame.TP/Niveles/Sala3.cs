@@ -18,7 +18,9 @@ namespace TGC.MonoGame.TP.Niveles
         private static float obstaclespeed = 10f;
 
         private static float angle = (float)Math.PI / 12f;
-        
+
+        PowerUp powerUp;
+
         private List<Coin> Coins { get; set; }
         public Sala3(ContentManager content, GraphicsDevice graphicsDevice, Vector3 posicion) : base(content, graphicsDevice, posicion)
         {
@@ -46,6 +48,8 @@ namespace TGC.MonoGame.TP.Niveles
             Coins.Add(new Coin(graphicsDevice, content, new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size * 1.1f, -0.45f * Size) + posicion));
             Coins.Add(new Coin(graphicsDevice, content, new Vector3(0, (float)Math.Tan(angle) * Size * 0.7f, 0f * Size) + posicion));
 
+            powerUp = new SpeedPU(graphicsDevice, content, new Vector3(-41, 8, 41) + posicion);
+
             foreach (MovingCube cube in obstacles)
             {
                 cube.Body.WorldUpdate(obstacleScale, cube.Body.Position + posicion, Quaternion.Identity);
@@ -72,6 +76,8 @@ namespace TGC.MonoGame.TP.Niveles
             {
                 coin.Draw(view, projection);
             }
+
+            powerUp.Draw(view, projection);
         }
 
         public override void Update(GameTime gameTime)
@@ -85,11 +91,14 @@ namespace TGC.MonoGame.TP.Niveles
             {
                 coin.Update(gameTime);
             }
+
+            powerUp.Update(gameTime);
         }
         public override List<TP.Elements.LogicalObject> GetLogicalObjects()
         {
             List<TP.Elements.LogicalObject> logicalObjects = base.GetLogicalObjects();
             logicalObjects.AddRange(Coins);
+            logicalObjects.Add(powerUp);
             return logicalObjects;
         }
 

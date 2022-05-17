@@ -18,6 +18,8 @@ namespace TGC.MonoGame.TP.Niveles
         public List<Cube> Platforms { get; set; }
         public List<Coin> Coins { get; set; }
 
+        PowerUp powerUp;
+
         public Sala4(ContentManager content, GraphicsDevice graphicsDevice, Vector3 posicion) : base(content, graphicsDevice, posicion)
         {
             Piso = new Cube(graphicsDevice, content, posicion);
@@ -28,6 +30,15 @@ namespace TGC.MonoGame.TP.Niveles
             Platforms.Add(new Cube(graphicsDevice, content, new Vector3(-22.5f, 0, 0)));
             Platforms.Add(new Cube(graphicsDevice, content, new Vector3(0, 0, 0)));
             Platforms.Add(new Cube(graphicsDevice, content, new Vector3(0, 0, 22.5f)));
+
+            // plataforma con powerUP
+            Platforms.Add(new Cube(graphicsDevice, content, new Vector3(22.5f, 5, 22.5f)));
+            //TODO: FIX rotación
+            powerUp = new GladePU(graphicsDevice, content, new Vector3(22.5f, 9, 22.5f) + posicion);
+
+            // plataforma a la que solo se llega con el powerUP
+            Platforms.Add(new Cube(graphicsDevice, content, new Vector3(35, 44, -35)));
+
             Platforms.Add(new Cube(graphicsDevice, content, new Vector3(0, 0, -22.5f)));
             Platforms.Add(new Cube(graphicsDevice, content, new Vector3(22.5f, 0, 0)));
 
@@ -40,10 +51,10 @@ namespace TGC.MonoGame.TP.Niveles
             Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(0, 35, 11.25f), new Vector3(0, -35, 11.25f) }, graphicsDevice, content, Color.Red, -2, 100f));
             Spheres.Add(new MovingSphere(new List<Vector3> { new Vector3(0, -35, -11.25f), new Vector3(0, 35, -11.25f) }, graphicsDevice, content, Color.Red, -2, 100f));
 
-
             Coins = new List<Coin>();
             Coins.Add(new Coin(graphicsDevice, content, new Vector3(0, 10, 22.5f) + posicion));
             Coins.Add(new Coin(graphicsDevice, content, new Vector3(0, 10, -22.5f) + posicion));
+            Coins.Add(new Coin(graphicsDevice, content, new Vector3(35, 48, -35) + posicion));
 
             foreach (MovingSphere sphere in Spheres)
             {
@@ -77,6 +88,8 @@ namespace TGC.MonoGame.TP.Niveles
             {
                 coin.Draw(view, projection);
             }
+
+            powerUp.Draw(view, projection);
         }
 
         public override void Update(GameTime gameTime)
@@ -93,11 +106,14 @@ namespace TGC.MonoGame.TP.Niveles
             {
                 coin.Update(gameTime);
             }
+
+            powerUp.Update(gameTime);
         }
         public override List<TP.Elements.LogicalObject> GetLogicalObjects()
         {
             List<TP.Elements.LogicalObject> logicalObjects = base.GetLogicalObjects();
             logicalObjects.AddRange(Coins);
+            logicalObjects.Add(powerUp);
             return logicalObjects;
         }
 

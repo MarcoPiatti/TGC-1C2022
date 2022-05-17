@@ -27,7 +27,7 @@ namespace TGC.MonoGame.TP.Niveles
             FirstPlatform = new Cube(graphicsDevice, content, posicion);
             FirstPlatform.WorldUpdate(new Vector3(10f, 1f, 10f), new Vector3(25, 10, 0) + posicion, Quaternion.Identity);
 
-            // TODO: Colocar los power up en algun lugar con mas sentido
+            // TODO: remover este power up
             //powerUp = new SpeedPU(graphicsDevice, content, new Vector3(0, 10, 0));
             powerUp = new GladePU(graphicsDevice, content, new Vector3(0, 10, 0));
 
