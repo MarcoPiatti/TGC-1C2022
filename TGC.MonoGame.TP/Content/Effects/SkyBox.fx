@@ -14,6 +14,7 @@ float4x4 Projection;
 float3 CameraPosition;
 
 texture SkyBoxTexture;
+
 samplerCUBE SkyBoxSampler = sampler_state
 {
     texture = <SkyBoxTexture>;

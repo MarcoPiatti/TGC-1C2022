@@ -270,6 +270,7 @@ namespace TGC.MonoGame.TP
             JumpLine.WorldUpdate(JumpLineScale, Position + JumpLinePos, Quaternion.Identity);
             grounded = false;
             lifes = 3;
+            totalCoins = 0;
             lifesZero = false;
             flag_play = false;
             //totalCoins = 0;

@@ -27,7 +27,7 @@ namespace TGC.MonoGame.TP
         public PlayerIron(GraphicsDevice graphics, ContentManager content) : base(graphics, content)
         {
             Bounce = 0.1f;
-            MoveForceVariation = 0.2f;
+            MoveForceVariation = 0.6f;
             typeName = "PELOTA DE HIERRO";
         }
     }

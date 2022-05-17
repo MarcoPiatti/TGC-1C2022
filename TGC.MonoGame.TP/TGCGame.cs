@@ -146,11 +146,11 @@ namespace TGC.MonoGame.TP
             levelStart = "level_start";
             level_start = Content.Load<Song>(ContentFolderMusic + levelStart);
             var skyBox = Content.Load<Model>(ContentFolder3D + "skybox/cube");
-            //var skyBoxTexture = Content.Load<TextureCube>(ContentFolderTextures + "skyboxes/sunset/sunset");
-            var skyBoxTexture = Content.Load<TextureCube>(ContentFolderTextures + "skyboxes/islands/islands");
+            var skyBoxTexture = Content.Load<TextureCube>(ContentFolderTextures + "skyboxes/sunset/sunset");
+            //var skyBoxTexture = Content.Load<TextureCube>(ContentFolderTextures + "skyboxes/islands/islands");
             //var skyBoxTexture = Content.Load<TextureCube>(ContentFolderTextures + "/skyboxes/skybox/skybox");
             var skyBoxEffect = Content.Load<Effect>(ContentFolderEffects + "SkyBox");
-            unaSkyBox = new SkyBox(skyBox, skyBoxTexture, skyBoxEffect, 100);
+            unaSkyBox = new SkyBox(skyBox, skyBoxTexture, skyBoxEffect, 300);
 
 
             //var skyBox = Content.Load<Model>(ContentFolder3D + "skybox/cube");
@@ -242,6 +242,7 @@ namespace TGC.MonoGame.TP
             if (keyboardState.IsKeyDown(Keys.R))
             {
                 Player.Restart();
+                NewGame();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.H))
             {
@@ -268,13 +269,6 @@ namespace TGC.MonoGame.TP
         {
             //Logica para dibujar en pantalla posicion exacta del jugador, actualmente no funcionando
 
-            
-           
-
-
-
-        
-
             if(selectedMenu != null)
             {
                 selectedMenu.Draw(GraphicsDevice);
@@ -294,7 +288,7 @@ namespace TGC.MonoGame.TP
             Effect.Parameters["View"].SetValue(Camera.View);
             Effect.Parameters["Projection"].SetValue(Camera.Projection);
             Effect.Parameters["eyePosition"].SetValue(Camera.Position);
-            //unaSkyBox.Draw(Camera.View, Camera.Projection, new Vector3(0,0,0));
+            unaSkyBox.Draw(Camera.View, Camera.Projection, Camera.Position);
             Player.Draw(Camera.View, Camera.Projection);
             Nivel.Draw(gameTime, Camera.View, Camera.Projection);
             HUD.Draw(GraphicsDevice, gameTime);
