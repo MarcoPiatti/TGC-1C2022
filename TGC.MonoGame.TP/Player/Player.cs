@@ -32,6 +32,7 @@ namespace TGC.MonoGame.TP
         public bool lifesZero { get; set; } = false;
         public Nivel Nivel { get; set; }
         public float speedPuTime = 0;
+        public bool gladeActivated = false;
         public float gladePuTime = 0;
         public string currentPowerUp_1 { get; set; } = "N/A";
         public string currentPowerUp_2 { get; set; } = "N/A";
@@ -99,9 +100,9 @@ namespace TGC.MonoGame.TP
             PhyisicallyInteract(objects, elapsedTime);
             LogicalInteract(logicalObjects);
             if (Position.Y > 0) PreFallPosition = Position;
-            else if(Position.Y < -10 && Position.Y > -200) { 
-                if (!flag_fall && !lifesZero) 
-                { 
+            else if(Position.Y < -10 && Position.Y > -200) {
+                if (!flag_fall && !lifesZero)
+                {
                     fall_sound.Play();
                     flag_fall = true;
                 }
@@ -110,7 +111,7 @@ namespace TGC.MonoGame.TP
                     longfall_sound.Play();
                 }
             }
-            else if (Position.Y < -200) { 
+            else if (Position.Y < -200) {
                 returnToCheckPoint();
                 flag_fall = false;
                 flag_longfall = false;
@@ -138,17 +139,23 @@ namespace TGC.MonoGame.TP
 
         private float handleGladePowerUp(float elapsedTime)
         {
-            float finalGravity;
+            float finalGravity = Gravity;
 
             if (gladePuTime > 0)
             {
+              if (Keyboard.GetState().IsKeyDown(Keys.Space))
+              {
+                  gladeActivated = true;
+              }
+              if (gladeActivated) {
                 currentPowerUp_2 = "Glade";
                 finalGravity = 0.4f;
                 gladePuTime -= elapsedTime;
+                }
             } else
             {
                 currentPowerUp_2 = "N/A";
-                finalGravity = Gravity;
+                gladeActivated = false;
             }
 
             return finalGravity;
@@ -210,16 +217,16 @@ namespace TGC.MonoGame.TP
         {
             var flag_jump = false;
             if (grounded) {
-                
+
                 VectorSpeed += Vector3.Up * JumpForce;
-                if (!flag_jump) { 
-                    jump_sound.Play(); 
-                    flag_jump = true; 
+                if (!flag_jump) {
+                    jump_sound.Play();
+                    flag_jump = true;
                 }
                 flag_jump = false;
             }
-            
-                
+
+
 
         }
 
@@ -238,17 +245,17 @@ namespace TGC.MonoGame.TP
             }
             else
             {
-                if (!flag_play) { 
+                if (!flag_play) {
                     dead_sound.Play();
-                    
+
                     flag_play = true;
                 }
                 flag_longfall = true;
                 lifesZero = true;
-                
+
             }
 
-            
+
         }
 
         public void AddCoin()
