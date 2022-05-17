@@ -13,7 +13,7 @@ namespace TGC.MonoGame.TP.Niveles
 {
     public class Sala3 : Sala
     {
-        private List<MovingCube> obstacles { get; set; }
+        private List<MovingKillerCube> obstacles { get; set; }
         private static Vector3 obstacleScale = new Vector3(1f, 0.2f * Size, 0.1f * Size);
         private static float obstaclespeed = 10f;
 
@@ -28,19 +28,19 @@ namespace TGC.MonoGame.TP.Niveles
             Piso.WorldUpdate(new Vector3(Size / (float)Math.Cos(angle), 1f, Size), new Vector3(0, (float)Math.Sin(angle) * Size / 2, 0) + Posicion, Matrix.CreateRotationZ(angle));
 
             
-            obstacles = new List<MovingCube>();
+            obstacles = new List<MovingKillerCube>();
 
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, -0.05f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, -0.05f * Size) }, graphicsDevice, content, Color.Red,1,obstaclespeed));
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle)*Size, -0.15f*Size), new Vector3(-Size * 0.4f,(float)Math.Tan(angle)*Size*0.1f,-0.15f * Size)}, graphicsDevice, content, Color.Red, 1, obstaclespeed));
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, -0.25f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, -0.25f * Size)}, graphicsDevice, content, Color.Red, 1, obstaclespeed));
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, -0.35f * Size), new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, -0.35f * Size)}, graphicsDevice, content, Color.Red, 1, obstaclespeed));
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, -0.45f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, -0.45f * Size)}, graphicsDevice, content, Color.Red, 1, obstaclespeed));
+            obstacles.Add(new MovingKillerCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, -0.05f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, -0.05f * Size) }, graphicsDevice, content,1,obstaclespeed));
+            obstacles.Add(new MovingKillerCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle)*Size, -0.15f*Size), new Vector3(-Size * 0.4f,(float)Math.Tan(angle)*Size*0.1f,-0.15f * Size)}, graphicsDevice, content, 1, obstaclespeed));
+            obstacles.Add(new MovingKillerCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, -0.25f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, -0.25f * Size)}, graphicsDevice, content, 1, obstaclespeed));
+            obstacles.Add(new MovingKillerCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, -0.35f * Size), new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, -0.35f * Size)}, graphicsDevice, content, 1, obstaclespeed));
+            obstacles.Add(new MovingKillerCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, -0.45f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, -0.45f * Size)}, graphicsDevice, content, 1, obstaclespeed));
             
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.05f * Size), new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.05f * Size)}, graphicsDevice, content, Color.Red, 1, obstaclespeed));
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.15f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.15f * Size)}, graphicsDevice, content, Color.Red, 1, obstaclespeed));
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.25f * Size), new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.25f * Size)}, graphicsDevice, content, Color.Red, 1, obstaclespeed));
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.35f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.35f * Size)}, graphicsDevice, content, Color.Red, 1, obstaclespeed));
-            obstacles.Add(new MovingCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.45f * Size), new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.45f * Size)}, graphicsDevice, content, Color.Red, 1, obstaclespeed));
+            obstacles.Add(new MovingKillerCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.05f * Size), new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.05f * Size)}, graphicsDevice, content, 1, obstaclespeed));
+            obstacles.Add(new MovingKillerCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.15f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.15f * Size)}, graphicsDevice, content, 1, obstaclespeed));
+            obstacles.Add(new MovingKillerCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.25f * Size), new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.25f * Size)}, graphicsDevice, content, 1, obstaclespeed));
+            obstacles.Add(new MovingKillerCube(new List<Vector3>() { new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.35f * Size), new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.35f * Size)}, graphicsDevice, content, 1, obstaclespeed));
+            obstacles.Add(new MovingKillerCube(new List<Vector3>() { new Vector3(Size * 0.4f, (float)Math.Tan(angle) * Size, 0.45f * Size), new Vector3(-Size * 0.4f, (float)Math.Tan(angle) * Size * 0.1f, 0.45f * Size)}, graphicsDevice, content, 1, obstaclespeed));
 
             Coins = new List<Coin>();
 
@@ -50,7 +50,7 @@ namespace TGC.MonoGame.TP.Niveles
 
             powerUp = new SpeedPU(graphicsDevice, content, new Vector3(-41, 8, 41) + posicion);
 
-            foreach (MovingCube cube in obstacles)
+            foreach (MovingKillerCube cube in obstacles)
             {
                 cube.Body.WorldUpdate(obstacleScale, cube.Body.Position + posicion, Quaternion.Identity);
                 cube.MovePoints(Posicion);
@@ -67,7 +67,7 @@ namespace TGC.MonoGame.TP.Niveles
         public override void Draw(GameTime gameTime, Matrix view, Matrix projection)
         {
             base.Draw(gameTime, view, projection);
-            foreach (MovingCube cube in obstacles)
+            foreach (MovingKillerCube cube in obstacles)
             {
                 cube.Body.Draw(view, projection);
             }
@@ -85,7 +85,7 @@ namespace TGC.MonoGame.TP.Niveles
 
         public override void Update(GameTime gameTime)
         {
-            foreach (MovingCube cube in obstacles)
+            foreach (MovingKillerCube cube in obstacles)
             {
                 cube.Move(gameTime);
                 cube.Body.WorldUpdate(obstacleScale, cube.Body.Position , Quaternion.Identity);
@@ -102,16 +102,16 @@ namespace TGC.MonoGame.TP.Niveles
             List<TP.Elements.LogicalObject> logicalObjects = base.GetLogicalObjects();
             logicalObjects.AddRange(Coins);
             logicalObjects.Add(powerUp);
+            for (int i = 0; i < obstacles.Count; i++)
+            {
+                logicalObjects.Add(obstacles[i].Body);
+            }
             return logicalObjects;
         }
 
         public override List<TP.Elements.Object> GetPhysicalObjects()
         {
             List<TP.Elements.Object> l = base.GetPhysicalObjects();
-            for (int i = 0; i < obstacles.Count; i++)
-            {
-                l.Add(obstacles[i].Body);
-            }
             return l;
         }
     }

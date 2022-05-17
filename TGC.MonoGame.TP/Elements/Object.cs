@@ -297,7 +297,64 @@ namespace TGC.MonoGame.TP.Elements
             World = Matrix.CreateScale(new Vector3(0, 0, 0)) * Matrix.CreateTranslation(Position + new Vector3(0, 100, 0));
             Collider = new BoundingCylinder(Position + new Vector3(0f, 100f, 0f), 0f, 0f);
         }
-}
+    }
 
+    public class LogicalCube : LogicalObject
+    {
+        public OrientedBoundingBox Collider { get; set; }
+        public OrientedBoundingBox InitialCollider { get; set; }
+        public LogicalCube(GraphicsDevice graphicsDevice, ContentManager content, Vector3 Position, Color color)
+        {
+            Collider = new OrientedBoundingBox(Position, new Vector3(1, 1, 1));
+            Body = new CubePrimitive(graphicsDevice, content, 1, color);
+            this.Position = Position;
+        }
+
+        public LogicalCube(GraphicsDevice graphicsDevice, ContentManager content, Vector3 Position)
+        {
+            Collider = new OrientedBoundingBox(Position, new Vector3(1, 1, 1));
+            Body = new CubePrimitive(graphicsDevice, content, 1, Color.White);
+            this.Position = Position;
+        }
+
+        public override void WorldUpdate(Vector3 scale, Vector3 newPosition, Quaternion rotation)
+        {
+            base.WorldUpdate(scale, newPosition, rotation);
+            Collider.Center = newPosition;
+            Collider.Extents = scale / 2;
+            Collider.Rotate(rotation);
+        }
+        public override void WorldUpdate(Vector3 scale, Vector3 newPosition, Matrix rotationMatrix)
+        {
+            base.WorldUpdate(scale, newPosition, rotationMatrix);
+            Collider.Center = newPosition;
+            Collider.Extents = scale / 2;
+            Collider.Rotate(Matrix.Invert(rotationMatrix));
+        }
+        public override bool Intersects(Sphere s)
+        {
+            return Collider.Intersects(s.Collider);
+        }
+
+        public override Vector3 GetDirectionFromCollision(Sphere s)
+        {
+            Matrix m = Matrix.Invert(Collider.Orientation);
+            Vector3 v = new Vector3(0, 0, 0);
+            float X = Math.Abs(Collider.Extents.X);
+            float Y = Math.Abs(Collider.Extents.Y);
+            float Z = Math.Abs(Collider.Extents.Z);
+            float Xdistance = Collider.Center.X - s.Collider.Center.X;
+            float Ydistance = Collider.Center.Y - s.Collider.Center.Y;
+            float Zdistance = Collider.Center.Z - s.Collider.Center.Z;
+            if (X < Xdistance || -X > Xdistance)
+                v += m.Left * Math.Sign(Xdistance);
+            if (Y < Ydistance || -Y > Ydistance)
+                v += m.Down * Math.Sign(Ydistance);
+            if (Z < Zdistance || -Z > Zdistance)
+                v += m.Forward * Math.Sign(Zdistance);
+            v.Normalize();
+            return v;
+        }
+    }
 
 }
