@@ -183,22 +183,41 @@ namespace TGC.MonoGame.TP.Elements
 
     public class Cylinder : Object
     {
-        public Cylinder(GraphicsDevice graphicsDevice, ContentManager content, Color color, float height = 1, float diameter = 1,int tessellation = 32)
+        public BoundingCylinder Collider { get; set; }
+        public Cylinder(GraphicsDevice graphicsDevice, ContentManager content, Color color, float height = 1, float diameter = 1, int tessellation = 32)
         {
             Body = new CylinderPrimitive(graphicsDevice, content, color, height, diameter, tessellation);
+            Collider = new BoundingCylinder(Vector3.Zero, height / 2, diameter / 2);
         }
 
         public override void WorldUpdate(Vector3 scale, Vector3 newPosition, Quaternion rotation)
         {
             base.WorldUpdate(scale, newPosition, rotation);
+            Collider.Center = newPosition;
+            Collider.HalfHeight *= scale.Y;
+            Collider.Radius *= scale.X;
         }
         public override bool Intersects(Sphere s)
         {
-            return false;
+            BoundingCylinder c = new BoundingCylinder(Collider.Center, Collider.Radius, Collider.HalfHeight + s.Collider.Radius);
+            return c.Intersects(s.Collider);
         }
         public override Vector3 GetDirectionFromCollision(Sphere s)
         {
-            return Vector3.One;
+            var Ydistance = s.Position.Y - Position.Y;
+            if (Ydistance < Collider.HalfHeight && Ydistance > -Collider.HalfHeight)
+            {
+                Vector3 v = s.Position - Position;
+                v.Y = 0;
+                v.Normalize();
+                return v;
+            }
+            if (Vector2.Distance(new Vector2(s.Position.X, s.Position.Z), new Vector2(Position.X, Position.Z)) < Collider.Radius)
+                return new Vector3(0, -1, 0) * Math.Sign(Ydistance);
+            Vector3 v1 = s.Position - Position;
+            v1.Y = -1 * Math.Sign(Ydistance);
+            v1.Normalize();
+            return v1;
         }
     }
     public abstract class LogicalObject : Object
