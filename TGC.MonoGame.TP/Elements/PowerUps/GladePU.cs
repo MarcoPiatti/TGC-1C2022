@@ -14,10 +14,10 @@ namespace TGC.MonoGame.TP.Elements
         private SoundEffect sound { get; set; }
         private List<TrianglePrism> triang = new List<TrianglePrism>();
 
-        private Vector3 P1 = new Vector3(0.8f, -1.2f, 0);
-        private Vector3 P2 = new Vector3(1.4f, -0.5f, 0);
-        private Vector3 P3 = new Vector3(1.6f, 0.3f, 0);
-        private Vector3 P4 = new Vector3(0.3f, -1.4f, 0);
+        private Vector3 P1 = new Vector3(0.8f, -1.2f, 0.8f);
+        private Vector3 P2 = new Vector3(1.4f, -0.5f, 1.4f);
+        private Vector3 P3 = new Vector3(1.6f, 0.3f, 1.6f);
+        private Vector3 P4 = new Vector3(0.3f, -1.4f, 0.3f);
 
         public GladePU(GraphicsDevice graphicsDevice, ContentManager content, Vector3 posicion): base(graphicsDevice, content, posicion)
         {
@@ -44,14 +44,16 @@ namespace TGC.MonoGame.TP.Elements
                 base.Update(gameTime);
                 Matrix rotation1 = Matrix.CreateRotationY(Angle + MathF.PI / 2);
                 Matrix rotation2 = Matrix.CreateRotationY(Angle - MathF.PI / 2);
-                triang[0].World = Matrix.CreateScale(1f, 0.8f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-130)) * Matrix.CreateTranslation(Position + P1) * rotation1;
-                triang[1].World = Matrix.CreateScale(1f, 1.2f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-100)) * Matrix.CreateTranslation(Position + P2) * rotation1;
-                triang[2].World = Matrix.CreateScale(1f, 1.6f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-70)) * Matrix.CreateTranslation(Position + P3) * rotation1;
-                triang[3].World = Matrix.CreateScale(1f, 0.8f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-130)) * Matrix.CreateTranslation(Position + P1) * rotation2;
-                triang[4].World = Matrix.CreateScale(1f, 1.2f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-100)) * Matrix.CreateTranslation(Position + P2) * rotation2;
-                triang[5].World = Matrix.CreateScale(1f, 1.6f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-70)) * Matrix.CreateTranslation(Position + P3) * rotation2;
-                cyl[0].World = Matrix.CreateScale(0.4f, 1f, 0.4f) * Matrix.CreateRotationX(MathC.ToRadians(90)) * Matrix.CreateTranslation(Position + P4) * rotation1;
-                cyl[1].World = Matrix.CreateScale(0.4f, 1f, 0.4f) * Matrix.CreateRotationX(MathC.ToRadians(90)) * Matrix.CreateTranslation(Position + P4) * rotation2;
+                Vector3 RPE = new Vector3(MathF.Sin(Angle), 1, MathF.Cos(Angle)); //Rotacion de la posicion
+                Vector3 YInv = new Vector3(1, -1, 1); //Invierto la posicion en Y;
+                triang[0].World = Matrix.CreateScale(1f, 0.8f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-130)) * rotation1 * Matrix.CreateTranslation(Position - P1 * YInv * RPE);
+                triang[1].World = Matrix.CreateScale(1f, 1.2f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-100)) * rotation1 * Matrix.CreateTranslation(Position - P2 * YInv * RPE);
+                triang[2].World = Matrix.CreateScale(1f, 1.6f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-70)) * rotation1 * Matrix.CreateTranslation(Position - P3 * YInv * RPE);
+                triang[3].World = Matrix.CreateScale(1f, 0.8f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-130)) * rotation2 * Matrix.CreateTranslation(Position + P1 * RPE);
+                triang[4].World = Matrix.CreateScale(1f, 1.2f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-100)) * rotation2 * Matrix.CreateTranslation(Position + P2 * RPE);
+                triang[5].World = Matrix.CreateScale(1f, 1.6f, 1f) * Matrix.CreateRotationZ(MathC.ToRadians(-70)) * rotation2 * Matrix.CreateTranslation(Position + P3 * RPE);
+                cyl[0].World = Matrix.CreateScale(0.4f, 1f, 0.4f) * Matrix.CreateRotationX(MathC.ToRadians(90)) * rotation1 * Matrix.CreateTranslation(Position - P4 * YInv * RPE);
+                cyl[1].World = Matrix.CreateScale(0.4f, 1f, 0.4f) * Matrix.CreateRotationX(MathC.ToRadians(90)) * rotation2 * Matrix.CreateTranslation(Position + P4 * RPE);
             }
         }
         public override void destroyItself()
