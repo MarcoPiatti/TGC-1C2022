@@ -72,6 +72,10 @@ namespace TGC.MonoGame.TP.Niveles
                 s.Draw(gameTime, view, projection);
             }
 
+            foreach (Sala s in Salas)
+            {
+                s.DrawTranslucent(gameTime, view, projection);
+            }
 
         }
 

@@ -88,7 +88,10 @@ namespace TGC.MonoGame.TP.Niveles
             {
                 coin.Draw(view, projection);
             }
+        }
 
+        public override void DrawTranslucent(GameTime gameTime, Matrix view, Matrix projection)
+        {
             powerUp.Draw(view, projection);
         }
 

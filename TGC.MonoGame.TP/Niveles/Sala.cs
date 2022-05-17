@@ -56,16 +56,16 @@ namespace TGC.MonoGame.TP.Niveles
         public virtual void Draw(GameTime gameTime, Matrix view, Matrix projection)
         {
 
-            // Set the View and Projection matrices, needed to draw every 3D model
-            Effect.Parameters["View"].SetValue(view);
-            Effect.Parameters["Projection"].SetValue(projection);
-
             Piso.Draw(view, projection);
             ParedOeste.Draw(view, projection);
             ParedEste.Draw(view, projection);
             ParedNorteIzq.Draw(view, projection);
             ParedNorteDer.Draw(view, projection);
             Techo.Draw(view, projection);
+        }
+
+        public virtual void DrawTranslucent(GameTime gameTime, Matrix view, Matrix projection)
+        {
         }
 
         public virtual List<TP.Elements.Object> GetPhysicalObjects() {
