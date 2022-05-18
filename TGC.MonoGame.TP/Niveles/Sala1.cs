@@ -41,7 +41,7 @@ namespace TGC.MonoGame.TP.Niveles
         public override List<TP.Elements.Object> GetPhysicalObjects()
         {
             List<TP.Elements.Object> l = base.GetPhysicalObjects();
-            l.Add(Pilar);
+            l.AddRange(Pilar.getPhysicalObjects());
             return l;
         }
         public override List<TP.Elements.LogicalObject> GetLogicalObjects()

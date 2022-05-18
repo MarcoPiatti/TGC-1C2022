@@ -6,12 +6,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TGC.MonoGame.TP.Elements
 {
-    public class SpinningPillar : Object
+    public class SpinningPillar
     {
         private Cylinder Columna { get; set; }
 
         private List<Escalon> Escalones { get; set; }
-        private float velocidadAngular = -90f;
+        private float velocidadAngular = -45f;
 
         public SpinningPillar(GraphicsDevice graphicsDevice, ContentManager content, Vector3 posicion){
             Columna = new Cylinder(graphicsDevice,content, Color.White, 1f, 1f, 32);
@@ -37,31 +37,27 @@ namespace TGC.MonoGame.TP.Elements
             }
         }
 
-        public override void Draw(Matrix view, Matrix projection){
+        public void Draw(Matrix view, Matrix projection){
             Columna.Draw(view, projection);
             foreach(Escalon e in Escalones){
                 e.Draw(view, projection);
             }
         }
 
-        public override bool Intersects(Sphere s)
-        {
-            return Columna.Intersects(s) || Escalones.Exists(e => e.Intersects(s));
-        }
-
-        public override Vector3 GetDirectionFromCollision(Sphere s)
-        {
-            if(Columna.Intersects(s)){
-                return Columna.GetDirectionFromCollision(s);
+        public List<TP.Elements.Object> getPhysicalObjects(){
+            List<TP.Elements.Object> l = new List<TP.Elements.Object>();
+            l.Add(Columna);
+            foreach(Escalon e in Escalones){
+                l.Add(e.Cuerpo);
             }
-            return Escalones.Find(e => e.Intersects(s)).GetDirectionFromCollision(s);
+            return l;
         }
     }
 
     internal class Escalon{
         private Vector3 ColumnCenter { get; set; }
         private Matrix ColumnCenterTranslation { get; set; }
-        private Cube Cuerpo { get; set; }
+        public Cube Cuerpo { get; set; }
         private Matrix EscalonWorld { get; set; }
         private Vector3 EscalonScaleVector = new Vector3(10f, 1f, 15f);
         private Matrix EscalonScale;
