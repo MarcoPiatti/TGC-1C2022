@@ -72,7 +72,7 @@ namespace TGC.MonoGame.TP
             var longFallSound = "long_fall";
             longfall_sound = content.Load<SoundEffect>("Music/" + longFallSound);
             Body = new Sphere(graphics, content, 1f, 16, Color.Green);
-            Body.WorldUpdate(scale, new Vector3(0, 15, 20), Quaternion.Identity);
+            Body.WorldUpdate(scale, new Vector3(0, 15, 0), Quaternion.Identity);
             Position = Body.Position;
             JumpLine = new Sphere(graphics, content, 1f, 10, new Color(0f, 1f, 0f, 0.3f));
             JumpLine.WorldUpdate(JumpLineScale, Position + JumpLinePos, Quaternion.Identity);
