@@ -197,6 +197,14 @@ namespace TGC.MonoGame.TP.Elements
             Collider.HalfHeight *= scale.Y;
             Collider.Radius *= scale.X;
         }
+
+        public override void WorldUpdate(Vector3 scale, Vector3 newPosition, Matrix rotation)
+        {
+            base.WorldUpdate(scale, newPosition, rotation);
+            Collider.Center = newPosition;
+            Collider.HalfHeight = scale.Y/2;
+            Collider.Radius = scale.X/2;
+        }
         public override bool Intersects(Sphere s)
         {
             BoundingCylinder c = new BoundingCylinder(Collider.Center, Collider.Radius, Collider.HalfHeight + s.Collider.Radius);
