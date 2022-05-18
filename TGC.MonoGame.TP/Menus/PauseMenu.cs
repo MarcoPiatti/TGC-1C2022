@@ -33,8 +33,8 @@ namespace TGC.MonoGame.TP.Menus
 
             if (KeyCoolDown > 0) KeyCoolDown -= time;
 
-            if (selector.Y > 2) selector.Y = 0;
-            if (selector.Y < 0) selector.Y = 2;
+            if (selector.Y > 3) selector.Y = 0;
+            if (selector.Y < 0) selector.Y = 3;
         }
 
         public override void Draw(GraphicsDevice graphicsDevice)
@@ -46,7 +46,9 @@ namespace TGC.MonoGame.TP.Menus
 
             DrawSelectedText("OPCIONES (WIP)", 0, 0, 1, 1 - selector.Y);
 
-            DrawSelectedText("VOLVER AL MENU PRINCIPAL", 0, windowSize.Y * 1 / 7, 1, 2 - selector.Y);
+            DrawSelectedText("ACTIVAR GOD", 0, windowSize.Y * 1 / 8.5f, 1, 2 - selector.Y);
+
+            DrawSelectedText("VOLVER AL MENU PRINCIPAL", 0, windowSize.Y * 1 / 4, 1, 3 - selector.Y);
             //DrawCenterText("Presiona ENTER para comenzar", 1, Color.White);
         }
 
@@ -60,6 +62,11 @@ namespace TGC.MonoGame.TP.Menus
                     ChangeMenu(0);
                 }
                 if (selector.Y == 2)
+                {
+                    operations.Add("activarGod");
+                }
+
+                if (selector.Y == 3)
                 {
                     operations.Add("resetGame");
                     operations.Add("upMusic");

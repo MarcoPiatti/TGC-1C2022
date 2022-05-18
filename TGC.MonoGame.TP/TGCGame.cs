@@ -218,40 +218,47 @@ namespace TGC.MonoGame.TP
                 ChangeMenu(2);
                 MediaPlayer.Volume = MediaPlayer.Volume / 3;
             }
+            if (HUD.flag_menuSegunCamara)
+            {
+                if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
+                {
+                    Player.Move(Camera.RightDirection);
+                }
+                if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
+                {
+                    Player.Move(Camera.RightDirection * -1);
+                }
+                if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
+                {
+                    Player.Move(Camera.FrontDirection);
+                }
+                if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S))
+                {
+                    Player.Move(Camera.FrontDirection * -1);
+                }
+                if (keyboardState.IsKeyDown(Keys.Space))
+                {
+                    Player.Jump();
+                }
+                if (keyboardState.IsKeyDown(Keys.R))
+                {
+                    Player.Restart();
+                    NewGame();
+                }
+            }
 
-            if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
-            {
-                Player.Move(Camera.RightDirection);
-            }
-            if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
-            {
-                Player.Move(Camera.RightDirection * -1);
-            }
-            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
-            {
-                Player.Move(Camera.FrontDirection);
-            }
-            if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S))
-            {
-                Player.Move(Camera.FrontDirection * -1);
-            }
-            if (keyboardState.IsKeyDown(Keys.Space))
-            {
-                Player.Jump();
-            }
-            if (keyboardState.IsKeyDown(Keys.R))
-            {
-                Player.Restart();
-                NewGame();
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.H))
+           
+            if (Keyboard.GetState().IsKeyDown(Keys.G) && HUD.godActivado())
             {
                 if (CameraChangeCooldown <= 0)
                 {
+                    HUD.menuCambiarCamara();
                     cambiarCamara();
                     CameraChangeCooldown = 0.25f;
                 }
             }
+
+
             Player.Update(gameTime, Nivel.PhysicalObjects, Nivel.LogicalObjects);
 
 
@@ -288,7 +295,10 @@ namespace TGC.MonoGame.TP
             Effect.Parameters["View"].SetValue(Camera.View);
             Effect.Parameters["Projection"].SetValue(Camera.Projection);
             Effect.Parameters["eyePosition"].SetValue(Camera.Position);
+
+
             unaSkyBox.Draw(Camera.View, Camera.Projection, Camera.Position);
+
             Player.Draw(Camera.View, Camera.Projection);
             Nivel.Draw(gameTime, Camera.View, Camera.Projection);
             HUD.Draw(GraphicsDevice, gameTime);
@@ -380,12 +390,18 @@ namespace TGC.MonoGame.TP
                 {
                     MediaPlayer.Volume = MediaPlayer.Volume * 3;
                 }
+                if (selectedMenu.operations.Exists(op => op == "activarGod"))
+                {
+                    HUD.ActivarGod();
+                }
                 if (selectedMenu.operations.Exists(op => op == "changeMenu"))
                 {
                     Player = PlayerTypes[selectedMenu.SelectedPlayer()];
                     HUD.Player = Player;
                     ChangeMenu(selectedMenu.nextMenu);
                 }
+                
+
                 /*
                 if (selectedMenu.operations.Exists(op => op == "showCoins"))
                 {
