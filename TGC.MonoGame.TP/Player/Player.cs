@@ -27,7 +27,7 @@ namespace TGC.MonoGame.TP
         private float JumpForce = 15f;
         private float friction = 0.05f;
         public float Bounce = 0.5f;
-        private float CCC = 0.01f; //Collider Correction Constant
+        private float CCC = 0.02f; //Collider Correction Constant
         public int totalCoins { get; set; } = 0;
         public int lifes { get; set; } = 3;
         public bool lifesZero { get; set; } = false;
@@ -165,12 +165,14 @@ namespace TGC.MonoGame.TP
             {
                 if (o.Intersects(Body))
                 {
-                    var speed = VectorSpeed.Length() * elapsedTime;
+                    var speed = VectorSpeed.Length();
                     VectorSpeed = Vector3.Reflect(VectorSpeed, o.GetDirectionFromCollision(Body));
-                    VectorSpeed.Normalize();
+                    VectorSpeed = Vector3.Normalize(VectorSpeed);
                     VectorSpeed *= speed;
+                    int i=0;
                     while (o.Intersects(Body))
                     {
+                        i++;
                         Body.WorldUpdate(scale, Position + VectorSpeed * CCC, Quaternion.Identity);
                         Position = Body.Position;
                         JumpLine.WorldUpdate(JumpLineScale, Position + JumpLinePos, Quaternion.Identity);
