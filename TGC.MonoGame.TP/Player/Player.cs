@@ -146,10 +146,10 @@ namespace TGC.MonoGame.TP
             {
               if (Keyboard.GetState().IsKeyDown(Keys.Space))
               {
-                    currentPowerUp_2 = "Glide";
                     finalGravity = 0.2f;
-                    gladePuTime -= elapsedTime;
               }
+              currentPowerUp_2 = "Glide";
+              gladePuTime -= elapsedTime;
             } else
             {
                 currentPowerUp_2 = "N/A";
