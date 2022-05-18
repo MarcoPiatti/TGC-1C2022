@@ -26,4 +26,24 @@ namespace TGC.MonoGame.TP.Elements
         }
 
     }
+
+
+    public class KillerSphere : LogicalSphere
+    {
+        public KillerSphere(GraphicsDevice graphicsDevice, ContentManager content, float diameter, int teselation) : base(graphicsDevice, content, diameter, teselation, Color.Red)
+        {
+        }
+
+        public override void logicalAction(Player player)
+        {
+            player.returnToCheckPoint();
+
+        }
+
+        public override void Draw(Matrix view, Matrix projection)
+        {
+            Body.Draw(World, view, projection);
+        }
+
+    }
 }

@@ -20,4 +20,13 @@ namespace TGC.MonoGame.TP.Elements
             InitializeMovingObject(Points, graphicsDevice, content, movementType, speed);
         }
     }
+
+    public class MovingKillerSphere : MovingLogicalObject
+    {
+        public MovingKillerSphere(List<Vector3> Points, GraphicsDevice graphicsDevice, ContentManager content, int movementType = 1, float speed = 10f) //: base(Points, graphicsDevice, content, movementType, speed)
+        {
+            Body = new KillerSphere(graphicsDevice, content, 1, 16);
+            InitializeMovingObject(Points, graphicsDevice, content, movementType, speed);
+        }
+    }
 }
