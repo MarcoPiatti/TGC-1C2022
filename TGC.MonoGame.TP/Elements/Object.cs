@@ -98,6 +98,8 @@ namespace TGC.MonoGame.TP.Elements
                 v += m.Down * Math.Sign(Ydistance);
             if (Z < Zdistance || -Z > Zdistance)
                 v += m.Forward * Math.Sign(Zdistance);
+            if(v == Vector3.Zero) 
+                v = new Vector3(-0.25f, 0.96f, 0f); //Workaround rampa
             v.Normalize();
             return v;
         }
