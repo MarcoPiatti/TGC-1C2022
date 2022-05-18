@@ -29,7 +29,7 @@ namespace TGC.MonoGame.TP.Niveles
 
             // TODO: remover este power up
             //powerUp = new SpeedPU(graphicsDevice, content, new Vector3(0, 10, 0));
-            powerUp = new GladePU(graphicsDevice, content, new Vector3(0, 10, 0));
+            //powerUp = new GladePU(graphicsDevice, content, new Vector3(0, 10, 0));
 
             ParedSur = new Cube(graphicsDevice, content, posicion);
             ParedSur.WorldUpdate(new Vector3(1f, Size, Size), new Vector3(-Size / 2, Size / 2, 0) + posicion,Quaternion.Identity);
@@ -45,13 +45,13 @@ namespace TGC.MonoGame.TP.Niveles
 
         public override void DrawTranslucent(GameTime gameTime, Matrix view, Matrix projection)
         {
-            powerUp.Draw(view, projection);
+            //powerUp.Draw(view, projection);
         }
 
         public override void Update(GameTime gameTime)
         {
             Coin.Update(gameTime);
-            powerUp.Update(gameTime);
+            //powerUp.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -66,7 +66,7 @@ namespace TGC.MonoGame.TP.Niveles
         {
             List<TP.Elements.LogicalObject> logicalObjects = base.GetLogicalObjects();
             logicalObjects.Add(Coin);
-            logicalObjects.Add(powerUp);
+            //logicalObjects.Add(powerUp);
             return logicalObjects;
         }
     }
