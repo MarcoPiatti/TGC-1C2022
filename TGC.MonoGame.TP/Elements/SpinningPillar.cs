@@ -11,7 +11,7 @@ namespace TGC.MonoGame.TP.Elements
         private Cylinder Columna { get; set; }
 
         private List<Escalon> Escalones { get; set; }
-        private float velocidadAngular = -45f;
+        private float velocidadAngular = -20f;
 
         public SpinningPillar(GraphicsDevice graphicsDevice, ContentManager content, Vector3 posicion){
             Columna = new Cylinder(graphicsDevice,content, Color.White, 1f, 1f, 32);
