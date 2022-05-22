@@ -46,6 +46,7 @@ namespace TGC.MonoGame.TP
         private SpriteBatch SpriteBatch { get; set; }
         private Model Model { get; set; }
         private Effect Effect { get; set; }
+        private Effect PlayerEffect { get; set; }
         private float Rotation { get; set; }
         private Matrix World { get; set; }
         private Matrix View { get; set; }
@@ -90,7 +91,7 @@ namespace TGC.MonoGame.TP
             //originalmente variable local screenSize
             screenSize = new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
             //Pongo el jugador antes de la camara porque sino no hay Player.Position
-            Player = new Player(GraphicsDevice, Content);
+            Player = new Player(GraphicsDevice, Content, null);
             //Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), screenSize);
             Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, Player.Position, screenSize);
             Camera.FrontDirection = Vector3.Normalize(new Vector3(Player.Position.X - Camera.Position.X, 0, Player.Position.Z - Camera.Position.Z));
@@ -129,7 +130,7 @@ namespace TGC.MonoGame.TP
             selectedMenu = new MainMenu(SpriteFont, SpriteBatch, PlayerTypes, Content);
 
             Effect = Content.Load<Effect>(ContentFolderEffects + "ShaderBlingPhong");
-
+           
             Effect.Parameters["lightPosition"].SetValue(new Vector3(0, 1000, 0));
 
             Effect.Parameters["ambientColor"].SetValue(Color.White.ToVector3());
@@ -139,6 +140,9 @@ namespace TGC.MonoGame.TP
             Effect.Parameters["KAmbient"].SetValue(0.7f);
             Effect.Parameters["KDiffuse"].SetValue(0.6f);
             Effect.Parameters["KSpecular"].SetValue(0.3f);
+
+            
+
 
             SongName = "menu_music";
             Song = Content.Load<Song>(ContentFolderMusic + SongName);
@@ -419,9 +423,9 @@ namespace TGC.MonoGame.TP
             Nivel = new Nivel(Content, GraphicsDevice);
             Player.Nivel = Nivel;
             PlayerTypes = new Player[]{
-                new PlayerGum(GraphicsDevice, Content),
-                new PlayerIron(GraphicsDevice, Content),
-                new PlayerWood(GraphicsDevice, Content)
+                new PlayerGum(GraphicsDevice, Content, null),
+                new PlayerIron(GraphicsDevice, Content, null),
+                new PlayerWood(GraphicsDevice, Content, null)
             };
 
             MediaPlayer.Stop();

@@ -170,6 +170,15 @@ namespace TGC.MonoGame.TP.Geometries
             // Draw the model, using BasicEffect.
             Draw(Effect);
         }
+        public void Draw(Matrix world, Matrix view, Matrix projection, Effect effect)
+        {
+            Effect.Parameters["World"].SetValue(world);
+            Effect.Parameters["View"].SetValue(view);
+            Effect.Parameters["Projection"].SetValue(projection);
+            Draw(effect);
+        }
+
+
 
         #endregion Draw
     }

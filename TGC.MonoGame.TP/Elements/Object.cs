@@ -22,6 +22,14 @@ namespace TGC.MonoGame.TP.Elements
         {
             Body.Draw(World, view, projection);
         }
+        public virtual void Draw(Matrix view, Matrix projection, Effect effect)
+        {
+            Body.Draw(World, view, projection, effect);
+        }
+        public virtual void Draw(Effect effect)
+        {
+            Body.Draw(effect);
+        }
 
         public virtual void WorldUpdate(Vector3 scale, Vector3 newPosition, Quaternion rotation)
         {

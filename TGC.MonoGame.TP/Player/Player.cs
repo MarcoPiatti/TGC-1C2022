@@ -17,6 +17,13 @@ namespace TGC.MonoGame.TP
 {
     public class Player
     {
+
+        /// <summary>
+        public float KAmbientGoma = 0.8f;
+        public float KDiffuseGoma = 0.6f;
+        public float KSpecularGoma = 0.8f;
+        ///
+
         public Vector3 PositionE { get; private set; }
         public Vector3 VectorSpeed { get; set; }
         public Vector3 roundPosition { get; set; }
@@ -61,8 +68,29 @@ namespace TGC.MonoGame.TP
         public SoundEffect jump_sound { get; set; }
         public SoundEffect fall_sound { get; set; }
         public SoundEffect longfall_sound { get; set; }
-        public Player(GraphicsDevice graphics, ContentManager content)
+
+        //Texturas
+        private Texture2D Texture1 { get; set; }
+        private Texture2D Texture2 { get; set; }
+        private Texture2D Texture3 { get; set; }
+        private Model Model { get; set; }
+        private Texture2D PlayerTexture { get; set; }
+        public Effect PlayerEffect { get; set; }
+        private GraphicsDevice currentGraphics { get; set; }
+        private RenderTargetCube EnvironmentMapRenderTarget { get; set; }
+
+        public Player(GraphicsDevice graphics, ContentManager content, Effect Effect)
         {
+
+            Model = content.Load<Model>("Models/" + "geometries/sphere");
+            Texture1 = content.Load<Texture2D>("Textures/" + "Texture1");
+            currentGraphics = graphics;
+            this.PlayerEffect = content.Load<Effect>("Effects/" + "PlayerShader");
+            //Texture2 = content.Load<Texture2D>("Textures/" + "texture1");
+            //Texture3 = content.Load<Texture2D>("Textures/" + "texture1");
+            PlayerTexture = Texture1;
+
+            PlayerEffect.Parameters["ModelTexture"].SetValue(PlayerTexture);
             var deadSound = "dead";
             dead_sound = content.Load<SoundEffect>("Music/" + deadSound);
             var jumpSound = "jump";
@@ -76,11 +104,47 @@ namespace TGC.MonoGame.TP
             Position = Body.Position;
             JumpLine = new Sphere(graphics, content, 1f, 10, new Color(0f, 1f, 0f, 0.3f));
             JumpLine.WorldUpdate(JumpLineScale, Position + JumpLinePos, Quaternion.Identity);
+            foreach (var meshPart in Model.Meshes.SelectMany(mesh => mesh.MeshParts))
+                meshPart.Effect = PlayerEffect;
         }
 
         public void Draw(Matrix view, Matrix projection)
         {
-            Body.Draw(view, projection);
+
+            Body.Draw(view, projection, PlayerEffect);
+            // Set BasicEffect parameters.
+            var playerWorld = this.Body.World;
+            
+            PlayerEffect.Parameters["World"].SetValue(playerWorld);
+            PlayerEffect.Parameters["View"].SetValue(view);
+            PlayerEffect.Parameters["Projection"].SetValue(projection);
+            PlayerEffect.Parameters["ModelTexture"].SetValue(PlayerTexture);
+
+            /*
+            PlayerEffect.Parameters["KAmbient"].SetValue(KAmbientGoma);
+            PlayerEffect.Parameters["KDiffuse"].SetValue(KDiffuseGoma);
+            PlayerEffect.Parameters["KSpecular"].SetValue(KSpecularGoma);
+            PlayerEffect.Parameters["shininess"].SetValue(1f);
+            */
+
+            
+            var mesh = Model.Meshes.FirstOrDefault();
+
+            /*
+            foreach (var part in mesh.MeshParts)
+            {
+                part.Effect = PlayerEffect;
+                var worldM = mesh.ParentBone.Transform * this.Body.World;
+                PlayerEffect.Parameters["World"].SetValue(worldM);
+                PlayerEffect.Parameters["View"].SetValue(view);
+                PlayerEffect.Parameters["Projection"].SetValue(projection);
+                //PlayerEffect.Parameters["InverseTransposeWorld"].SetValue(Matrix.Invert(Matrix.Transpose(worldM)));
+                
+            }
+            mesh.Draw();
+            */
+
+
             //JumpLine.Draw(view, projection);
         }
 
@@ -101,18 +165,20 @@ namespace TGC.MonoGame.TP
             PhyisicallyInteract(objects, elapsedTime);
             LogicalInteract(logicalObjects);
             if (Position.Y > 0) PreFallPosition = Position;
-            else if(Position.Y < -10 && Position.Y > -200) {
+            else if (Position.Y < -10 && Position.Y > -200)
+            {
                 if (!flag_fall && !lifesZero)
                 {
                     fall_sound.Play();
                     flag_fall = true;
                 }
-                else if(flag_longfall)
+                else if (flag_longfall)
                 {
                     longfall_sound.Play();
                 }
             }
-            else if (Position.Y < -200) {
+            else if (Position.Y < -200)
+            {
                 returnToCheckPoint();
                 flag_fall = false;
                 flag_longfall = false;
@@ -144,13 +210,14 @@ namespace TGC.MonoGame.TP
 
             if (gladePuTime > 0)
             {
-              if (Keyboard.GetState().IsKeyDown(Keys.Space))
-              {
+                if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                {
                     finalGravity = 0.2f;
-              }
-              currentPowerUp_2 = "Glide";
-              gladePuTime -= elapsedTime;
-            } else
+                }
+                currentPowerUp_2 = "Glide";
+                gladePuTime -= elapsedTime;
+            }
+            else
             {
                 currentPowerUp_2 = "N/A";
                 gladeActivated = false;
@@ -159,7 +226,7 @@ namespace TGC.MonoGame.TP
             return finalGravity;
         }
 
-        public void PhyisicallyInteract(List<TP.Elements.Object> objects,float elapsedTime)
+        public void PhyisicallyInteract(List<TP.Elements.Object> objects, float elapsedTime)
         {
             foreach (TP.Elements.Object o in objects)
             {
@@ -169,7 +236,7 @@ namespace TGC.MonoGame.TP
                     VectorSpeed = Vector3.Reflect(VectorSpeed, o.GetDirectionFromCollision(Body));
                     VectorSpeed = Vector3.Normalize(VectorSpeed);
                     VectorSpeed *= speed;
-                    int i=0;
+                    int i = 0;
                     while (o.Intersects(Body))
                     {
                         i++;
@@ -216,10 +283,12 @@ namespace TGC.MonoGame.TP
         public void Jump()
         {
             var flag_jump = false;
-            if (grounded) {
+            if (grounded)
+            {
 
                 VectorSpeed += Vector3.Up * JumpForce;
-                if (!flag_jump) {
+                if (!flag_jump)
+                {
                     jump_sound.Play();
                     flag_jump = true;
                 }
@@ -233,7 +302,8 @@ namespace TGC.MonoGame.TP
 
         public void returnToCheckPoint()
         {
-            if(!(lifes == 0)) {
+            if (!(lifes == 0))
+            {
                 VectorSpeed = Vector3.Zero;
                 Position = new Vector3(MathF.Truncate((PreFallPosition.X + 50) / 100) * 100, 10, 0);
                 Position = Position + new Vector3(-45, 0, 0);
@@ -245,7 +315,8 @@ namespace TGC.MonoGame.TP
             }
             else
             {
-                if (!flag_play) {
+                if (!flag_play)
+                {
                     dead_sound.Play();
 
                     flag_play = true;
@@ -265,7 +336,7 @@ namespace TGC.MonoGame.TP
         public void Restart()
         {
             VectorSpeed = Vector3.Zero;
-            Position = new Vector3(0,0,0);
+            Position = new Vector3(0, 0, 0);
             Position = Position + new Vector3(0, 15, 0);
             Body.Position = Position;
             Body.WorldUpdate(scale, Position, Quaternion.Identity);
@@ -276,7 +347,7 @@ namespace TGC.MonoGame.TP
             lifesZero = false;
             flag_play = false;
             //totalCoins = 0;
-           // Nivel.RestartLogicalObjects();
+            // Nivel.RestartLogicalObjects();
         }
     }
 

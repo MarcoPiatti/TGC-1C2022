@@ -25,6 +25,16 @@ float KSpecular;
 float3 lightPosition; // Posicion de la fuente de luz
 float3 eyePosition; // Camera position
 
+//texture2D ModelTexture;
+/*sampler2D textureSampler = sampler_state
+{
+    Texture = (ModelTexture);
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+*/
 //Tomada de https://gist.github.com/mattatz/86fff4b32d198d0928d0fa4ff32cf6fa
 float4x4 inverse(float4x4 m) {
     float n11 = m[0][0], n12 = m[1][0], n13 = m[2][0], n14 = m[3][0];
@@ -69,6 +79,7 @@ struct VertexShaderInput
 {
 	float4 Position : POSITION0;
     float4 Color : COLOR0;
+    //float2 TextureCoordinates : TEXCOORD0;
     float4 Normal : NORMAL;
 };
 
@@ -77,6 +88,7 @@ struct VertexShaderOutput
 	float4 Position : SV_POSITION;
     float4 WorldPosition : TEXCOORD1;
     float4 Normal : TEXCOORD2;
+    //float2 TextureCoordinates : TEXCOORD0;
     float4 Color : COLOR0;
 };
 
@@ -95,7 +107,7 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 
     float4x4 inverseTransposeWorld = transpose(inverse(World));
     output.Normal = mul(input.Normal, inverseTransposeWorld);
-	
+    //output.TextureCoordinates = input.TextureCoordinates;
     output.Color = input.Color;
 
 	return output;
@@ -109,7 +121,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float3 halfVector = normalize(lightDirection + viewDirection);
     
     float3 ambientLight = ambientColor * KAmbient;
-
+   // float4 texelColor = tex2D(textureSampler, input.TextureCoordinates);
 	// Calculate the diffuse light
     float NdotL = saturate(dot(input.Normal.xyz, lightDirection));
     float3 diffuseLight = KDiffuse * diffuseColor * NdotL;
@@ -120,6 +132,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     
     // Final calculation
     float4 finalColor = float4(saturate(ambientLight + diffuseLight) * input.Color.rgb + specularLight, input.Color.a);
+    //float4 finalColor = float4(saturate(ambientLight + diffuseLight)  * texelColor.rgb + specularLight, texelColor.a);
     return finalColor;
 }
 
