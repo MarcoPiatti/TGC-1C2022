@@ -25,6 +25,8 @@ namespace TGC.MonoGame.TP.Niveles
         public Cube ParedNorteDer { get; set; }
         public Cube Techo { get; set; }
 
+        public CheckPointWall checkpoint;
+
         public Vector3 Posicion;
         public static float Size = 100f;
 
@@ -51,6 +53,9 @@ namespace TGC.MonoGame.TP.Niveles
 
             Techo = new Cube(graphicsDevice, content, posicion);
             Techo.WorldUpdate(new Vector3(Size, 1f, Size), new Vector3(0, Size, 0) + Posicion, Quaternion.Identity);
+
+            checkpoint = new CheckPointWall(graphicsDevice, content, posicion);
+            checkpoint.WorldUpdate(new Vector3(1f, Size, Size * 0.1f), new Vector3(Size/2, Size/2, 0) + Posicion, Quaternion.Identity);
         }
 
         public virtual void Draw(GameTime gameTime, Matrix view, Matrix projection)
@@ -62,6 +67,7 @@ namespace TGC.MonoGame.TP.Niveles
             ParedNorteIzq.Draw(view, projection);
             ParedNorteDer.Draw(view, projection);
             Techo.Draw(view, projection);
+            checkpoint.Draw(view, projection);
         }
 
         public virtual void DrawTranslucent(GameTime gameTime, Matrix view, Matrix projection)
@@ -81,6 +87,7 @@ namespace TGC.MonoGame.TP.Niveles
         public virtual List <TP.Elements.LogicalObject> GetLogicalObjects()
         {
             List<TP.Elements.LogicalObject> logicalObjects = new List<TP.Elements.LogicalObject>();
+            logicalObjects.Add(checkpoint);
             return logicalObjects;
         }
             public virtual void Update(GameTime gameTime) { }

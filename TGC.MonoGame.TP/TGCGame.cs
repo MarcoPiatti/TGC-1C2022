@@ -306,7 +306,7 @@ namespace TGC.MonoGame.TP
             unaSkyBox.Draw(Camera.View, Camera.Projection, Camera.Position);
 
             Player.Draw(Camera.View, Camera.Projection);
-            Nivel.Draw(gameTime, Camera.View, Camera.Projection);
+            Nivel.Draw(gameTime, Camera.View, Camera.Projection, Player.Position.X);
             HUD.Draw(GraphicsDevice, gameTime);
            
         }

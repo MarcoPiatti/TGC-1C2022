@@ -79,6 +79,8 @@ namespace TGC.MonoGame.TP
         private GraphicsDevice currentGraphics { get; set; }
         private RenderTargetCube EnvironmentMapRenderTarget { get; set; }
 
+        public Vector3 checkpoint = new Vector3(-45, 10, 0);
+
         public Player(GraphicsDevice graphics, ContentManager content, Effect Effect)
         {
 
@@ -305,8 +307,7 @@ namespace TGC.MonoGame.TP
             if (!(lifes == 0))
             {
                 VectorSpeed = Vector3.Zero;
-                Position = new Vector3(MathF.Truncate((PreFallPosition.X + 50) / 100) * 100, 10, 0);
-                Position = Position + new Vector3(-45, 0, 0);
+                Position = checkpoint;
                 Body.Position = Position;
                 Body.WorldUpdate(scale, Position, Quaternion.Identity);
                 JumpLine.WorldUpdate(JumpLineScale, Position + JumpLinePos, Quaternion.Identity);

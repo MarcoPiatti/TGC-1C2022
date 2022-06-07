@@ -61,7 +61,7 @@ namespace TGC.MonoGame.TP.Niveles
             Effect = content.Load<Effect>(ContentFolderEffects + "BasicShader");
         }
 
-        public void Draw(GameTime gameTime, Matrix view, Matrix projection)
+        public void Draw(GameTime gameTime, Matrix view, Matrix projection, float playerPosX)
         {
 
             // Set the View and Projection matrices, needed to draw every 3D model
@@ -69,12 +69,10 @@ namespace TGC.MonoGame.TP.Niveles
             Effect.Parameters["Projection"].SetValue(projection);
             
             foreach (Sala s in Salas){
-                s.Draw(gameTime, view, projection);
-            }
-
-            foreach (Sala s in Salas)
-            {
-                s.DrawTranslucent(gameTime, view, projection);
+                if(playerPosX > s.Posicion.X - Sala.Size && playerPosX < s.Posicion.X + Sala.Size * 1.6f) {
+                    s.Draw(gameTime, view, projection);
+                    s.DrawTranslucent(gameTime, view, projection);
+                }
             }
 
         }
