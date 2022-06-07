@@ -7,6 +7,7 @@ using TGC.MonoGame.TP.Menus;
 using Microsoft.Xna.Framework.Media;
 using TGC.MonoGame.Niveles.SkyBox;
 using System.Collections.Generic;
+using TGC.MonoGame.TP.Elements;
 
 namespace TGC.MonoGame.TP
 {
@@ -41,7 +42,7 @@ namespace TGC.MonoGame.TP
             // Hace que el mouse sea visible.
             IsMouseVisible = true;
         }
-         
+
         private GraphicsDeviceManager Graphics { get; }
         private SpriteBatch SpriteBatch { get; set; }
         private Model Model { get; set; }
@@ -72,7 +73,8 @@ namespace TGC.MonoGame.TP
 
         //Menu
 
-        public Menu selectedMenu; 
+        public Menu selectedMenu;
+
         public HUD HUD { get; set; }
         private bool flag_play { get; set; }
 
@@ -127,7 +129,7 @@ namespace TGC.MonoGame.TP
             SpriteFont = Content.Load<SpriteFont>(ContentFolderSpriteFonts + "Cascadia/CascadiaCodePL");
             
             HUD = new HUD(SpriteFont, SpriteBatch, Content, Player);
-            selectedMenu = new MainMenu(SpriteFont, SpriteBatch, PlayerTypes, Content);
+            selectedMenu = new MainMenu(GraphicsDevice, SpriteFont, SpriteBatch, PlayerTypes, Content);
 
             Effect = Content.Load<Effect>(ContentFolderEffects + "ShaderBlingPhong");
            
@@ -282,7 +284,7 @@ namespace TGC.MonoGame.TP
 
             if(selectedMenu != null)
             {
-                selectedMenu.Draw(GraphicsDevice);
+                selectedMenu.Draw(GraphicsDevice, Content, Camera.View, Camera.Projection);
                 return;
             }
 
@@ -351,7 +353,7 @@ namespace TGC.MonoGame.TP
             }
             if (menu == 1)
             {
-                selectedMenu = new MainMenu(SpriteFont, SpriteBatch, PlayerTypes, Content);
+                selectedMenu = new MainMenu(GraphicsDevice, SpriteFont, SpriteBatch, PlayerTypes, Content);
                 MediaPlayer.Play(Song);
             }
             if (menu == 2)
@@ -376,7 +378,7 @@ namespace TGC.MonoGame.TP
         {
             if (selectedMenu != null)
             {
-                selectedMenu.Update(GraphicsDevice, gameTime, keyboardState);
+                selectedMenu.Update(GraphicsDevice, Content, gameTime, keyboardState);
                 if (selectedMenu.operations.Exists(op => op == "exitGame"))
                 {
                     Exit();

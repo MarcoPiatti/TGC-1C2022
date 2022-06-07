@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using TGC.MonoGame.TP.Elements;
 using TGC.MonoGame.TP.Geometries;
 
 namespace TGC.MonoGame.TP.Menus
@@ -17,15 +18,21 @@ namespace TGC.MonoGame.TP.Menus
         public Player[] playerTypes;
         public GameTime currentGameTime { get; set; }
         public float Cooldown { get; set; }
-        public MainMenu(SpriteFont SpriteFont, SpriteBatch SpriteBatch, Player[] playerTypes, ContentManager content) : base(SpriteFont, SpriteBatch, content)
+
+        public List<Cylinder> cylinders;
+        public Cylinder piso;
+
+        public MainMenu(GraphicsDevice graphicsDevice, SpriteFont SpriteFont, SpriteBatch SpriteBatch, Player[] playerTypes, ContentManager content) : base(SpriteFont, SpriteBatch, content)
         {
             this.playerTypes = playerTypes;
+            piso = new Cylinder(graphicsDevice, content, Color.Orange);
+            piso.World = Matrix.CreateScale(3, 0.5f, 3) * Matrix.CreateTranslation(-23, 9f, 4);
         }
 
-        public override void Update(GraphicsDevice graphicsDevice, GameTime gameTime, KeyboardState keyboardState)
+        public override void Update(GraphicsDevice graphicsDevice, ContentManager content, GameTime gameTime, KeyboardState keyboardState)
         {
             currentGameTime = gameTime;
-            base.Update(graphicsDevice, gameTime, keyboardState);
+            base.Update(graphicsDevice, content, gameTime, keyboardState);
             float time = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
 
             if (KeyCoolDown <= 0)
@@ -40,9 +47,17 @@ namespace TGC.MonoGame.TP.Menus
             if (selector.Y < 0) selector.Y = 3;
         }
 
-        public override void Draw(GraphicsDevice graphicsDevice)
+        public override void Draw(GraphicsDevice graphicsDevice, ContentManager content, Matrix view, Matrix projection)
         {
-            base.Draw(graphicsDevice);
+            base.Draw(graphicsDevice, content, view, projection);
+
+            piso.Draw(view, projection);
+
+            GeometricPrimitive player = playerTypes[selectedPlayer].Body.Body;
+            Matrix playerWorld = Matrix.CreateTranslation(-23, 9.5f, 4);
+
+            player.Draw(playerWorld, view, projection);
+
             DrawCenterTextY("Rogue       ", windowSize.Y * 1 / 12, 2, Color.Green);
             DrawCenterTextY("      it    ", windowSize.Y * 1 / 12, 2, Color.PaleGreen);
             DrawCenterTextY("         up ", windowSize.Y * 1 / 12, 2, Color.SpringGreen);

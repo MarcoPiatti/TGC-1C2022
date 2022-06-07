@@ -37,12 +37,12 @@ namespace TGC.MonoGame.TP.Menus
             this.SpriteBatch = SpriteBatch;
         }
 
-        public virtual void Update(GraphicsDevice graphicsDevice, GameTime gameTime, KeyboardState keyboardState)
+        public virtual void Update(GraphicsDevice graphicsDevice, ContentManager content, GameTime gameTime, KeyboardState keyboardState)
         {
             windowSize = new Vector2(graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height);
         }
 
-        public virtual void Draw(GraphicsDevice graphicsDevice)
+        public virtual void Draw(GraphicsDevice graphicsDevice, ContentManager content, Matrix view, Matrix projection)
         {
             graphicsDevice.Clear(Color.Black);
             MenuHelper();

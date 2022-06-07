@@ -20,9 +20,9 @@ namespace TGC.MonoGame.TP.Menus
         {
         }
 
-        public override void Update(GraphicsDevice graphicsDevice, GameTime gameTime, KeyboardState keyboardState)
+        public override void Update(GraphicsDevice graphicsDevice, ContentManager content, GameTime gameTime, KeyboardState keyboardState)
         {
-            base.Update(graphicsDevice, gameTime, keyboardState);
+            base.Update(graphicsDevice, content, gameTime, keyboardState);
             float time = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
 
             if (KeyCoolDown <= 0)
@@ -37,9 +37,9 @@ namespace TGC.MonoGame.TP.Menus
             if (selector.Y < 0) selector.Y = 3;
         }
 
-        public override void Draw(GraphicsDevice graphicsDevice)
+        public override void Draw(GraphicsDevice graphicsDevice, ContentManager content, Matrix view, Matrix projection)
         {
-            base.Draw(graphicsDevice);
+            base.Draw(graphicsDevice, content, view, projection);
             DrawCenterTextY("PAUSA", windowSize.Y * 1 / 12, 2, Color.CornflowerBlue);
 
             DrawSelectedText("REANUDAR", 0, - windowSize.Y * 1 / 7, 1, 0 - selector.Y);
