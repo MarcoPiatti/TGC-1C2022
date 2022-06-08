@@ -53,8 +53,10 @@ namespace TGC.MonoGame.TP.Menus
 
             piso.Draw(view, projection);
 
+            float time = Convert.ToSingle(currentGameTime.ElapsedGameTime.TotalSeconds);
+
             GeometricPrimitive player = playerTypes[selectedPlayer].Body.Body;
-            Matrix playerWorld = Matrix.CreateTranslation(-23, 1.3f, 3);
+            Matrix playerWorld = Matrix.CreateRotationY(time/2) * Matrix.CreateTranslation(-23, 1.3f, 3);
 
             player.Draw(playerWorld, view, projection);
 
