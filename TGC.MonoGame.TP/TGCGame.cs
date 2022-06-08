@@ -93,7 +93,7 @@ namespace TGC.MonoGame.TP
             //originalmente variable local screenSize
             screenSize = new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
             //Pongo el jugador antes de la camara porque sino no hay Player.Position
-            Player = new Player(GraphicsDevice, Content, null);
+            Player = new Player(GraphicsDevice, Content, null, Color.Green);
             //Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), screenSize);
             Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, Player.Position, screenSize);
             Camera.FrontDirection = Vector3.Normalize(new Vector3(Player.Position.X - Camera.Position.X, 0, Player.Position.Z - Camera.Position.Z));
@@ -429,7 +429,7 @@ namespace TGC.MonoGame.TP
                 new PlayerIron(GraphicsDevice, Content, null),
                 new PlayerWood(GraphicsDevice, Content, null)
             };
-
+            Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(0, 5, 0), screenSize);
             MediaPlayer.Stop();
         }
     }

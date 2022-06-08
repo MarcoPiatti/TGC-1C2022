@@ -81,7 +81,7 @@ namespace TGC.MonoGame.TP
 
         public Vector3 checkpoint = new Vector3(-45, 10, 0);
 
-        public Player(GraphicsDevice graphics, ContentManager content, Effect Effect)
+        public Player(GraphicsDevice graphics, ContentManager content, Effect Effect, Color color)
         {
 
             Model = content.Load<Model>("Models/" + "geometries/sphere");
@@ -101,7 +101,7 @@ namespace TGC.MonoGame.TP
             fall_sound = content.Load<SoundEffect>("Music/" + fallSound);
             var longFallSound = "long_fall";
             longfall_sound = content.Load<SoundEffect>("Music/" + longFallSound);
-            Body = new Sphere(graphics, content, 1f, 16, Color.Green);
+            Body = new Sphere(graphics, content, 1f, 16, color);
             Body.WorldUpdate(scale, new Vector3(0, 15, 0), Quaternion.Identity);
             Position = Body.Position;
             JumpLine = new Sphere(graphics, content, 1f, 10, new Color(0f, 1f, 0f, 0.3f));

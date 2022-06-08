@@ -26,7 +26,7 @@ namespace TGC.MonoGame.TP.Menus
         {
             this.playerTypes = playerTypes;
             piso = new Cylinder(graphicsDevice, content, Color.Orange);
-            piso.World = Matrix.CreateScale(3, 0.5f, 3) * Matrix.CreateTranslation(-23, 9f, 4);
+            piso.World = Matrix.CreateScale(3, 2f, 3) * Matrix.CreateTranslation(-23, 0f, 3);
         }
 
         public override void Update(GraphicsDevice graphicsDevice, ContentManager content, GameTime gameTime, KeyboardState keyboardState)
@@ -54,7 +54,7 @@ namespace TGC.MonoGame.TP.Menus
             piso.Draw(view, projection);
 
             GeometricPrimitive player = playerTypes[selectedPlayer].Body.Body;
-            Matrix playerWorld = Matrix.CreateTranslation(-23, 9.5f, 4);
+            Matrix playerWorld = Matrix.CreateTranslation(-23, 1.3f, 3);
 
             player.Draw(playerWorld, view, projection);
 
