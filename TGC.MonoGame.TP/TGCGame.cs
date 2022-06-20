@@ -82,7 +82,20 @@ namespace TGC.MonoGame.TP
 
         //Skybox
         private SkyBox unaSkyBox { get; set; }
-    
+
+        //Sombras
+
+        private RenderTarget2D ShadowMapRenderTarget;
+
+        private const int ShadowmapSize = 1024 * 20;
+
+        private TargetCamera ShadowCamera;
+
+        private Vector3 LightPosition = new Vector3(0, 10, 0);
+
+        private readonly float ShadowCameraFarPlaneDistance = 3000f;
+
+        private readonly float ShadowCameraNearPlaneDistance = 5f;
 
         /// <summary>
         ///     Se llama una sola vez, al principio cuando se ejecuta el ejemplo.
@@ -100,7 +113,14 @@ namespace TGC.MonoGame.TP
             Camera.RightDirection = Vector3.Normalize(Vector3.Cross(Camera.FrontDirection, Vector3.Up));
             //Camera = new TargetCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(-30, 30, 0), new Vector3(0,0,0));
 
+            ShadowCamera = new TargetCamera(1f, LightPosition, Vector3.Zero);
+            ShadowCamera.BuildProjection(1f, ShadowCameraNearPlaneDistance, ShadowCameraFarPlaneDistance,
+                MathHelper.PiOver2);
+
             // La logica de inicializacion que no depende del contenido se recomienda poner en este metodo.
+
+            ShadowMapRenderTarget = new RenderTarget2D(GraphicsDevice, ShadowmapSize, ShadowmapSize, false,
+                SurfaceFormat.Single, DepthFormat.Depth24, 0, RenderTargetUsage.PlatformContents);
 
             // Configuramos nuestras matrices de la escena.
             World = Matrix.Identity;
@@ -133,7 +153,7 @@ namespace TGC.MonoGame.TP
 
             Effect = Content.Load<Effect>(ContentFolderEffects + "ShaderBlingPhong");
            
-            Effect.Parameters["lightPosition"].SetValue(new Vector3(0, 1000, 0));
+            Effect.Parameters["lightPosition"].SetValue(LightPosition);
 
             Effect.Parameters["ambientColor"].SetValue(Color.White.ToVector3());
             Effect.Parameters["diffuseColor"].SetValue(Color.White.ToVector3());
@@ -204,7 +224,11 @@ namespace TGC.MonoGame.TP
                 }
                 return;
             }
-                
+
+            ShadowCamera.Position = LightPosition + Player.Position;
+            ShadowCamera.BuildView();
+            Effect.Parameters["lightPosition"].SetValue(LightPosition + Player.Position);
+
 
             if (CameraChangeCooldown > 0)
             CameraChangeCooldown -= Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
@@ -288,6 +312,8 @@ namespace TGC.MonoGame.TP
                 return;
             }
 
+            DrawShadowMap(gameTime);
+
             //Despues del menu restablezco
 
             GraphicsDevice.RasterizerState = new RasterizerState { CullMode = CullMode.None };
@@ -295,13 +321,17 @@ namespace TGC.MonoGame.TP
 
 
             // Aca deberiamos poner toda la logia de renderizado del juego.
+            GraphicsDevice.SetRenderTarget(null);
             GraphicsDevice.Clear(Color.Cyan);
-            
+
             // Para dibujar le modelo necesitamos pasarle informacion que el efecto esta esperando.
+            Effect.CurrentTechnique = Effect.Techniques["BasicColorDrawing"];
             Effect.Parameters["View"].SetValue(Camera.View);
             Effect.Parameters["Projection"].SetValue(Camera.Projection);
             Effect.Parameters["eyePosition"].SetValue(Camera.Position);
-
+            Effect.Parameters["shadowMapSize"]?.SetValue(Vector2.One * ShadowmapSize);
+            Effect.Parameters["shadowMap"]?.SetValue(ShadowMapRenderTarget);
+            Effect.Parameters["LightViewProjection"]?.SetValue(ShadowCamera.View * ShadowCamera.Projection);
 
             unaSkyBox.Draw(Camera.View, Camera.Projection, Camera.Position);
 
@@ -310,7 +340,23 @@ namespace TGC.MonoGame.TP
             HUD.Draw(GraphicsDevice, gameTime);
            
         }
-        
+
+        private void DrawShadowMap(GameTime gameTime)
+        {
+            Effect.Parameters["View"].SetValue(ShadowCamera.View);
+            Effect.Parameters["Projection"].SetValue(ShadowCamera.Projection);
+
+            //Seteamos render target en el shadowmap
+            GraphicsDevice.SetRenderTarget(ShadowMapRenderTarget);
+            GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1f, 0);
+
+            Effect.CurrentTechnique = Effect.Techniques["DepthPass"];
+
+            //Dibujamos en el shadowmap
+            Player.Draw(Camera.View, Camera.Projection);
+            Nivel.Draw(gameTime, Camera.View, Camera.Projection, Player.Position.X);
+        }
+
         public void DrawCenterText(string msg, float escala)
         {
             var W = GraphicsDevice.Viewport.Width;

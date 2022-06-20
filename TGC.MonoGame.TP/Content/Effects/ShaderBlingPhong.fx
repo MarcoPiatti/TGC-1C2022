@@ -25,6 +25,24 @@ float KSpecular;
 float3 lightPosition; // Posicion de la fuente de luz
 float3 eyePosition; // Camera position
 
+//Sombras
+static const float modulatedEpsilon = 0.000041200182749889791011810302734375;
+static const float maxEpsilon = 0.000023200045689009130001068115234375;
+float2 shadowMapSize;
+float4x4 LightViewProjection;
+
+texture shadowMap;
+sampler2D shadowMapSampler =
+sampler_state
+{
+    Texture = <shadowMap>;
+    MinFilter = Point;
+    MagFilter = Point;
+    MipFilter = Point;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+
 //texture2D ModelTexture;
 /*sampler2D textureSampler = sampler_state
 {
@@ -88,8 +106,21 @@ struct VertexShaderOutput
 	float4 Position : SV_POSITION;
     float4 WorldPosition : TEXCOORD1;
     float4 Normal : TEXCOORD2;
+    float4 LightSpacePosition : TEXCOORD3;
+    float4 WorldSpacePosition : TEXCOORD4;
     //float2 TextureCoordinates : TEXCOORD0;
     float4 Color : COLOR0;
+};
+
+struct DepthPassVertexShaderInput
+{
+    float4 Position : POSITION0;
+};
+
+struct DepthPassVertexShaderOutput
+{
+    float4 Position : SV_POSITION;
+    float4 ScreenSpacePosition : TEXCOORD1;
 };
 
 VertexShaderOutput MainVS(in VertexShaderInput input)
@@ -104,6 +135,10 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
     output.Position = mul(viewPosition, Projection);
 
     output.WorldPosition = worldPosition;
+	
+    output.WorldSpacePosition = mul(input.Position, World);
+    
+    output.LightSpacePosition = mul(output.WorldSpacePosition, LightViewProjection);
 
     float4x4 inverseTransposeWorld = transpose(inverse(World));
     output.Normal = mul(input.Normal, inverseTransposeWorld);
@@ -113,7 +148,7 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 	return output;
 }
 
-float4 MainPS(VertexShaderOutput input) : COLOR
+float4 BlingPhong(VertexShaderOutput input)
 {
     // Base vectors
     float3 lightDirection = normalize(lightPosition - input.WorldPosition.xyz);
@@ -121,7 +156,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float3 halfVector = normalize(lightDirection + viewDirection);
     
     float3 ambientLight = ambientColor * KAmbient;
-   // float4 texelColor = tex2D(textureSampler, input.TextureCoordinates);
+
 	// Calculate the diffuse light
     float NdotL = saturate(dot(input.Normal.xyz, lightDirection));
     float3 diffuseLight = KDiffuse * diffuseColor * NdotL;
@@ -132,9 +167,66 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     
     // Final calculation
     float4 finalColor = float4(saturate(ambientLight + diffuseLight) * input.Color.rgb + specularLight, input.Color.a);
-    //float4 finalColor = float4(saturate(ambientLight + diffuseLight)  * texelColor.rgb + specularLight, texelColor.a);
     return finalColor;
 }
+
+float4 Shadows(VertexShaderOutput input, float4 color)
+{
+    float3 lightSpacePosition = input.LightSpacePosition.xyz / input.LightSpacePosition.w;
+    float2 shadowMapTextureCoordinates = 0.5 * lightSpacePosition.xy + float2(0.5, 0.5);
+    shadowMapTextureCoordinates.y = 1.0f - shadowMapTextureCoordinates.y;
+	
+    float3 normal = normalize(input.Normal.rgb);
+    float3 lightDirection = normalize(lightPosition - input.WorldSpacePosition.xyz);
+    float inclinationBias = max(modulatedEpsilon * (1.0 - dot(normal, lightDirection)), maxEpsilon);
+	
+	// Sample and smooth the shadowmap
+	// Also perform the comparison inside the loop and average the result
+    float notInShadow = 0.0;
+    float2 texelSize = 1.0 / shadowMapSize;
+    for (int x = -1; x <= 1; x++)
+        for (int y = -1; y <= 1; y++)
+        {
+            float pcfDepth = tex2D(shadowMapSampler, shadowMapTextureCoordinates + float2(x, y) * texelSize).r + inclinationBias;
+            notInShadow += step(lightSpacePosition.z, pcfDepth) / 9.0;
+        }
+	
+    float4 baseColor = color;
+    baseColor.rgb *= 0.5 + 0.5 * notInShadow;
+    return baseColor;
+}
+
+float4 MainPS(VertexShaderOutput input) : COLOR
+{
+    float4 finalColor;
+    finalColor = BlingPhong(input);
+    finalColor = Shadows(input, finalColor);
+    return finalColor;
+}
+
+DepthPassVertexShaderOutput DepthVS(in DepthPassVertexShaderInput input)
+{
+    DepthPassVertexShaderOutput output;
+    float4x4 WorldViewProjection = mul(mul(World, View), Projection);
+    output.Position = mul(input.Position, WorldViewProjection);
+    output.ScreenSpacePosition = mul(input.Position, WorldViewProjection);
+    return output;
+}
+
+float4 DepthPS(in DepthPassVertexShaderOutput input) : COLOR
+{
+    float depth = input.ScreenSpacePosition.z / input.ScreenSpacePosition.w;
+    return float4(depth, depth, depth, 1.0);
+}
+
+technique DepthPass
+{
+    pass Pass0
+    {
+        VertexShader = compile VS_SHADERMODEL DepthVS();
+        PixelShader = compile PS_SHADERMODEL DepthPS();
+    }
+};
 
 technique BasicColorDrawing
 {
