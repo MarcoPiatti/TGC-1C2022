@@ -27,8 +27,8 @@ namespace TGC.MonoGame.TP.Elements
         public void Draw(Matrix view, Matrix projection, float time)
         {
             effect.Parameters["DiffuseColor"].SetValue(Color.Red.ToVector3());
-            effect.Parameters["Alpha"].SetValue(1f);
-            effect.Parameters["Time"].SetValue(time);
+            effect.Parameters["Alpha"]?.SetValue(1f);
+            effect.Parameters["Time"]?.SetValue(time);
             Body.Draw(World, view, projection, this.effect);
         }
     }

@@ -30,18 +30,23 @@ struct VertexShaderInput
 struct VertexShaderOutput
 {
 	float4 Position : SV_POSITION;
+    float4 Pos : TEXCOORD0;
 };
 
 VertexShaderOutput MainVS(in VertexShaderInput input)
 {
     // Clear the output
 	VertexShaderOutput output = (VertexShaderOutput)0;
+	
     // Model space to World space
     float4 worldPosition = mul(input.Position, World);
     // World space to View space
     float4 viewPosition = mul(worldPosition, View);	
 	// View space to Projection space
     output.Position = mul(viewPosition, Projection);
+	
+	
+    output.Pos = worldPosition;
 
     return output;
 }
@@ -49,7 +54,14 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 float4 MainPS(VertexShaderOutput input) : COLOR
 {	
     float3 Color = DiffuseColor;
-    return float4(Color, Alpha * frac(Time));
+    float3 Black = float3(0.0, 0.0, 0.0);
+    float alpha = saturate(-input.Pos.y / 30 + 1);
+    if (input.Pos.y / 30 > frac(Time) * 1 - 0.1 && input.Pos.y / 30 < frac(Time) * 1 + 0.1)
+    {
+        alpha = lerp(alpha, 0, abs(input.Pos.y / 20 - frac(Time) + 0.1));
+    }
+    Color = lerp(Black, Color, alpha);
+    return float4(Color, alpha);
 }
 
 technique BasicColorDrawing
