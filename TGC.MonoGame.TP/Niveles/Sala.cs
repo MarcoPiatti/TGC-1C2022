@@ -65,7 +65,7 @@ namespace TGC.MonoGame.TP.Niveles
             ParedNorteIzq.Draw(view, projection);
             ParedNorteDer.Draw(view, projection);
             //Techo.Draw(view, projection);
-            checkpoint.Draw(view, projection);
+            checkpoint.Draw(view, projection, (float)gameTime.TotalGameTime.TotalSeconds);
         }
 
         public virtual void Draw(GameTime gameTime, Matrix view, Matrix projection)

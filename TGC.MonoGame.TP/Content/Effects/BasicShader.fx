@@ -48,7 +48,8 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {	
-    return float4(DiffuseColor, Alpha);
+    float3 Color = DiffuseColor;
+    return float4(Color, Alpha * frac(Time));
 }
 
 technique BasicColorDrawing
