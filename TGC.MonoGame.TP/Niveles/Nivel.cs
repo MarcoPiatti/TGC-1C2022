@@ -69,7 +69,7 @@ namespace TGC.MonoGame.TP.Niveles
             Effect.Parameters["Projection"].SetValue(projection);
             
             foreach (Sala s in Salas){
-                if(playerPosX > s.Posicion.X - Sala.Size && playerPosX < s.Posicion.X + Sala.Size * 1.6f) {
+                if(playerPosX > s.Posicion.X - Sala.Size * 3f && playerPosX < s.Posicion.X + Sala.Size * 3f) {
                     s.Draw(gameTime, view, projection);
                     s.DrawTranslucent(gameTime, view, projection);
                 }

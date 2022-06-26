@@ -18,6 +18,7 @@ namespace TGC.MonoGame.TP.Menus
         public Player[] playerTypes;
         public GameTime currentGameTime { get; set; }
         public float Cooldown { get; set; }
+        public float Time { get; set; }
 
         public List<Cylinder> cylinders;
         public Cylinder piso;
@@ -34,6 +35,7 @@ namespace TGC.MonoGame.TP.Menus
             currentGameTime = gameTime;
             base.Update(graphicsDevice, content, gameTime, keyboardState);
             float time = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
+            Time = Convert.ToSingle(gameTime.TotalGameTime.TotalSeconds);
 
             if (KeyCoolDown <= 0)
             {
@@ -53,10 +55,8 @@ namespace TGC.MonoGame.TP.Menus
 
             piso.Draw(view, projection);
 
-            float time = Convert.ToSingle(currentGameTime.ElapsedGameTime.TotalSeconds);
-
             GeometricPrimitive player = playerTypes[selectedPlayer].Body.Body;
-            Matrix playerWorld = Matrix.CreateRotationY(time/2) * Matrix.CreateTranslation(-23, 1.3f, 3);
+            Matrix playerWorld = Matrix.CreateRotationY(Time / 2) * Matrix.CreateTranslation(-23, 1.3f, 3);
 
             player.Draw(playerWorld, view, projection);
 

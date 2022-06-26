@@ -152,7 +152,9 @@ namespace TGC.MonoGame.TP
             selectedMenu = new MainMenu(GraphicsDevice, SpriteFont, SpriteBatch, PlayerTypes, Content);
 
             Effect = Content.Load<Effect>(ContentFolderEffects + "ShaderBlingPhong");
-           
+
+            Effect.CurrentTechnique = Effect.Techniques["BasicColorDrawing"];
+
             Effect.Parameters["lightPosition"].SetValue(LightPosition);
 
             Effect.Parameters["ambientColor"].SetValue(Color.White.ToVector3());
@@ -162,8 +164,6 @@ namespace TGC.MonoGame.TP
             Effect.Parameters["KAmbient"].SetValue(0.7f);
             Effect.Parameters["KDiffuse"].SetValue(0.6f);
             Effect.Parameters["KSpecular"].SetValue(0.3f);
-
-            
 
 
             SongName = "menu_music";
@@ -339,7 +339,7 @@ namespace TGC.MonoGame.TP
             unaSkyBox.Draw(Camera.View, Camera.Projection, Camera.Position);
             GraphicsDevice.BlendState = previousBlend;
 
-            Player.Draw(Camera.View, Camera.Projection);
+            Player.Draw(Camera.View, Camera.Projection, Camera.Position, ShadowMapRenderTarget, ShadowmapSize, ShadowCamera, "BasicColorDrawing", LightPosition + Player.Position);
             Nivel.Draw(gameTime, Camera.View, Camera.Projection, Player.Position.X);
             Nivel.DrawWalls(gameTime, Camera.View, Camera.Projection, Player.Position.X);
             HUD.Draw(GraphicsDevice, gameTime);
@@ -358,9 +358,10 @@ namespace TGC.MonoGame.TP
             Effect.CurrentTechnique = Effect.Techniques["DepthPass"];
 
             //Dibujamos en el shadowmap
-            Player.Draw(ShadowCamera.View, ShadowCamera.Projection);
+            
             Nivel.Draw(gameTime, ShadowCamera.View, ShadowCamera.Projection, Player.Position.X);
             Nivel.DrawWalls(gameTime, ShadowCamera.View, ShadowCamera.Projection, Player.Position.X);
+            Player.Draw(ShadowCamera.View, ShadowCamera.Projection, ShadowCamera.Position, ShadowMapRenderTarget, ShadowmapSize, ShadowCamera, "DepthPass", LightPosition + Player.Position);
         }
 
         public void DrawCenterText(string msg, float escala)

@@ -43,7 +43,7 @@ sampler_state
     AddressV = Clamp;
 };
 
-texture2D ModelTexture;
+texture ModelTexture;
 sampler2D textureSampler = sampler_state
 {
     Texture = (ModelTexture);
@@ -96,9 +96,8 @@ float4x4 inverse(float4x4 m) {
 struct VertexShaderInput
 {
 	float4 Position : POSITION0;
-    float4 Color : COLOR0;
-    //float2 TextureCoordinates : TEXCOORD0;
     float4 Normal : NORMAL;
+    float2 TextureCoordinates : TEXCOORD0;
 };
 
 struct VertexShaderOutput
@@ -146,7 +145,7 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 	return output;
 }
 
-float4 BlingPhong(VertexShaderOutput input)
+float4 BlingPhong(VertexShaderOutput input, float4 color)
 {
     // Base vectors
     float3 lightDirection = normalize(lightPosition - input.WorldPosition.xyz);
@@ -163,10 +162,9 @@ float4 BlingPhong(VertexShaderOutput input)
     float NdotH = dot(input.Normal.xyz, halfVector);
     float3 specularLight = sign(NdotL) * KSpecular * specularColor * saturate(NdotH);
     
-    float4 texColor = tex2D(textureSampler, input.TextureCoordinates);
 
     // Final calculation
-    float4 finalColor = float4(saturate(ambientLight + diffuseLight) * texColor.rgb + specularLight, texColor.a);
+    float4 finalColor = float4(saturate(ambientLight + diffuseLight) * color.rgb + specularLight, color.a);
     return finalColor;
 }
 
@@ -199,7 +197,8 @@ float4 Shadows(VertexShaderOutput input, float4 color)
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
     float4 finalColor;
-    finalColor = BlingPhong(input);
+    finalColor = tex2D(textureSampler, input.TextureCoordinates);
+    finalColor = BlingPhong(input, finalColor);
     finalColor = Shadows(input, finalColor);
     return finalColor;
 }

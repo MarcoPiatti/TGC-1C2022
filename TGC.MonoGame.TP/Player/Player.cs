@@ -88,11 +88,18 @@ namespace TGC.MonoGame.TP
             Model = content.Load<Model>("Models/" + "geometries/sphere");
             Texture1 = content.Load<Texture2D>("Textures/" + "water");
             currentGraphics = graphics;
-            this.PlayerEffect = content.Load<Effect>("Effects/" + "PlayerShader");
+            PlayerEffect = content.Load<Effect>("Effects/" + "ShaderBlingPhongTex");
             //Texture2 = content.Load<Texture2D>("Textures/" + "texture1");
             //Texture3 = content.Load<Texture2D>("Textures/" + "texture1");
             PlayerTexture = Texture1;
-            PlayerEffect.Parameters["ModelTexture"].SetValue(PlayerTexture);
+            PlayerEffect.Parameters["ModelTexture"]?.SetValue(PlayerTexture);
+            PlayerEffect.Parameters["ambientColor"].SetValue(Color.White.ToVector3());
+            PlayerEffect.Parameters["diffuseColor"].SetValue(Color.White.ToVector3());
+            PlayerEffect.Parameters["specularColor"].SetValue(Color.White.ToVector3());
+
+            PlayerEffect.Parameters["KAmbient"].SetValue(0.7f);
+            PlayerEffect.Parameters["KDiffuse"].SetValue(0.6f);
+            PlayerEffect.Parameters["KSpecular"].SetValue(0.3f);
             var deadSound = "dead";
             dead_sound = content.Load<SoundEffect>("Music/" + deadSound);
             var jumpSound = "jump";
@@ -111,16 +118,23 @@ namespace TGC.MonoGame.TP
                 meshPart.Effect = PlayerEffect;
         }
 
-        public void Draw(Matrix view, Matrix projection)
+        public void Draw(Matrix view, Matrix projection, Vector3 cameraPosition, RenderTarget2D ShadowMapRenderTarget, float ShadowmapSize, Camera ShadowCamera, String Tech, Vector3 LightPosition)
         {
 
             // Set BasicEffect parameters.
             var playerWorld = this.Body.World;
-            
+
+            PlayerEffect.CurrentTechnique = PlayerEffect.Techniques[Tech];
+
+            PlayerEffect.Parameters["lightPosition"].SetValue(LightPosition);
             PlayerEffect.Parameters["World"].SetValue(playerWorld);
             PlayerEffect.Parameters["View"].SetValue(view);
             PlayerEffect.Parameters["Projection"].SetValue(projection);
-            PlayerEffect.Parameters["ModelTexture"].SetValue(PlayerTexture);
+            PlayerEffect.Parameters["eyePosition"]?.SetValue(cameraPosition);
+            PlayerEffect.Parameters["shadowMapSize"]?.SetValue(Vector2.One * ShadowmapSize);
+            PlayerEffect.Parameters["shadowMap"]?.SetValue(ShadowMapRenderTarget);
+            PlayerEffect.Parameters["LightViewProjection"]?.SetValue(ShadowCamera.View * ShadowCamera.Projection);
+            PlayerEffect.Parameters["ModelTexture"]?.SetValue(PlayerTexture);
             drawnBody.Draw(playerWorld, view, projection, PlayerEffect);
 
             /*
@@ -129,26 +143,6 @@ namespace TGC.MonoGame.TP
             PlayerEffect.Parameters["KSpecular"].SetValue(KSpecularGoma);
             PlayerEffect.Parameters["shininess"].SetValue(1f);
             */
-
-            
-            var mesh = Model.Meshes.FirstOrDefault();
-
-            /*
-            foreach (var part in mesh.MeshParts)
-            {
-                part.Effect = PlayerEffect;
-                var worldM = mesh.ParentBone.Transform * this.Body.World;
-                PlayerEffect.Parameters["World"].SetValue(worldM);
-                PlayerEffect.Parameters["View"].SetValue(view);
-                PlayerEffect.Parameters["Projection"].SetValue(projection);
-                //PlayerEffect.Parameters["InverseTransposeWorld"].SetValue(Matrix.Invert(Matrix.Transpose(worldM)));
-                
-            }
-            mesh.Draw();
-            */
-
-
-            //JumpLine.Draw(view, projection);
         }
 
         public void Update(GameTime gameTime, List<TP.Elements.Object> objects, List<TP.Elements.LogicalObject> logicalObjects)
