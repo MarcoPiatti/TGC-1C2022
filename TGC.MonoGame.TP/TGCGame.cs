@@ -334,7 +334,10 @@ namespace TGC.MonoGame.TP
             Effect.Parameters["shadowMap"]?.SetValue(ShadowMapRenderTarget);
             Effect.Parameters["LightViewProjection"]?.SetValue(ShadowCamera.View * ShadowCamera.Projection);
 
+            var previousBlend = GraphicsDevice.BlendState;
+            GraphicsDevice.BlendState = BlendState.Opaque;
             unaSkyBox.Draw(Camera.View, Camera.Projection, Camera.Position);
+            GraphicsDevice.BlendState = previousBlend;
 
             Player.Draw(Camera.View, Camera.Projection);
             Nivel.Draw(gameTime, Camera.View, Camera.Projection, Player.Position.X);
