@@ -52,6 +52,7 @@ namespace TGC.MonoGame.TP
         private State estado { get; set; }
 
         public Sphere Body { get; set; }
+        public SpherePrimitiveTex drawnBody { get; set; }
         public bool flag_play { get; set; } = false;
         public bool flag_fall { get; set; } = false;
         public bool flag_longfall { get; set; } = false;
@@ -70,7 +71,7 @@ namespace TGC.MonoGame.TP
         public SoundEffect longfall_sound { get; set; }
 
         //Texturas
-        private Texture2D Texture1 { get; set; }
+        public Texture2D Texture1 { get; set; }
         private Texture2D Texture2 { get; set; }
         private Texture2D Texture3 { get; set; }
         private Model Model { get; set; }
@@ -85,13 +86,12 @@ namespace TGC.MonoGame.TP
         {
 
             Model = content.Load<Model>("Models/" + "geometries/sphere");
-            Texture1 = content.Load<Texture2D>("Textures/" + "Texture1");
+            Texture1 = content.Load<Texture2D>("Textures/" + "water");
             currentGraphics = graphics;
             this.PlayerEffect = content.Load<Effect>("Effects/" + "PlayerShader");
             //Texture2 = content.Load<Texture2D>("Textures/" + "texture1");
             //Texture3 = content.Load<Texture2D>("Textures/" + "texture1");
             PlayerTexture = Texture1;
-
             PlayerEffect.Parameters["ModelTexture"].SetValue(PlayerTexture);
             var deadSound = "dead";
             dead_sound = content.Load<SoundEffect>("Music/" + deadSound);
@@ -102,6 +102,7 @@ namespace TGC.MonoGame.TP
             var longFallSound = "long_fall";
             longfall_sound = content.Load<SoundEffect>("Music/" + longFallSound);
             Body = new Sphere(graphics, content, 1f, 16, color);
+            drawnBody = new SpherePrimitiveTex(graphics, 1f, 16);
             Body.WorldUpdate(scale, new Vector3(0, 15, 0), Quaternion.Identity);
             Position = Body.Position;
             JumpLine = new Sphere(graphics, content, 1f, 10, new Color(0f, 1f, 0f, 0.3f));
@@ -113,7 +114,6 @@ namespace TGC.MonoGame.TP
         public void Draw(Matrix view, Matrix projection)
         {
 
-            Body.Draw(view, projection, PlayerEffect);
             // Set BasicEffect parameters.
             var playerWorld = this.Body.World;
             
@@ -121,6 +121,7 @@ namespace TGC.MonoGame.TP
             PlayerEffect.Parameters["View"].SetValue(view);
             PlayerEffect.Parameters["Projection"].SetValue(projection);
             PlayerEffect.Parameters["ModelTexture"].SetValue(PlayerTexture);
+            drawnBody.Draw(playerWorld, view, projection, PlayerEffect);
 
             /*
             PlayerEffect.Parameters["KAmbient"].SetValue(KAmbientGoma);

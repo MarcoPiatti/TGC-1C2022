@@ -20,7 +20,8 @@ float4x4 Projection;
 
 struct VertexShaderInput
 {
-    float4 Position : POSITION0;
+	float4 Position : POSITION0;
+    float4 Normal : NORMAL;
     float2 TextureCoordinate : TEXCOORD0;
 };
 
@@ -58,7 +59,9 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-    return tex2D(textureSampler, input.TextureCoordinate * 10);
+    float2 coordenadaFalsa = float2(0.5, 0.5);
+    float4 texColor = tex2D(textureSampler, input.TextureCoordinate);
+    return float4(texColor.rgb, 1.0);
 }
 
 technique BasicColorDrawing
