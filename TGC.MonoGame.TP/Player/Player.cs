@@ -75,7 +75,7 @@ namespace TGC.MonoGame.TP
         private Texture2D Texture2 { get; set; }
         private Texture2D Texture3 { get; set; }
         private Model Model { get; set; }
-        private Texture2D PlayerTexture { get; set; }
+        public Texture2D PlayerTexture { get; set; }
         public Effect PlayerEffect { get; set; }
         private GraphicsDevice currentGraphics { get; set; }
         private RenderTargetCube EnvironmentMapRenderTarget { get; set; }
