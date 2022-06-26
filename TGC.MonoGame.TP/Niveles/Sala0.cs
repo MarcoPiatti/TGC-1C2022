@@ -39,8 +39,13 @@ namespace TGC.MonoGame.TP.Niveles
         {
             base.Draw(gameTime, view, projection);
             FirstPlatform.Draw( view, projection);
-            ParedSur.Draw( view, projection);
             Coin.Draw( view, projection);
+        }
+
+        public override void DrawWalls(GameTime gameTime, Matrix view, Matrix projection)
+        {
+            ParedSur.Draw(view, projection);
+            base.DrawWalls(gameTime, view, projection);
         }
 
         public override void DrawTranslucent(GameTime gameTime, Matrix view, Matrix projection)

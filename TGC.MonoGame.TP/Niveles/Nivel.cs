@@ -77,6 +77,23 @@ namespace TGC.MonoGame.TP.Niveles
 
         }
 
+        public void DrawWalls(GameTime gameTime, Matrix view, Matrix projection, float playerPosX)
+        {
+
+            // Set the View and Projection matrices, needed to draw every 3D model
+            Effect.Parameters["View"].SetValue(view);
+            Effect.Parameters["Projection"].SetValue(projection);
+
+            foreach (Sala s in Salas)
+            {
+                if (playerPosX > s.Posicion.X - Sala.Size && playerPosX < s.Posicion.X + Sala.Size * 1.6f)
+                {
+                    s.DrawWalls(gameTime, view, projection);
+                }
+            }
+
+        }
+
         public void Update(GameTime gameTime) {
             foreach (Sala s in Salas)
             {

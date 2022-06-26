@@ -91,7 +91,7 @@ namespace TGC.MonoGame.TP
 
         private TargetCamera ShadowCamera;
 
-        private Vector3 LightPosition = new Vector3(0, 10, 0);
+        private Vector3 LightPosition = new Vector3(0.1f, 100, 0);
 
         private readonly float ShadowCameraFarPlaneDistance = 3000f;
 
@@ -226,6 +226,7 @@ namespace TGC.MonoGame.TP
             }
 
             ShadowCamera.Position = LightPosition + Player.Position;
+            ShadowCamera.TargetPosition = Player.Position;
             ShadowCamera.BuildView();
             Effect.Parameters["lightPosition"].SetValue(LightPosition + Player.Position);
 
@@ -337,6 +338,7 @@ namespace TGC.MonoGame.TP
 
             Player.Draw(Camera.View, Camera.Projection);
             Nivel.Draw(gameTime, Camera.View, Camera.Projection, Player.Position.X);
+            Nivel.DrawWalls(gameTime, Camera.View, Camera.Projection, Player.Position.X);
             HUD.Draw(GraphicsDevice, gameTime);
            
         }
@@ -353,8 +355,9 @@ namespace TGC.MonoGame.TP
             Effect.CurrentTechnique = Effect.Techniques["DepthPass"];
 
             //Dibujamos en el shadowmap
-            Player.Draw(Camera.View, Camera.Projection);
-            Nivel.Draw(gameTime, Camera.View, Camera.Projection, Player.Position.X);
+            Player.Draw(ShadowCamera.View, ShadowCamera.Projection);
+            Nivel.Draw(gameTime, ShadowCamera.View, ShadowCamera.Projection, Player.Position.X);
+            Nivel.DrawWalls(gameTime, ShadowCamera.View, ShadowCamera.Projection, Player.Position.X);
         }
 
         public void DrawCenterText(string msg, float escala)
