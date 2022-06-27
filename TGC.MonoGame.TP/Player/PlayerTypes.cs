@@ -22,6 +22,9 @@ namespace TGC.MonoGame.TP
             Texture1 = content.Load<Texture2D>("Textures/" + "goma");
             PlayerTexture = Texture1;
             PlayerEffect.Parameters["ModelTexture"]?.SetValue(PlayerTexture);
+            PlayerEffect.Parameters["KAmbient"].SetValue(0.7f);
+            PlayerEffect.Parameters["KDiffuse"].SetValue(0.6f);
+            PlayerEffect.Parameters["KSpecular"].SetValue(0.3f);
         }
     }
 
@@ -35,6 +38,9 @@ namespace TGC.MonoGame.TP
             Texture1 = content.Load<Texture2D>("Textures/" + "metal_granoso");
             PlayerTexture = Texture1;
             PlayerEffect.Parameters["ModelTexture"]?.SetValue(PlayerTexture);
+            PlayerEffect.Parameters["KAmbient"].SetValue(0.7f);
+            PlayerEffect.Parameters["KDiffuse"].SetValue(0.6f);
+            PlayerEffect.Parameters["KSpecular"].SetValue(0.3f);
         }
     }
 
@@ -47,6 +53,9 @@ namespace TGC.MonoGame.TP
             Texture1 = content.Load<Texture2D>("Textures/" + "madera");
             PlayerTexture = Texture1;
             PlayerEffect.Parameters["ModelTexture"]?.SetValue(PlayerTexture);
+            PlayerEffect.Parameters["KAmbient"].SetValue(0.7f);
+            PlayerEffect.Parameters["KDiffuse"].SetValue(0.6f);
+            PlayerEffect.Parameters["KSpecular"].SetValue(0.3f);
         }
     }
 
