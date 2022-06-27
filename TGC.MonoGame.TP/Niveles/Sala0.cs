@@ -16,6 +16,8 @@ namespace TGC.MonoGame.TP.Niveles
         private Cube ParedSur { get; set; }
         private Cube FirstPlatform { get; set; }
 
+        private StartEnd start;
+
         private Coin Coin { get; set; }
 
         private PowerUp powerUp;
@@ -33,6 +35,9 @@ namespace TGC.MonoGame.TP.Niveles
 
             ParedSur = new Cube(graphicsDevice, content, posicion);
             ParedSur.WorldUpdate(new Vector3(1f, Size, Size), new Vector3(-Size / 2, Size / 2, 0) + posicion,Quaternion.Identity);
+
+            start = new StartEnd(graphicsDevice, content, Color.Yellow);
+            start.WorldUpdate(new Vector3(10, 100, 10), Vector3.Zero, Quaternion.Identity);
         }
 
         public override void Draw(GameTime gameTime, Matrix view, Matrix projection)
@@ -40,17 +45,14 @@ namespace TGC.MonoGame.TP.Niveles
             base.Draw(gameTime, view, projection);
             FirstPlatform.Draw( view, projection);
             Coin.Draw( view, projection);
-        }
-
-        public override void DrawWalls(GameTime gameTime, Matrix view, Matrix projection)
-        {
             ParedSur.Draw(view, projection);
-            base.DrawWalls(gameTime, view, projection);
         }
 
         public override void DrawTranslucent(GameTime gameTime, Matrix view, Matrix projection)
         {
             //powerUp.Draw(view, projection);
+            base.DrawTranslucent(gameTime, view, projection);
+            start.Draw(view, projection, (float)gameTime.TotalGameTime.TotalSeconds);
         }
 
         public override void Update(GameTime gameTime)

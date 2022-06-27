@@ -58,23 +58,19 @@ namespace TGC.MonoGame.TP.Niveles
             checkpoint.WorldUpdate(new Vector3(1f, Size, Size * 0.1f), new Vector3(Size/2, Size/2, 0) + Posicion, Quaternion.Identity);
         }
 
-        public virtual void DrawWalls(GameTime gameTime, Matrix view, Matrix projection)
+        public virtual void Draw(GameTime gameTime, Matrix view, Matrix projection)
         {
+            Piso.Draw(view, projection);
             ParedOeste.Draw(view, projection);
             ParedEste.Draw(view, projection);
             ParedNorteIzq.Draw(view, projection);
             ParedNorteDer.Draw(view, projection);
             //Techo.Draw(view, projection);
-            checkpoint.Draw(view, projection, (float)gameTime.TotalGameTime.TotalSeconds);
-        }
-
-        public virtual void Draw(GameTime gameTime, Matrix view, Matrix projection)
-        {
-            Piso.Draw(view, projection);
         }
 
         public virtual void DrawTranslucent(GameTime gameTime, Matrix view, Matrix projection)
         {
+            checkpoint.Draw(view, projection, (float)gameTime.TotalGameTime.TotalSeconds);
         }
 
         public virtual List<TP.Elements.Object> GetPhysicalObjects() {
