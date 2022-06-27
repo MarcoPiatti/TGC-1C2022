@@ -53,6 +53,17 @@ sampler2D textureSampler = sampler_state
     AddressV = Clamp;
 };
 
+texture environmentMap;
+samplerCUBE environmentMapSampler = sampler_state
+{
+    Texture = (environmentMap);
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+
+
 //Tomada de https://gist.github.com/mattatz/86fff4b32d198d0928d0fa4ff32cf6fa
 float4x4 inverse(float4x4 m) {
     float n11 = m[0][0], n12 = m[1][0], n13 = m[2][0], n14 = m[3][0];
@@ -194,12 +205,28 @@ float4 Shadows(VertexShaderOutput input, float4 color)
     return baseColor;
 }
 
+float4 EnvironmentMap(VertexShaderOutput input, float4 color)
+{
+    float3 baseColor = color.xyz;
+    float3 normal = normalize(input.Normal.xyz);
+    float3 view = normalize(eyePosition.xyz - input.WorldPosition.xyz);
+    float3 reflection = reflect(view, normal);
+    float3 reflectionColor = texCUBE(environmentMapSampler, reflection).rgb;
+    float fresnel = saturate((1.0 - dot(normal, view)));
+    return float4(lerp(baseColor, reflectionColor, fresnel), 1);
+
+}
+
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
     float4 finalColor;
+    
     finalColor = tex2D(textureSampler, input.TextureCoordinates);
+    finalColor = EnvironmentMap(input, finalColor);
     finalColor = BlingPhong(input, finalColor);
     finalColor = Shadows(input, finalColor);
+    
+    
     return finalColor;
 }
 

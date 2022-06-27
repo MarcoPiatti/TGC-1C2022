@@ -118,14 +118,14 @@ namespace TGC.MonoGame.TP
                 meshPart.Effect = PlayerEffect;
         }
 
-        public void Draw(Matrix view, Matrix projection, Vector3 cameraPosition, RenderTarget2D ShadowMapRenderTarget, float ShadowmapSize, Camera ShadowCamera, String Tech, Vector3 LightPosition)
+        public void Draw(Matrix view, Matrix projection, Vector3 cameraPosition, RenderTarget2D ShadowMapRenderTarget, float ShadowmapSize, Camera ShadowCamera, String Tech, Vector3 LightPosition, RenderTargetCube EnvironmentMapRenderTarget)
         {
 
             // Set BasicEffect parameters.
             var playerWorld = this.Body.World;
-
             PlayerEffect.CurrentTechnique = PlayerEffect.Techniques[Tech];
-
+            //Effect.CurrentTechnique = Effect.Techniques["EnvironmentMapSphere"];
+            PlayerEffect.Parameters["environmentMap"].SetValue(EnvironmentMapRenderTarget);
             PlayerEffect.Parameters["lightPosition"].SetValue(LightPosition);
             PlayerEffect.Parameters["World"].SetValue(playerWorld);
             PlayerEffect.Parameters["View"].SetValue(view);
@@ -143,6 +143,7 @@ namespace TGC.MonoGame.TP
             PlayerEffect.Parameters["KSpecular"].SetValue(KSpecularGoma);
             PlayerEffect.Parameters["shininess"].SetValue(1f);
             */
+
         }
 
         public void Update(GameTime gameTime, List<TP.Elements.Object> objects, List<TP.Elements.LogicalObject> logicalObjects)
