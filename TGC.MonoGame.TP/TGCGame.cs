@@ -160,7 +160,7 @@ namespace TGC.MonoGame.TP
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             SpriteFont = Content.Load<SpriteFont>(ContentFolderSpriteFonts + "Cascadia/CascadiaCodePL");
             
-            HUD = new HUD(SpriteFont, SpriteBatch, Content, Player);
+            HUD = new HUD(SpriteFont, SpriteBatch, Content, Player, GraphicsDevice);
             selectedMenu = new MainMenu(GraphicsDevice, SpriteFont, SpriteBatch, PlayerTypes, Content);
 
             Effect = Content.Load<Effect>(ContentFolderEffects + "ShaderBlingPhong");
@@ -290,6 +290,7 @@ namespace TGC.MonoGame.TP
                 {
                     Player.Restart();
                     NewGame();
+                    MediaPlayer.Play(level_start);
                 }
             }
 
@@ -487,6 +488,7 @@ namespace TGC.MonoGame.TP
                 if (selectedMenu.operations.Exists(op => op == "resetGame"))
                 {
                     NewGame();
+                    MediaPlayer.Play(level_start);
                 }
                 if (selectedMenu.operations.Exists(op => op == "upMusic"))
                 {
@@ -527,6 +529,7 @@ namespace TGC.MonoGame.TP
             };
             Camera = new FollowCamera(GraphicsDevice.Viewport.AspectRatio, new Vector3(0, 5, 0), screenSize);
             MediaPlayer.Stop();
+            //MediaPlayer.Play(Song);
         }
 
         private void SetCubemapCameraForOrientation(CubeMapFace face)
