@@ -24,6 +24,9 @@ namespace TGC.MonoGame.TP.Niveles
 
         public List<TP.Elements.Object> PhysicalObjects { get; set; }
         public List<TP.Elements.LogicalObject> LogicalObjects { get; set; }
+
+        public bool drawAll = false;
+
         public Nivel(ContentManager content, GraphicsDevice graphicsDevice)
         {
             this.graphicsDevice = graphicsDevice;
@@ -63,7 +66,6 @@ namespace TGC.MonoGame.TP.Niveles
 
         public void Draw(GameTime gameTime, Matrix view, Matrix projection, float playerPosX)
         {
-            bool drawAll = true;
             // Set the View and Projection matrices, needed to draw every 3D model
             Effect.Parameters["View"].SetValue(view);
             Effect.Parameters["Projection"].SetValue(projection);
@@ -71,10 +73,28 @@ namespace TGC.MonoGame.TP.Niveles
             foreach (Sala s in Salas){
                 if(playerPosX > s.Posicion.X - Sala.Size * 3f && playerPosX < s.Posicion.X + Sala.Size * 3f) {
                     s.Draw(gameTime, view, projection);
-                    s.DrawTranslucent(gameTime, view, projection);
                 } else if(drawAll)
                 {
                     s.Draw(gameTime, view, projection);
+                }
+            }
+
+        }
+
+        public void DrawTranslucent(GameTime gameTime, Matrix view, Matrix projection, float playerPosX)
+        {
+            // Set the View and Projection matrices, needed to draw every 3D model
+            Effect.Parameters["View"].SetValue(view);
+            Effect.Parameters["Projection"].SetValue(projection);
+
+            foreach (Sala s in Salas)
+            {
+                if (playerPosX > s.Posicion.X - Sala.Size * 3f && playerPosX < s.Posicion.X + Sala.Size * 3f)
+                {
+                    s.DrawTranslucent(gameTime, view, projection);
+                }
+                else if (drawAll)
+                {
                     s.DrawTranslucent(gameTime, view, projection);
                 }
             }

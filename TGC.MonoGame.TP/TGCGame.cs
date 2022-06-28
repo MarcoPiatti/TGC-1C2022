@@ -357,6 +357,7 @@ namespace TGC.MonoGame.TP
 
             Player.Draw(Camera.View, Camera.Projection, Camera.Position, ShadowMapRenderTarget, ShadowmapSize, ShadowCamera, "BasicColorDrawing", LightPosition + Player.Position, EnvironmentMapRenderTarget);
             Nivel.Draw(gameTime, Camera.View, Camera.Projection, Player.Position.X);
+            Nivel.DrawTranslucent(gameTime, Camera.View, Camera.Projection, Player.Position.X);
             HUD.Draw(GraphicsDevice, gameTime);
            
         }
@@ -375,6 +376,7 @@ namespace TGC.MonoGame.TP
             //Dibujamos en el shadowmap
             
             Nivel.Draw(gameTime, ShadowCamera.View, ShadowCamera.Projection, Player.Position.X);
+            Nivel.DrawTranslucent(gameTime, ShadowCamera.View, ShadowCamera.Projection, Player.Position.X);
             Player.Draw(ShadowCamera.View, ShadowCamera.Projection, ShadowCamera.Position, ShadowMapRenderTarget, ShadowmapSize, ShadowCamera, "DepthPass", LightPosition + Player.Position, EnvironmentMapRenderTarget);
         }
 
@@ -392,6 +394,7 @@ namespace TGC.MonoGame.TP
                 CubeMapCamera.BuildView();
 
                 Nivel.Draw(gameTime,CubeMapCamera.View, CubeMapCamera.Projection, Player.Position.X);
+                Nivel.DrawTranslucent(gameTime, CubeMapCamera.View, CubeMapCamera.Projection, Player.Position.X);
             }
 
             #endregion
