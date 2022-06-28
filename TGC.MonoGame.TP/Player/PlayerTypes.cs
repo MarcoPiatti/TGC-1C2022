@@ -21,10 +21,8 @@ namespace TGC.MonoGame.TP
             typeName = "PELOTA DE GOMA";
             Texture1 = content.Load<Texture2D>("Textures/" + "goma");
             PlayerTexture = Texture1;
-            PlayerEffect.Parameters["ModelTexture"]?.SetValue(PlayerTexture);
-            PlayerEffect.Parameters["KAmbient"].SetValue(0.7f);
-            PlayerEffect.Parameters["KDiffuse"].SetValue(0.6f);
-            PlayerEffect.Parameters["KSpecular"].SetValue(0.3f);
+            Ks = new Vector3(0.7f, 0.6f, 0.3f); //Ambient, Diffuse, Specular
+            Reflection = 1f;
         }
     }
 
@@ -37,10 +35,8 @@ namespace TGC.MonoGame.TP
             typeName = "PELOTA DE HIERRO";
             Texture1 = content.Load<Texture2D>("Textures/" + "metal_granoso");
             PlayerTexture = Texture1;
-            PlayerEffect.Parameters["ModelTexture"]?.SetValue(PlayerTexture);
-            PlayerEffect.Parameters["KAmbient"].SetValue(0.7f);
-            PlayerEffect.Parameters["KDiffuse"].SetValue(0.6f);
-            PlayerEffect.Parameters["KSpecular"].SetValue(0.3f);
+            Ks = new Vector3(0.7f, 0.6f, 0.3f); //Ambient, Diffuse, Specular
+            Reflection = 1f;
         }
     }
 
@@ -52,10 +48,8 @@ namespace TGC.MonoGame.TP
             typeName = "PELOTA DE MADERA";
             Texture1 = content.Load<Texture2D>("Textures/" + "madera");
             PlayerTexture = Texture1;
-            PlayerEffect.Parameters["ModelTexture"]?.SetValue(PlayerTexture);
-            PlayerEffect.Parameters["KAmbient"].SetValue(0.7f);
-            PlayerEffect.Parameters["KDiffuse"].SetValue(0.6f);
-            PlayerEffect.Parameters["KSpecular"].SetValue(0.3f);
+            Ks = new Vector3(0.7f, 0.6f, 0.3f); //Ambient, Diffuse, Specular
+            Reflection = 1f;
         }
     }
 

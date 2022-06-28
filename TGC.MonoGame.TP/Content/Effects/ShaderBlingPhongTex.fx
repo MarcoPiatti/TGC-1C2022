@@ -22,6 +22,7 @@ float3 specularColor;
 float KAmbient;
 float KDiffuse;
 float KSpecular;
+float Reflection;
 
 float3 lightPosition; // Posicion de la fuente de luz
 float3 eyePosition; // Camera position
@@ -213,7 +214,7 @@ float4 EnvironmentMap(VertexShaderOutput input, float4 color)
     float3 reflection = reflect(view, normal);
     float3 reflectionColor = texCUBE(environmentMapSampler, reflection).rgb;
     float fresnel = saturate((1.0 - dot(normal, view)));
-    return float4(lerp(baseColor, reflectionColor, fresnel), 1);
+    return float4(lerp(baseColor, reflectionColor, fresnel * Reflection), 1);
 
 }
 

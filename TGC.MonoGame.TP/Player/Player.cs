@@ -82,6 +82,12 @@ namespace TGC.MonoGame.TP
 
         public Vector3 checkpoint = new Vector3(-45, 10, 0);
 
+        public float Reflection = 1f;
+
+        public Vector3 Ks = new Vector3(0.7f, 0.6f, 0.3f); //Ambient, Diffuse, Specular
+
+        public bool Initialized = false;
+
         public Player(GraphicsDevice graphics, ContentManager content, Effect Effect, Color color)
         {
 
@@ -97,9 +103,6 @@ namespace TGC.MonoGame.TP
             PlayerEffect.Parameters["diffuseColor"].SetValue(Color.White.ToVector3());
             PlayerEffect.Parameters["specularColor"].SetValue(Color.White.ToVector3());
 
-            PlayerEffect.Parameters["KAmbient"].SetValue(0.7f);
-            PlayerEffect.Parameters["KDiffuse"].SetValue(0.6f);
-            PlayerEffect.Parameters["KSpecular"].SetValue(0.3f);
             var deadSound = "dead";
             dead_sound = content.Load<SoundEffect>("Music/" + deadSound);
             var jumpSound = "jump";
@@ -117,10 +120,21 @@ namespace TGC.MonoGame.TP
             foreach (var meshPart in Model.Meshes.SelectMany(mesh => mesh.MeshParts))
                 meshPart.Effect = PlayerEffect;
         }
+        
+        public void Init()
+        {
+            PlayerEffect.Parameters["Reflection"].SetValue(Reflection);
+            PlayerEffect.Parameters["KAmbient"].SetValue(Ks.X);
+            PlayerEffect.Parameters["KDiffuse"].SetValue(Ks.Y);
+            PlayerEffect.Parameters["KSpecular"].SetValue(Ks.Z);
+            PlayerEffect.Parameters["ModelTexture"]?.SetValue(PlayerTexture);
+            Initialized = true;
+        }
+
 
         public void Draw(Matrix view, Matrix projection, Vector3 cameraPosition, RenderTarget2D ShadowMapRenderTarget, float ShadowmapSize, Camera ShadowCamera, String Tech, Vector3 LightPosition, RenderTargetCube EnvironmentMapRenderTarget)
         {
-
+            if (!Initialized) Init();
             // Set BasicEffect parameters.
             var playerWorld = this.Body.World;
             PlayerEffect.CurrentTechnique = PlayerEffect.Techniques[Tech];
@@ -136,7 +150,6 @@ namespace TGC.MonoGame.TP
             PlayerEffect.Parameters["shadowMapSize"]?.SetValue(Vector2.One * ShadowmapSize);
             PlayerEffect.Parameters["shadowMap"]?.SetValue(ShadowMapRenderTarget);
             PlayerEffect.Parameters["LightViewProjection"]?.SetValue(ShadowCamera.View * ShadowCamera.Projection);
-            PlayerEffect.Parameters["ModelTexture"]?.SetValue(PlayerTexture);
             drawnBody.Draw(playerWorld, view, projection, PlayerEffect);
 
             /*
