@@ -106,12 +106,6 @@
 /processorParam:Quality=Best
 /build:Music/coin_get.wav
 
-#begin Music/crystal_dolphin.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Music/crystal_dolphin.mp3
-
 #begin Music/dead.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -165,31 +159,6 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Music/powerUpPicked.wav
-
-#begin Music/rebote1.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Music/rebote1.wav
-
-#begin Music/rebote2.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Music/rebote2.wav
-
-#begin Music/rebote3.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Music/rebote3.wav
-
-#begin SpriteFonts/Arial.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:SpriteFonts/Arial.spritefont
 
 #begin SpriteFonts/Cascadia/CascadiaCodePL.spritefont
 /importer:FontDescriptionImporter
@@ -264,18 +233,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/goma.jpg
-
-#begin Textures/lava.jpg
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Textures/lava.jpg
 
 #begin Textures/madera.jpg
 /importer:TextureImporter
@@ -409,30 +366,6 @@
 /processorParam:TextureFormat=Color
 /build:Textures/stones.bmp
 
-#begin Textures/Texture1.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Textures/Texture1.png
-
-#begin Textures/Texture2.jpg
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Textures/Texture2.jpg
-
 #begin Textures/tiles.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -444,16 +377,4 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/tiles.jpg
-
-#begin Textures/water.bmp
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Textures/water.bmp
 
