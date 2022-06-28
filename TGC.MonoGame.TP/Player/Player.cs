@@ -92,7 +92,7 @@ namespace TGC.MonoGame.TP
         {
 
             Model = content.Load<Model>("Models/" + "geometries/sphere");
-            Texture1 = content.Load<Texture2D>("Textures/" + "water");
+            //Texture1 = content.Load<Texture2D>("Textures/" + "water");
             currentGraphics = graphics;
             PlayerEffect = content.Load<Effect>("Effects/" + "ShaderBlingPhongTex");
             //Texture2 = content.Load<Texture2D>("Textures/" + "texture1");
