@@ -22,7 +22,7 @@ namespace TGC.MonoGame.TP
             Texture1 = content.Load<Texture2D>("Textures/" + "goma");
             PlayerTexture = Texture1;
             Ks = new Vector3(0.7f, 0.6f, 0.3f); //Ambient, Diffuse, Specular
-            Reflection = 1f;
+            Reflection = 0.4f;
         }
     }
 
@@ -36,7 +36,7 @@ namespace TGC.MonoGame.TP
             Texture1 = content.Load<Texture2D>("Textures/" + "metal_granoso");
             PlayerTexture = Texture1;
             Ks = new Vector3(0.7f, 0.6f, 0.3f); //Ambient, Diffuse, Specular
-            Reflection = 1f;
+            Reflection = 0.8f;
         }
     }
 
@@ -49,7 +49,7 @@ namespace TGC.MonoGame.TP
             Texture1 = content.Load<Texture2D>("Textures/" + "madera");
             PlayerTexture = Texture1;
             Ks = new Vector3(0.7f, 0.6f, 0.3f); //Ambient, Diffuse, Specular
-            Reflection = 1f;
+            Reflection = 0.2f;
         }
     }
 
