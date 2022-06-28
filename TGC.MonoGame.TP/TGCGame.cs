@@ -376,13 +376,11 @@ namespace TGC.MonoGame.TP
             //Dibujamos en el shadowmap
             
             Nivel.Draw(gameTime, ShadowCamera.View, ShadowCamera.Projection, Player.Position.X);
-            Nivel.DrawTranslucent(gameTime, ShadowCamera.View, ShadowCamera.Projection, Player.Position.X);
             Player.Draw(ShadowCamera.View, ShadowCamera.Projection, ShadowCamera.Position, ShadowMapRenderTarget, ShadowmapSize, ShadowCamera, "DepthPass", LightPosition + Player.Position, EnvironmentMapRenderTarget);
         }
 
         private void DrawEnvironmentMap(GameTime gameTime)
         {
-            #region Pass 1-6
 
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             for (var face = CubeMapFace.PositiveX; face <= CubeMapFace.NegativeZ; face++)
@@ -396,18 +394,6 @@ namespace TGC.MonoGame.TP
                 Nivel.Draw(gameTime,CubeMapCamera.View, CubeMapCamera.Projection, Player.Position.X);
                 Nivel.DrawTranslucent(gameTime, CubeMapCamera.View, CubeMapCamera.Projection, Player.Position.X);
             }
-
-            #endregion
-
-            #region Pass 7
-
-            // Set the render target as null, we are drawing on the screen!
-            GraphicsDevice.SetRenderTarget(null);
-            GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1f, 0);
-
-            Player.Draw(Camera.View, Camera.Projection, Camera.Position, ShadowMapRenderTarget, ShadowmapSize, ShadowCamera, "BasicColorDrawing", LightPosition + Player.Position, EnvironmentMapRenderTarget);
-            #endregion
-
 
         }
 
