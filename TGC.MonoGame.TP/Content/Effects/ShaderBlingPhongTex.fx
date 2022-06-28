@@ -10,6 +10,7 @@
 float4x4 World; // Matriz de mundo
 float4x4 View; // Matriz de vista
 float4x4 Projection; // Matriz de proyeccion
+float4x4 InverseTransposeWorld;
 // float4x4 InverseTransposeWorld; // Usada para la iluminacion
 
 //Los tres colores de la fuente de luz
@@ -148,9 +149,8 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
     output.WorldSpacePosition = mul(input.Position, World);
     
     output.LightSpacePosition = mul(output.WorldSpacePosition, LightViewProjection);
-
-    float4x4 inverseTransposeWorld = transpose(inverse(World));
-    output.Normal = mul(input.Normal, inverseTransposeWorld);
+    
+    output.Normal = mul(input.Normal, InverseTransposeWorld);
     output.TextureCoordinates = input.TextureCoordinates;
 
 	return output;

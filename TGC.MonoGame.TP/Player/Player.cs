@@ -127,6 +127,8 @@ namespace TGC.MonoGame.TP
             //Effect.CurrentTechnique = Effect.Techniques["EnvironmentMapSphere"];
             PlayerEffect.Parameters["environmentMap"].SetValue(EnvironmentMapRenderTarget);
             PlayerEffect.Parameters["lightPosition"].SetValue(LightPosition);
+            Matrix InverseTransposeWorld = Matrix.Transpose(Matrix.Invert(playerWorld));
+            PlayerEffect.Parameters["InverseTransposeWorld"].SetValue(InverseTransposeWorld);
             PlayerEffect.Parameters["World"].SetValue(playerWorld);
             PlayerEffect.Parameters["View"].SetValue(view);
             PlayerEffect.Parameters["Projection"].SetValue(projection);
