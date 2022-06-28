@@ -21,7 +21,7 @@ namespace TGC.MonoGame.TP
             typeName = "PELOTA DE GOMA";
             Texture1 = content.Load<Texture2D>("Textures/" + "goma");
             PlayerTexture = Texture1;
-            Ks = new Vector3(0.7f, 0.6f, 0.3f); //Ambient, Diffuse, Specular
+            Ks = new Vector3(0.5f, 0.6f, 0.5f); //Ambient, Diffuse, Specular
             Reflection = 0.4f;
         }
     }
@@ -33,9 +33,9 @@ namespace TGC.MonoGame.TP
             Bounce = 0.1f;
             MoveForceVariation = 0.6f;
             typeName = "PELOTA DE HIERRO";
-            Texture1 = content.Load<Texture2D>("Textures/" + "metal_granoso");
+            Texture1 = content.Load<Texture2D>("Textures/" + "metal");
             PlayerTexture = Texture1;
-            Ks = new Vector3(0.7f, 0.6f, 0.3f); //Ambient, Diffuse, Specular
+            Ks = new Vector3(0.8f, 0.1f, 1f); //Ambient, Diffuse, Specular
             Reflection = 0.8f;
         }
     }
@@ -48,7 +48,7 @@ namespace TGC.MonoGame.TP
             typeName = "PELOTA DE MADERA";
             Texture1 = content.Load<Texture2D>("Textures/" + "madera");
             PlayerTexture = Texture1;
-            Ks = new Vector3(0.7f, 0.6f, 0.3f); //Ambient, Diffuse, Specular
+            Ks = new Vector3(1f, 0.1f, 0.1f); //Ambient, Diffuse, Specular
             Reflection = 0.2f;
         }
     }
