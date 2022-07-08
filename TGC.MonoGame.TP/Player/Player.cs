@@ -101,9 +101,9 @@ namespace TGC.MonoGame.TP
             //Texture3 = content.Load<Texture2D>("Textures/" + "texture1");
             PlayerTexture = Texture1;
             PlayerEffect.Parameters["ModelTexture"]?.SetValue(PlayerTexture);
-            PlayerEffect.Parameters["ambientColor"].SetValue(Color.White.ToVector3());
-            PlayerEffect.Parameters["diffuseColor"].SetValue(Color.White.ToVector3());
-            PlayerEffect.Parameters["specularColor"].SetValue(Color.White.ToVector3());
+            PlayerEffect.Parameters["ambientColor"]?.SetValue(Color.White.ToVector3());
+            PlayerEffect.Parameters["diffuseColor"]?.SetValue(Color.White.ToVector3());
+            PlayerEffect.Parameters["specularColor"]?.SetValue(Color.White.ToVector3());
 
             var deadSound = "dead";
             dead_sound = content.Load<SoundEffect>("Music/" + deadSound);
@@ -126,10 +126,10 @@ namespace TGC.MonoGame.TP
         
         public void Init()
         {
-            PlayerEffect.Parameters["Reflection"].SetValue(Reflection);
-            PlayerEffect.Parameters["KAmbient"].SetValue(Ks.X);
-            PlayerEffect.Parameters["KDiffuse"].SetValue(Ks.Y);
-            PlayerEffect.Parameters["KSpecular"].SetValue(Ks.Z);
+            PlayerEffect.Parameters["Reflection"]?.SetValue(Reflection);
+            PlayerEffect.Parameters["KAmbient"]?.SetValue(Ks.X);
+            PlayerEffect.Parameters["KDiffuse"]?.SetValue(Ks.Y);
+            PlayerEffect.Parameters["KSpecular"]?.SetValue(Ks.Z);
             PlayerEffect.Parameters["ModelTexture"]?.SetValue(PlayerTexture);
             Initialized = true;
         }
@@ -142,7 +142,7 @@ namespace TGC.MonoGame.TP
             var playerWorld = this.Body.World;
             PlayerEffect.CurrentTechnique = PlayerEffect.Techniques[Tech];
             //Effect.CurrentTechnique = Effect.Techniques["EnvironmentMapSphere"];
-            PlayerEffect.Parameters["environmentMap"].SetValue(EnvironmentMapRenderTarget);
+            PlayerEffect.Parameters["environmentMap"]?.SetValue(EnvironmentMapRenderTarget);
             PlayerEffect.Parameters["lightPosition"].SetValue(LightPosition);
             Matrix InverseTransposeWorld = Matrix.Transpose(Matrix.Invert(playerWorld));
             PlayerEffect.Parameters["InverseTransposeWorld"].SetValue(InverseTransposeWorld);
