@@ -87,11 +87,13 @@ namespace TGC.MonoGame.TP
         public Vector3 Ks = new Vector3(0.7f, 0.6f, 0.3f); //Ambient, Diffuse, Specular
 
         public bool Initialized = false;
+        public Song lifesZeroMusic {get;set;}
 
         public Player(GraphicsDevice graphics, ContentManager content, Effect Effect, Color color)
         {
 
             Model = content.Load<Model>("Models/" + "geometries/sphere");
+
             //Texture1 = content.Load<Texture2D>("Textures/" + "water");
             currentGraphics = graphics;
             PlayerEffect = content.Load<Effect>("Effects/" + "ShaderBlingPhongTex");
@@ -119,6 +121,7 @@ namespace TGC.MonoGame.TP
             JumpLine.WorldUpdate(JumpLineScale, Position + JumpLinePos, Quaternion.Identity);
             foreach (var meshPart in Model.Meshes.SelectMany(mesh => mesh.MeshParts))
                 meshPart.Effect = PlayerEffect;
+
         }
         
         public void Init()
@@ -165,6 +168,7 @@ namespace TGC.MonoGame.TP
         {
             var elapsedTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             float finalGravity = handleGladePowerUp(elapsedTime);
+
             grounded = CanJump(objects);
             if (!grounded)
                 VectorSpeed += Vector3.Down * finalGravity;
