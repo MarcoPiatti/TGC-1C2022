@@ -24,7 +24,7 @@ namespace TGC.MonoGame.TP
         public const string ContentFolderSounds = "Sounds/";
         public const string ContentFolderSpriteFonts = "SpriteFonts/";
         public const string ContentFolderTextures = "Textures/";
-
+       
         //private FreeCamera Camera { get; set; }
 
         private Nivel Nivel { get; set; }
@@ -35,6 +35,7 @@ namespace TGC.MonoGame.TP
         {
             // Maneja la configuracion y la administracion del dispositivo grafico.
             Graphics = new GraphicsDeviceManager(this);
+            
             // Descomentar para que el juego sea pantalla completa.
             // Graphics.IsFullScreen = true;
             // Carpeta raiz donde va a estar toda la Media.
@@ -87,15 +88,18 @@ namespace TGC.MonoGame.TP
 
         private RenderTarget2D ShadowMapRenderTarget;
 
-        private const int ShadowmapSize = 1024 * 20;
+        private const int ShadowmapSize = 1024 * 7;
 
         private TargetCamera ShadowCamera;
 
-        private Vector3 LightPosition = new Vector3(0.1f, 100, 0);
-
+        //0.1
+        //300
+        //0
+        private Vector3 LightPosition = new Vector3(-70f, 330f, 60f);
+        //3000
         private readonly float ShadowCameraFarPlaneDistance = 3000f;
-
-        private readonly float ShadowCameraNearPlaneDistance = 5f;
+        //5f
+        private readonly float ShadowCameraNearPlaneDistance = 25f;
 
         // Environment Map
 
@@ -242,7 +246,7 @@ namespace TGC.MonoGame.TP
             ShadowCamera.Position = LightPosition + Player.Position;
             ShadowCamera.TargetPosition = Player.Position;
             ShadowCamera.BuildView();
-            Effect.Parameters["lightPosition"].SetValue(LightPosition + Player.Position);
+            Effect.Parameters["lightPosition"].SetValue(LightPosition + Player.Position*0.2f);
 
             CubeMapCamera.Position = Player.Position;
 
@@ -292,9 +296,13 @@ namespace TGC.MonoGame.TP
                     NewGame();
                     MediaPlayer.Play(level_start);
                 }
+                if (keyboardState.IsKeyDown(Keys.F))
+                {
+                    Graphics.ToggleFullScreen();
+                }
             }
+            
 
-           
             if (Keyboard.GetState().IsKeyDown(Keys.G) && HUD.godActivado())
             {
                 if (CameraChangeCooldown <= 0)

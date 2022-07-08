@@ -60,7 +60,7 @@ namespace TGC.MonoGame.TP.Menus
             playerRoundPosition = new Vector3(MathF.Round(playerPosition.X, 0), MathF.Round(playerPosition.Y, 0), MathF.Round(playerPosition.Z, 0));
 
 
-            SpriteBatch.DrawString(SpriteFont, playerRoundPosition.ToString(), new Vector2(W - 300, H - 50), Color.Gold);
+            //SpriteBatch.DrawString(SpriteFont, playerRoundPosition.ToString(), new Vector2(W - 300, H - 50), Color.Gold);
 
             if (flag_menuSegunCamara)
             {
