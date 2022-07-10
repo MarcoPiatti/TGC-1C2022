@@ -27,6 +27,8 @@ namespace TGC.MonoGame.TP.Niveles
 
         public bool drawAll = false;
 
+
+
         public Nivel(ContentManager content, GraphicsDevice graphicsDevice)
         {
             this.graphicsDevice = graphicsDevice;
@@ -113,6 +115,20 @@ namespace TGC.MonoGame.TP.Niveles
             {
                 s.RestartLogicalObjects();
             }
+        }
+
+        public List<TP.Elements.Object> GetFilteredPhysicalObjects(int i) {
+            List<TP.Elements.Object> s = new List<TP.Elements.Object>();
+            s.AddRange(Salas[i].GetPhysicalObjects());
+            s.Add(Salas[i].ParedNorteDer);
+            s.Add(Salas[i].ParedNorteIzq);
+            return s;
+        }
+        public List<TP.Elements.LogicalObject> GetFilteredObjects(int i)
+        {
+            List<TP.Elements.LogicalObject> s = new List<TP.Elements.LogicalObject>();
+            s.AddRange(Salas[i].GetLogicalObjects());
+            return s;
         }
 
     }

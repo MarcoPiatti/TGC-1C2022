@@ -314,8 +314,9 @@ namespace TGC.MonoGame.TP
             }
 
 
-            Player.Update(gameTime, Nivel.PhysicalObjects, Nivel.LogicalObjects);
-
+            //Player.Update(gameTime, Nivel.PhysicalObjects, Nivel.LogicalObjects);
+            int i = Convert.ToInt32(Math.Truncate((Player.Position.X+50)/100));
+            Player.Update(gameTime, Nivel.GetFilteredPhysicalObjects(i), Nivel.GetFilteredObjects(i));
 
             Rotation += Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             HUD.Update(GraphicsDevice, gameTime, keyboardState);
