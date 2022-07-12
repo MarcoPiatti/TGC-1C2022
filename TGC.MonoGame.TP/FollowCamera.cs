@@ -72,8 +72,9 @@ namespace TGC.MonoGame.TP
 
         private void ProcessMouseMovement(float elapsedTime)
         {
+            bool notRightClick = true;
             MouseState mouseState = Mouse.GetState();
-            if (mouseState.RightButton.Equals(ButtonState.Pressed))
+            if (mouseState.RightButton.Equals(ButtonState.Pressed) || notRightClick)
             {
                 Vector2 mouseDelta = mouseState.Position.ToVector2() - pastMousePosition;
                 mouseDelta *= MouseSensitivity * elapsedTime;
@@ -92,7 +93,7 @@ namespace TGC.MonoGame.TP
                 
                 UpdateCameraVectors();
 
-                if (lockMouse)
+                if (lockMouse || notRightClick)
                 {
                     Mouse.SetPosition(screenCenter.X, screenCenter.Y);
                     Mouse.SetCursor(MouseCursor.Crosshair);
