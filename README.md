@@ -15,7 +15,7 @@ Piatti Castro, Marco Augusto - Legajo: 175.645-0
 ![foto de piatti](Documentacion/piatti.jpg)
 
 Kallenbach, Maximiliano Hernan - Legajo: 1717844
-![foto de Kallenbach](Documentacion/Maxi.jpg)
+![foto de Kallenbach](Documentacion/maxi.jpg)
 
 Odriozola, Matías - Legajo: 1680729
 ![foto de Odriozola](Documentacion/Odriozola.jpg)
