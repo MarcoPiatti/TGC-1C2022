@@ -82,6 +82,8 @@ namespace TGC.MonoGame.TP
 
         public Vector3 checkpoint = new Vector3(-45, 10, 0);
 
+        public Quaternion playerRotation;
+
         public float Reflection = 1f;
 
         public Vector3 Ks = new Vector3(0.7f, 0.6f, 0.3f); //Ambient, Diffuse, Specular
@@ -139,6 +141,8 @@ namespace TGC.MonoGame.TP
             graphics.Clear(Color.Transparent);
 
             graphics.SetRenderTarget(null);
+
+            playerRotation = Quaternion.Identity;
 
         }
         
@@ -226,7 +230,8 @@ namespace TGC.MonoGame.TP
                 VectorSpeed -= VectorSpeed * friction;
             var scaledSpeed = VectorSpeed * elapsedTime;
             Vector3 finalScaledSpeed = handleSpeedPowerUp(scaledSpeed, elapsedTime);
-            Body.WorldUpdate(scale, Position + finalScaledSpeed, Matrix.CreateRotationZ(VectorSpeed.X) * Matrix.CreateRotationX(VectorSpeed.Z));
+            playerRotation = Quaternion.CreateFromAxisAngle(Vector3.Forward, VectorSpeed.X/100) * Quaternion.CreateFromAxisAngle(Vector3.Right, VectorSpeed.Z / 100) * playerRotation;
+            Body.WorldUpdate(scale, Position + finalScaledSpeed, Matrix.CreateFromQuaternion(playerRotation));
             Position = Body.Position;
             JumpLine.WorldUpdate(new Vector3(1, 1f, 1), Position + JumpLinePos, Quaternion.Identity);
             PhyisicallyInteract(objects, elapsedTime);
