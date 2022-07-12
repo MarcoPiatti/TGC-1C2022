@@ -115,6 +115,11 @@ namespace TGC.MonoGame.TP
         /// </summary>
         protected override void Initialize()
         {
+
+            Graphics.PreferredBackBufferWidth = GraphicsDevice.Adapter.CurrentDisplayMode.Width;
+            Graphics.PreferredBackBufferHeight = GraphicsDevice.Adapter.CurrentDisplayMode.Height;
+            Graphics.ApplyChanges();
+            Graphics.ToggleFullScreen();
             //originalmente variable local screenSize
             screenSize = new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
             //Pongo el jugador antes de la camara porque sino no hay Player.Position
@@ -299,6 +304,7 @@ namespace TGC.MonoGame.TP
                 if (keyboardState.IsKeyDown(Keys.F))
                 {
                     Graphics.ToggleFullScreen();
+                    screenSize = new Point(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
                 }
             }
             

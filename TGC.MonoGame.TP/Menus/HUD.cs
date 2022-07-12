@@ -44,10 +44,10 @@ namespace TGC.MonoGame.TP.Menus
             W = graphicsDevice.Viewport.Width;
             H = graphicsDevice.Viewport.Height;
             SpriteBatch = new SpriteBatch(graphicsDevice);
-            Life_position = new Vector2(W - 780, H-475);
-            Coin_position = new Vector2(W - 784, H - 445);
-            Speed_position = new Vector2(W - 780, H - 400);
-            Glide_position = new Vector2(W - 784, H - 330);
+            Life_position = new Vector2(W - W*(0.08f + 0.9f), H-H*0.99f);
+            Coin_position = new Vector2(W - W*(0.08f + 0.905f), H - H*0.93f);
+            Speed_position = new Vector2(W - W*(0.08f + 0.9f), H - H*0.83f);
+            Glide_position = new Vector2(W - W*(0.08f + 0.905f), H - H*0.69f);
 
 
         }
