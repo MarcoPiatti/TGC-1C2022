@@ -47,7 +47,7 @@ namespace TGC.MonoGame.TP.Menus
             Life_position = new Vector2(W - 780, H-475);
             Coin_position = new Vector2(W - 784, H - 445);
             Speed_position = new Vector2(W - 780, H - 400);
-            Glide_position = new Vector2(W - 784, H - 378);
+            Glide_position = new Vector2(W - 784, H - 330);
 
 
         }

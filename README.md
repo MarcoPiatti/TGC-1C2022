@@ -1,19 +1,23 @@
-(+) El jugador va a ser una bola que avanza, retrocede, se mueve a los lados y salta.
+## Integrantes
+Maqueda, Pablo  |  3,3
+<img src="https://github.com/tgc-utn/tgc-utn.github.io/blob/master/images/robotgc.png" height="500"> | <img src="https://github.com/tgc-utn/tgc-utn.github.io/blob/master/images/trofeotp.png" height="500">
 
-(-) Tener en cuenta que es una esfera que rueda sobre una superficie, esta tiene que rodar dependiendo la dirección de movimiento.
 
-(w) La cámara es en tercera persona enfocada en la esfera y deberá orbitar alrededor de la misma utilizando el mouse.
+<img src="https://github.com/tgc-utn/tgc-utn.github.io/blob/master/images/robotgc.png" height="250"> | <img src="https://github.com/tgc-utn/tgc-utn.github.io/blob/master/images/trofeotp.png" height="250">
 
-(+) Crear un nivel.
 
-(+) Un circuito con puntos de control que el jugador debe seguir con límites fuera de estos el jugador cae y deberá volver al último punto de control.
 
-(+) El circuito deberá tener obstáculos fijos y móviles.
+1,1  |  2,2
+<img src="https://github.com/tgc-utn/tgc-utn.github.io/blob/master/images/robotgc.png" height="500"> | <img src="https://github.com/tgc-utn/tgc-utn.github.io/blob/master/images/trofeotp.png" height="500">
 
-(+) Debe tener varios power ups de velocidad y vuelo que incrementa momentáneamente la velocidad de movimiento de la bola o le permite desplazarse a mayor distancia en el aire.
 
-(W) Deben existir colisiones entre el jugador, obstáculos y el entorno, tener en cuenta la gravedad y a qué objetos afecta.
+<img src="https://github.com/tgc-utn/tgc-utn.github.io/blob/master/images/robotgc.png" height="250"> | <img src="https://github.com/tgc-utn/tgc-utn.github.io/blob/master/images/trofeotp.png" height="250">
 
-(+) Debe haber por lo menos tres tipos de bola: piedra, metal, plástico, goma, etc. cada una debería tener propiedades particulares por ejemplo: la de goma salta más que el resto, la de metal es la más rápida.
 
-(W) El entorno debe tener un skybox.
+
+
+4,4  |  5,5
+<img src="https://github.com/tgc-utn/tgc-utn.github.io/blob/master/images/robotgc.png" height="500"> | <img src="https://github.com/tgc-utn/tgc-utn.github.io/blob/master/images/trofeotp.png" height="500">
+
+
+<img src="https://github.com/tgc-utn/tgc-utn.github.io/blob/master/images/robotgc.png" height="250"> | <img src="https://github.com/tgc-utn/tgc-utn.github.io/blob/master/images/trofeotp.png" height="250">
