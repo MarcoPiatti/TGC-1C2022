@@ -52,6 +52,6 @@ Odriozola, Matías - Legajo: 1680729
 <img src="https://github.com/MaquedaPaul/2022-1C-3051-LosPapanatas/blob/master/Documentacion/captura4.jfif" height="250"> 
 
 
+## Gameplay
 
-
-
+![Gameplay](Documentacion/gameplay.flv)
