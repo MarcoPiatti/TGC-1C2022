@@ -417,6 +417,7 @@ namespace TGC.MonoGame.TP
             totalCoins = 0;
             lifesZero = false;
             flag_play = false;
+            Initialized = false;
             //totalCoins = 0;
             // Nivel.RestartLogicalObjects();
         }
