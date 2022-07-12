@@ -178,7 +178,7 @@ float4 Shadows(VertexShaderOutput input, float4 color)
 	
     float3 normal = normalize(input.Normal.rgb);
     float3 lightDirection = normalize(lightPosition - input.WorldSpacePosition.xyz);
-    float inclinationBias = max(modulatedEpsilon * (1.0 - dot(normal, lightDirection)), maxEpsilon);
+    float inclinationBias = 0.0002 ;//max(modulatedEpsilon * (1.0 - dot(normal, lightDirection)), maxEpsilon);
 	
 	// Sample and smooth the shadowmap
 	// Also perform the comparison inside the loop and average the result

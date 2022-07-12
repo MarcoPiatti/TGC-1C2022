@@ -95,11 +95,11 @@ namespace TGC.MonoGame.TP
         //0.1
         //300
         //0
-        private Vector3 LightPosition = new Vector3(-70f, 330f, 60f);
+        private Vector3 LightPosition = new Vector3(-70f, 500f, 0f);
         //3000
         private readonly float ShadowCameraFarPlaneDistance = 3000f;
         //5f
-        private readonly float ShadowCameraNearPlaneDistance = 25f;
+        private readonly float ShadowCameraNearPlaneDistance = 20f;
 
         // Environment Map
 
@@ -246,7 +246,7 @@ namespace TGC.MonoGame.TP
             ShadowCamera.Position = LightPosition + Player.Position;
             ShadowCamera.TargetPosition = Player.Position;
             ShadowCamera.BuildView();
-            Effect.Parameters["lightPosition"].SetValue(LightPosition + Player.Position*0.2f);
+            Effect.Parameters["lightPosition"].SetValue(LightPosition + Player.Position * 0.0002f);
 
             CubeMapCamera.Position = Player.Position;
 
