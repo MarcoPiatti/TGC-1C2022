@@ -89,6 +89,10 @@ namespace TGC.MonoGame.TP
         public bool Initialized = false;
         public Song lifesZeroMusic {get;set;}
 
+        public RenderTarget2D noShadowsRender;
+
+        public RenderTarget2D noEnviromentRender;
+
         public Player(GraphicsDevice graphics, ContentManager content, Effect Effect, Color color)
         {
 
@@ -122,6 +126,20 @@ namespace TGC.MonoGame.TP
             foreach (var meshPart in Model.Meshes.SelectMany(mesh => mesh.MeshParts))
                 meshPart.Effect = PlayerEffect;
 
+            noShadowsRender = new RenderTarget2D(graphics, 1, 1, false,
+                SurfaceFormat.Single, DepthFormat.Depth24, 0, RenderTargetUsage.PlatformContents);
+
+            noEnviromentRender = new RenderTarget2D(graphics, 1, 1, false,
+                SurfaceFormat.Single, DepthFormat.Depth24, 0, RenderTargetUsage.PlatformContents);
+
+            graphics.SetRenderTarget(noShadowsRender);
+            graphics.Clear(Color.White);
+
+            graphics.SetRenderTarget(noEnviromentRender);
+            graphics.Clear(Color.Transparent);
+
+            graphics.SetRenderTarget(null);
+
         }
         
         public void Init()
@@ -153,6 +171,38 @@ namespace TGC.MonoGame.TP
             PlayerEffect.Parameters["shadowMapSize"]?.SetValue(Vector2.One * ShadowmapSize);
             PlayerEffect.Parameters["shadowMap"]?.SetValue(ShadowMapRenderTarget);
             PlayerEffect.Parameters["LightViewProjection"]?.SetValue(ShadowCamera.View * ShadowCamera.Projection);
+            drawnBody.Draw(playerWorld, view, projection, PlayerEffect);
+
+            /*
+            PlayerEffect.Parameters["KAmbient"].SetValue(KAmbientGoma);
+            PlayerEffect.Parameters["KDiffuse"].SetValue(KDiffuseGoma);
+            PlayerEffect.Parameters["KSpecular"].SetValue(KSpecularGoma);
+            PlayerEffect.Parameters["shininess"].SetValue(1f);
+            */
+
+        }
+
+        public void Draw(Matrix world, Matrix view, Matrix projection)
+        {
+            if (!Initialized) Init();
+            // Set BasicEffect parameters.
+            Vector3 cameraPosition = new Vector3(-10, 10, 0);
+            Vector3 LightPosition = new Vector3(-10, 10, 0);
+
+            var playerWorld = this.Body.World;
+            PlayerEffect.CurrentTechnique = PlayerEffect.Techniques["BasicColorDrawing"];
+            //Effect.CurrentTechnique = Effect.Techniques["EnvironmentMapSphere"];
+            PlayerEffect.Parameters["environmentMap"]?.SetValue(noEnviromentRender);
+            PlayerEffect.Parameters["lightPosition"].SetValue(LightPosition);
+            Matrix InverseTransposeWorld = Matrix.Transpose(Matrix.Invert(world));
+            PlayerEffect.Parameters["InverseTransposeWorld"].SetValue(InverseTransposeWorld);
+            PlayerEffect.Parameters["World"].SetValue(world);
+            PlayerEffect.Parameters["View"].SetValue(view);
+            PlayerEffect.Parameters["Projection"].SetValue(projection);
+            PlayerEffect.Parameters["eyePosition"]?.SetValue(cameraPosition);
+            PlayerEffect.Parameters["shadowMapSize"]?.SetValue(Vector2.One * 1);
+            PlayerEffect.Parameters["shadowMap"]?.SetValue(noShadowsRender);
+            PlayerEffect.Parameters["LightViewProjection"]?.SetValue(Matrix.Identity);
             drawnBody.Draw(playerWorld, view, projection, PlayerEffect);
 
             /*

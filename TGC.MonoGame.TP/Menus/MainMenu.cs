@@ -23,6 +23,7 @@ namespace TGC.MonoGame.TP.Menus
         public List<Cylinder> cylinders;
         public Cylinder piso;
 
+
         public MainMenu(GraphicsDevice graphicsDevice, SpriteFont SpriteFont, SpriteBatch SpriteBatch, Player[] playerTypes, ContentManager content) : base(SpriteFont, SpriteBatch, content)
         {
             this.playerTypes = playerTypes;
@@ -55,10 +56,9 @@ namespace TGC.MonoGame.TP.Menus
 
             piso.Draw(view, projection);
 
-            GeometricPrimitive player = playerTypes[selectedPlayer].Body.Body;
             Matrix playerWorld = Matrix.CreateRotationY(Time / 2) * Matrix.CreateTranslation(-23, 1.3f, 3);
 
-            player.Draw(playerWorld, view, projection);
+            playerTypes[selectedPlayer].Draw(playerWorld, view, projection);
 
             DrawCenterTextY("Rogue       ", windowSize.Y * 1 / 12, 2, Color.Green);
             DrawCenterTextY("      it    ", windowSize.Y * 1 / 12, 2, Color.PaleGreen);
@@ -124,14 +124,16 @@ namespace TGC.MonoGame.TP.Menus
                 {
                     menu_move.Play();
                     selectedPlayer += 1;
+                    if (selectedPlayer > playerTypes.Length - 1) selectedPlayer = 0;
+                    playerTypes[selectedPlayer].Initialized = false;
                 }
                 if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
                 {
                     menu_move.Play();
                     selectedPlayer -= 1;
+                    if (selectedPlayer < 0) selectedPlayer = playerTypes.Length - 1;
+                    playerTypes[selectedPlayer].Initialized = false;
                 }
-                if (selectedPlayer > playerTypes.Length - 1) selectedPlayer = 0;
-                if (selectedPlayer < 0) selectedPlayer = playerTypes.Length - 1;
             }
         }
 
