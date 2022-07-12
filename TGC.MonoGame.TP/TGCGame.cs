@@ -248,7 +248,7 @@ namespace TGC.MonoGame.TP
                 return;
             }
 
-            ShadowCamera.Position = LightPosition + Player.Position;
+            ShadowCamera.Position = LightPosition + Player.Position * 0.0002f;
             ShadowCamera.TargetPosition = Player.Position;
             ShadowCamera.BuildView();
             Effect.Parameters["lightPosition"].SetValue(LightPosition + Player.Position * 0.0002f);
