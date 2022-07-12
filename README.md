@@ -11,7 +11,8 @@ Legajo: 1762620
 <img src="https://github.com/MaquedaPaul/2022-1C-3051-LosPapanatas/blob/master/Documentacion/pablo.jfif" height="500"> 
 
 
-
+Piatti Castro, Marco Augusto
+Legajo: 175.645-0
 
 
 
