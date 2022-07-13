@@ -88,7 +88,7 @@ namespace TGC.MonoGame.TP
 
         private RenderTarget2D ShadowMapRenderTarget;
 
-        private const int ShadowmapSize = 1024 * 7;
+        private const int ShadowmapSize = 1024 * 4;
 
         private TargetCamera ShadowCamera;
 
